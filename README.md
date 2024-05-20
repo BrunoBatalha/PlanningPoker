@@ -1,36 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PlanningPoker
+Projeto para jogar Planning Poker online com o time.
 
-## Getting Started
+### Tecnologias
 
-First, run the development server:
+- [NextJs](https://nextjs.org/)
+- [Chakra UI](https://v2.chakra-ui.com/)
+- [Firebase](https://firebase.google.com/?hl=pt-br)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Descrição
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+No PlanningPoker, os usuários podem criar uma sala de sessão onde cada membro da equipe pode entrar e participar da rodada de estimativa. Cada participante seleciona uma carta de estimativa que representa sua previsão para uma tarefa ou história de usuário. Após todos os membros votarem, a média das estimativas é revelada, facilitando a discussão e o consenso sobre o esforço necessário.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
