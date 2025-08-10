@@ -187,44 +187,63 @@ export function StoriesSidebar({
                       </Text>
                     </Box>
                   ) : (
-                    pendingStories.map((story) => (
-                      <Box
-                        key={story.key}
-                        p="3"
-                        borderRadius="md"
-                        borderWidth="1px"
-                        borderColor="gray.200"
-                        bg="white"
-                        _hover={{
-                          borderColor: "purple.300",
-                          bg: "purple.50",
-                          transform: "translateY(-1px)",
-                          boxShadow: "sm",
-                        }}
-                        transition="all 0.2s"
-                      >
-                        <Flex justify="space-between" align="center">
-                          <Text
-                            fontSize="sm"
-                            fontWeight="medium"
-                            noOfLines={2}
-                            flex="1"
-                            mr="2"
-                          >
-                            {story.name}
-                          </Text>
-                          <Button
-                            size="sm"
-                            colorScheme="purple"
-                            variant="outline"
-                            onClick={() => onSelectPendingStory(story)}
-                            minW="fit-content"
-                          >
-                            Selecionar
-                          </Button>
-                        </Flex>
-                      </Box>
-                    ))
+                    pendingStories.map((story) => {
+                      const isCurrentStory = currentStory?.name === story.name;
+                      return (
+                        <Box
+                          key={story.key}
+                          p="3"
+                          borderRadius="md"
+                          borderWidth="2px"
+                          borderColor={isCurrentStory ? "blue.400" : "gray.200"}
+                          bg={isCurrentStory ? "blue.50" : "white"}
+                          position="relative"
+                          _hover={{
+                            borderColor: isCurrentStory ? "blue.500" : "purple.300",
+                            bg: isCurrentStory ? "blue.100" : "purple.50",
+                            transform: "translateY(-1px)",
+                            boxShadow: "sm",
+                          }}
+                          transition="all 0.2s"
+                        >
+                          {isCurrentStory && (
+                            <Badge
+                              position="absolute"
+                              top="-2"
+                              left="-2"
+                              colorScheme="blue"
+                              variant="solid"
+                              fontSize="xs"
+                              borderRadius="full"
+                            >
+                              Atual
+                            </Badge>
+                          )}
+                          <Flex justify="space-between" align="center">
+                            <Text
+                              fontSize="sm"
+                              fontWeight={isCurrentStory ? "bold" : "medium"}
+                              noOfLines={2}
+                              flex="1"
+                              mr="2"
+                              color={isCurrentStory ? "blue.700" : "gray.700"}
+                            >
+                              {story.name}
+                            </Text>
+                            <Button
+                              size="sm"
+                              colorScheme={isCurrentStory ? "blue" : "purple"}
+                              variant={isCurrentStory ? "solid" : "outline"}
+                              onClick={() => onSelectPendingStory(story)}
+                              minW="fit-content"
+                              isDisabled={isCurrentStory}
+                            >
+                              {isCurrentStory ? "Selecionada" : "Selecionar"}
+                            </Button>
+                          </Flex>
+                        </Box>
+                      );
+                    })
                   )}
                 </VStack>
               </Box>

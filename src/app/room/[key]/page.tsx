@@ -81,7 +81,7 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
     const onListPlayers = useCallback((currentUserKey: string) => {
         const database = realtimeDatabase.getDatabase(app)
         const usersRef = realtimeDatabase.ref(database, `rooms/${roomKey}/users`);
-        realtimeDatabase.onValue(usersRef, (snapshot: realtimeDatabase.DataSnapshot) => {
+        realtimeDatabase.onValue(usersRef, async (snapshot: realtimeDatabase.DataSnapshot) => {
             if (!snapshot.exists()) {
                 return;
             }
@@ -91,17 +91,37 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
             const keyValue = Object.entries(data) as [string, User][]
             const userList = keyValue.map(([key, value]) => ({ key, ...value }));
             setPlayers(userList.map(u => ({ username: u.username, point: u.point, key: u.key })))
+            
+            // Auto-update story score if cards are revealed and someone changes vote
+            if (isShowAverage && currentStory?.name) {
+                const name = currentStory.name.trim()
+                if (name) {
+                    const avg = calculateAverageCallback()
+                    await saveScoredStoryCallback(name, avg, false) // Don't show toast for auto-updates
+                }
+            }
         });
-    }, [roomKey])
+    }, [roomKey, isShowAverage, currentStory, saveScoredStoryCallback, calculateAverageCallback])
 
     const onShowAverage = useCallback(() => {
         const database = realtimeDatabase.getDatabase(app)
         const usersRef = realtimeDatabase.ref(database, `rooms/${roomKey}`);
-        realtimeDatabase.onValue(usersRef, (snapshot: realtimeDatabase.DataSnapshot) => {
+        realtimeDatabase.onValue(usersRef, async (snapshot: realtimeDatabase.DataSnapshot) => {
             const data = snapshot.val();
-            setIsShowAverage(!!data.isShowingAverage)
+            const newIsShowAverage = !!data.isShowingAverage
+            
+            // Auto-save story when cards are revealed
+            if (!isShowAverage && newIsShowAverage && currentStory?.name) {
+                const name = currentStory.name.trim()
+                if (name) {
+                    const avg = calculateAverageCallback()
+                    await saveScoredStoryCallback(name, avg)
+                }
+            }
+            
+            setIsShowAverage(newIsShowAverage)
         });
-    }, [roomKey])
+    }, [roomKey, isShowAverage, currentStory, saveScoredStoryCallback, calculateAverageCallback])
 
     const existsRoomByKey = useCallback(async (currentRoomKey: string) => {
         const database = realtimeDatabase.getDatabase(app)
@@ -231,7 +251,7 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
         })
     }
 
-    function calculateAverage() {
+    const calculateAverageCallback = useCallback(() => {
         const total = players.reduce((acc: number, current: User) => {
             const value = Number(current.point)
             return isNaN(value) ? acc : acc + value
@@ -240,6 +260,10 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
         const value = isNaN(castToNumber) ? 0 : castToNumber
         const average = (total + value) / (players.length + 1)
         return average.toPrecision(3)
+    }, [players, pointSelected])
+
+    function calculateAverage() {
+        return calculateAverageCallback()
     }
 
     async function saveIsShowingAvarageTo(isShowing: boolean) {
@@ -264,49 +288,56 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
         await defineCurrentStory(story.name)
     }
 
-    async function saveScoredStory(name: string, average: string) {
+    const saveScoredStoryCallback = useCallback(async (name: string, average: string, showToast: boolean = true) => {
         const database = realtimeDatabase.getDatabase(app)
-        const scoredRef = realtimeDatabase.ref(database, `rooms/${roomKey}/stories`)
-        await realtimeDatabase.push(scoredRef, { name, average } as StoryScored)
-
-        // remove from pending if exists
-        const matched = pendingStories.find((s) => s.name === name)
-        if (matched) {
-            const pendingRef = realtimeDatabase.ref(database, `rooms/${roomKey}/pendingStories/${matched.key}`)
-            await realtimeDatabase.remove(pendingRef)
+        
+        // Check if story already exists in scored stories and update it
+        const existingStory = scoredStories.find((s) => s.name === name)
+        if (existingStory) {
+            const scoredRef = realtimeDatabase.ref(database, `rooms/${roomKey}/stories/${existingStory.key}`)
+            await realtimeDatabase.update(scoredRef, { average })
+        } else {
+            const scoredRef = realtimeDatabase.ref(database, `rooms/${roomKey}/stories`)
+            await realtimeDatabase.push(scoredRef, { name, average } as StoryScored)
         }
 
-        // clear current story
-        const currentRef = realtimeDatabase.ref(database, `rooms/${roomKey}/currentStory`)
-        await realtimeDatabase.remove(currentRef)
+        if (showToast) {
+            toast({
+                title: '📊 Pontuação salva!',
+                description: `"${name}" pontuada com ${average}`,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+                position: 'top',
+            })
+        }
+
+        // remove from pending if exists (only for new stories)
+        if (!existingStory) {
+            const matched = pendingStories.find((s) => s.name === name)
+            if (matched) {
+                const pendingRef = realtimeDatabase.ref(database, `rooms/${roomKey}/pendingStories/${matched.key}`)
+                await realtimeDatabase.remove(pendingRef)
+            }
+        }
+    }, [roomKey, scoredStories, pendingStories, toast])
+
+    async function saveScoredStory(name: string, average: string, showToast: boolean = true) {
+        return saveScoredStoryCallback(name, average, showToast)
     }
 
     async function handleClickNewRound() {
-        // When finishing a round with average visible, persist story score if defined
-        if (isShowAverage) {
-            try {
-                const name = currentStory?.name?.trim()
-                if (!name) {
-                    throw new Error("Nome da estória não definido")
-                }
-                const avg = calculateAverage()
-                await saveScoredStory(name, avg)
-            } catch (e) {
-                toast({
-                    title: 'Defina o nome da estória antes de finalizar',
-                    status: 'warning',
-                    duration: 2500,
-                    isClosable: true,
-                    position: 'top',
-                })
-            }
-        }
-
         const updates = listAllUsersWithPointsResetedToUpdate()
         const database = realtimeDatabase.getDatabase(app)
         const ref = realtimeDatabase.ref(database, `rooms/${roomKey}/users`);
         await realtimeDatabase.update(ref, updates)
-        saveIsShowingAvarageTo(false)
+        await saveIsShowingAvarageTo(false)
+        
+        // Clear current story after new round
+        if (currentStory?.name) {
+            const currentRef = realtimeDatabase.ref(database, `rooms/${roomKey}/currentStory`)
+            await realtimeDatabase.remove(currentRef)
+        }
     }
 
     function listAllUsersWithPointsResetedToUpdate() {
