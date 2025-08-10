@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { app } from "../../../../firebase";
 import { useRouter } from "next/navigation";
 import { AddIcon, LinkIcon } from "@chakra-ui/icons";
-import { CardOtherPlayer, CardPoint, EffectDisable } from "@/components";
+import { CardOtherPlayer, CardPoint, EffectDisable, StoriesSidebar } from "@/components";
 /**
  *
 rooms
@@ -329,6 +329,21 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
 
     return (
         <Box h='100vh' py='12' overflow='hidden' position='relative'>
+            {/* Stories Sidebar */}
+            <StoriesSidebar
+                pendingStories={pendingStories}
+                scoredStories={scoredStories}
+                storyInput={storyInput}
+                onStoryInputChange={setStoryInput}
+                onAddStory={async (name: string) => {
+                    await addPendingStory(name);
+                    await defineCurrentStory(name);
+                    setStoryInput("");
+                }}
+                onSelectPendingStory={handleSelectPendingAsCurrent}
+                currentStory={currentStory}
+            />
+
             <Flex flexDir='column' position='absolute' top='4' left='4' gap='2'>
                 <Tag variant='subtle'>
                     <Avatar
@@ -436,47 +451,6 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
                     {rigthCardPlayerList}
                 </Flex>
             </Flex>
-
-            {/* Story Controls */}
-            <Box p='3' borderWidth='1px' borderRadius='md' position='absolute' bottom='4' left='4' right='4'>
-              <Text fontWeight='bold' mb='2'>Estórias</Text>
-              <InputGroup size='sm'>
-                <Input placeholder='Nova estória' value={storyInput} onChange={(e) => setStoryInput(e.target.value)} />
-                <InputRightElement width='3rem'>
-                  <IconButton aria-label='Adicionar estória' size='sm' icon={<AddIcon />} onClick={async () => {
-                    const name = storyInput.trim()
-                    if (!name) return
-                    await addPendingStory(name)
-                    await defineCurrentStory(name)
-                    setStoryInput("")
-                  }} />
-                </InputRightElement>
-              </InputGroup>
-
-              <Text mt='3' fontSize='sm' color='gray.600'>A pontuar</Text>
-              <VStack align='stretch' maxH='160px' overflowY='auto' spacing='1' mt='1'>
-                {pendingStories.length === 0 && <Text fontSize='xs' color='gray.500'>Sem estórias</Text>}
-                {pendingStories.map((s) => (
-                  <Flex key={s.key} justify='space-between' align='center' p='1' borderRadius='sm' _hover={{ bg: 'gray.50' }}>
-                    <Text fontSize='sm' noOfLines={1}>{s.name}</Text>
-                    <Button size='xs' variant='outline' onClick={() => handleSelectPendingAsCurrent(s)}>Selecionar</Button>
-                  </Flex>
-                ))}
-              </VStack>
-
-              <Divider my='2' />
-
-              <Text fontSize='sm' color='gray.600'>Pontuadas</Text>
-              <VStack align='stretch' maxH='160px' overflowY='auto' spacing='1' mt='1'>
-                {scoredStories.length === 0 && <Text fontSize='xs' color='gray.500'>Nada por aqui</Text>}
-                {scoredStories.map((s: { key: string; name: string; average: string }) => (
-                  <Flex key={s.key} justify='space-between' align='center' p='1' borderRadius='sm'>
-                    <Text fontSize='sm' noOfLines={1}>{s.name}</Text>
-                    <Badge colorScheme='purple'>{s.average}</Badge>
-                  </Flex>
-                ))}
-              </VStack>
-            </Box>
         </Box >
     );
 }
