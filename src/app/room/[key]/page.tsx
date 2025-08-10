@@ -1,7 +1,7 @@
 'use client'
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import * as realtimeDatabase from "firebase/database";
-import { Avatar, Box, Button, Flex, Heading, Tag, TagLeftIcon, Text, Wrap, WrapItem, useClipboard, useConst, useToast } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, Heading, Tag, TagLeftIcon, Text, Wrap, WrapItem, useClipboard, useConst, useToast, Input, InputGroup, InputRightElement, IconButton, VStack, Divider, Badge } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { app } from "../../../../firebase";
 import { useRouter } from "next/navigation";
@@ -37,6 +37,9 @@ interface ParamsUrl {
     key: string
 }
 
+interface StoryPending { name: string }
+interface StoryScored { name: string; average: string }
+
 export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }) {
     const POINTS = useConst(['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89', '?', '☕'])
     const router = useRouter()
@@ -46,10 +49,14 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
     const [pointSelected, setPointSelected] = useState<string | null>(null)
     const [players, setPlayers] = useState<User[]>([])
     const [isShowAverage, setIsShowAverage] = useState(false)
+    const [currentStory, setCurrentStory] = useState<{ name: string } | null>(null)
+    const [storyInput, setStoryInput] = useState("")
+    const [pendingStories, setPendingStories] = useState<Array<{ key: string } & StoryPending>>([])
+    const [scoredStories, setScoredStories] = useState<Array<{ key: string } & StoryScored>>([])
 
     const leftCardPlayerList = useMemo(() => {
         const playersLeft = players.length > 1 ? players.slice(0, players.length / 2) : players
-        return playersLeft.map((p, index) => (
+        return playersLeft.map((p: User, index: number) => (
             <CardOtherPlayer
                 key={index}
                 point={p.point}
@@ -61,7 +68,7 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
 
     const rigthCardPlayerList = useMemo(() => {
         const playersRight = players.length > 1 ? players.slice(players.length / 2, players.length) : []
-        return playersRight.map((p, index) => (
+        return playersRight.map((p: User, index: number) => (
             <CardOtherPlayer
                 key={index}
                 point={p.point}
@@ -74,7 +81,7 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
     const onListPlayers = useCallback((currentUserKey: string) => {
         const database = realtimeDatabase.getDatabase(app)
         const usersRef = realtimeDatabase.ref(database, `rooms/${roomKey}/users`);
-        realtimeDatabase.onValue(usersRef, (snapshot) => {
+        realtimeDatabase.onValue(usersRef, (snapshot: realtimeDatabase.DataSnapshot) => {
             if (!snapshot.exists()) {
                 return;
             }
@@ -90,7 +97,7 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
     const onShowAverage = useCallback(() => {
         const database = realtimeDatabase.getDatabase(app)
         const usersRef = realtimeDatabase.ref(database, `rooms/${roomKey}`);
-        realtimeDatabase.onValue(usersRef, (snapshot) => {
+        realtimeDatabase.onValue(usersRef, (snapshot: realtimeDatabase.DataSnapshot) => {
             const data = snapshot.val();
             setIsShowAverage(!!data.isShowingAverage)
         });
@@ -138,6 +145,35 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
     useEffect(() => {
         onShowAverage()
     }, [onShowAverage])
+
+    useEffect(() => {
+        const database = realtimeDatabase.getDatabase(app)
+        const ref = realtimeDatabase.ref(database, `rooms/${roomKey}/pendingStories`)
+        realtimeDatabase.onValue(ref, (snapshot: realtimeDatabase.DataSnapshot) => {
+            const data = snapshot.val() || {}
+            const list = Object.entries(data as Record<string, StoryPending>).map(([key, value]) => ({ key, ...(value as StoryPending) }))
+            setPendingStories(list)
+        })
+    }, [roomKey])
+
+    useEffect(() => {
+        const database = realtimeDatabase.getDatabase(app)
+        const ref = realtimeDatabase.ref(database, `rooms/${roomKey}/stories`)
+        realtimeDatabase.onValue(ref, (snapshot: realtimeDatabase.DataSnapshot) => {
+            const data = snapshot.val() || {}
+            const list = Object.entries(data as Record<string, StoryScored>).map(([key, value]) => ({ key, ...(value as StoryScored) }))
+            setScoredStories(list)
+        })
+    }, [roomKey])
+
+    useEffect(() => {
+        const database = realtimeDatabase.getDatabase(app)
+        const ref = realtimeDatabase.ref(database, `rooms/${roomKey}/currentStory`)
+        realtimeDatabase.onValue(ref, (snapshot: realtimeDatabase.DataSnapshot) => {
+            const data = snapshot.val()
+            setCurrentStory(data ?? null)
+        })
+    }, [roomKey])
 
     function getCurrentUser() {
         const storageUser = window.sessionStorage.getItem('currentUser')
@@ -196,7 +232,7 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
     }
 
     function calculateAverage() {
-        const total = players.reduce((acc, current) => {
+        const total = players.reduce((acc: number, current: User) => {
             const value = Number(current.point)
             return isNaN(value) ? acc : acc + value
         }, 0)
@@ -212,7 +248,60 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
         await realtimeDatabase.update(ref, { isShowingAverage: isShowing })
     }
 
+    async function addPendingStory(name: string) {
+        const database = realtimeDatabase.getDatabase(app)
+        const ref = realtimeDatabase.ref(database, `rooms/${roomKey}/pendingStories`)
+        await realtimeDatabase.push(ref, { name } as StoryPending)
+    }
+
+    async function defineCurrentStory(name: string) {
+        const database = realtimeDatabase.getDatabase(app)
+        const ref = realtimeDatabase.ref(database, `rooms/${roomKey}/currentStory`)
+        await realtimeDatabase.set(ref, { name })
+    }
+
+    async function handleSelectPendingAsCurrent(story: { key: string; name: string }) {
+        await defineCurrentStory(story.name)
+    }
+
+    async function saveScoredStory(name: string, average: string) {
+        const database = realtimeDatabase.getDatabase(app)
+        const scoredRef = realtimeDatabase.ref(database, `rooms/${roomKey}/stories`)
+        await realtimeDatabase.push(scoredRef, { name, average } as StoryScored)
+
+        // remove from pending if exists
+        const matched = pendingStories.find((s) => s.name === name)
+        if (matched) {
+            const pendingRef = realtimeDatabase.ref(database, `rooms/${roomKey}/pendingStories/${matched.key}`)
+            await realtimeDatabase.remove(pendingRef)
+        }
+
+        // clear current story
+        const currentRef = realtimeDatabase.ref(database, `rooms/${roomKey}/currentStory`)
+        await realtimeDatabase.remove(currentRef)
+    }
+
     async function handleClickNewRound() {
+        // When finishing a round with average visible, persist story score if defined
+        if (isShowAverage) {
+            try {
+                const name = currentStory?.name?.trim()
+                if (!name) {
+                    throw new Error("Nome da estória não definido")
+                }
+                const avg = calculateAverage()
+                await saveScoredStory(name, avg)
+            } catch (e) {
+                toast({
+                    title: 'Defina o nome da estória antes de finalizar',
+                    status: 'warning',
+                    duration: 2500,
+                    isClosable: true,
+                    position: 'top',
+                })
+            }
+        }
+
         const updates = listAllUsersWithPointsResetedToUpdate()
         const database = realtimeDatabase.getDatabase(app)
         const ref = realtimeDatabase.ref(database, `rooms/${roomKey}/users`);
@@ -259,24 +348,6 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
                     Nova sala
                 </Button>
             </Flex>
-            <Flex h='80%' mx='12' flex='2'>
-                <Flex flex='1' flexDir='column' gap='4' flexWrap='wrap' justifyContent='center'>
-                    {leftCardPlayerList}
-                </Flex>
-                <Flex flex='2' alignItems='center' justifyContent='center'>
-                    {!isShowAverage && <Button size='lg' onClick={() => saveIsShowingAvarageTo(true)}>REVELAR CARTAS</Button>}
-                    {isShowAverage &&
-                        <Box>
-                            <Heading size='4xl' textAlign='center'>{calculateAverage()}</Heading>
-                            <Button mt='4' w='full' onClick={handleClickNewRound}>Nova rodada</Button>
-                        </Box>
-                    }
-                </Flex>
-                <Flex flex='1' flexDir='column' gap='4' flexWrap='wrap' justifyContent='center' alignItems='flex-end'>
-                    {rigthCardPlayerList}
-                </Flex>
-            </Flex>
-
             <Flex flex='1' flexDir='column' w='full' gap='8'>
                 <Box textAlign='center'>
                     <AnimatePresence>
@@ -341,6 +412,71 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
                     </Box>
                 </Flex>
             </Flex>
+
+            <Flex h='80%' mx='12' flex='2'>
+                <Flex flex='1' flexDir='column' gap='4' flexWrap='wrap' justifyContent='center'>
+                    {leftCardPlayerList}
+                </Flex>
+                <Flex flex='2' alignItems='center' justifyContent='center'>
+                    {!isShowAverage && (
+                        <Box textAlign='center'>
+                          {currentStory?.name && <Text mb='2' color='gray.600'>Estória atual: <b>{currentStory.name}</b></Text>}
+                          <Button size='lg' onClick={() => saveIsShowingAvarageTo(true)}>REVELAR CARTAS</Button>
+                        </Box>
+                    )}
+                    {isShowAverage && (
+                        <Box>
+                          {currentStory?.name && <Text mb='2' textAlign='center' color='gray.600'>Estória: <b>{currentStory.name}</b></Text>}
+                          <Heading size='4xl' textAlign='center'>{calculateAverage()}</Heading>
+                          <Button mt='4' w='full' onClick={handleClickNewRound}>Nova rodada</Button>
+                        </Box>
+                    )}
+                </Flex>
+                <Flex flex='1' flexDir='column' gap='4' flexWrap='wrap' justifyContent='center' alignItems='flex-end'>
+                    {rigthCardPlayerList}
+                </Flex>
+            </Flex>
+
+            {/* Story Controls */}
+            <Box p='3' borderWidth='1px' borderRadius='md' position='absolute' bottom='4' left='4' right='4'>
+              <Text fontWeight='bold' mb='2'>Estórias</Text>
+              <InputGroup size='sm'>
+                <Input placeholder='Nova estória' value={storyInput} onChange={(e) => setStoryInput(e.target.value)} />
+                <InputRightElement width='3rem'>
+                  <IconButton aria-label='Adicionar estória' size='sm' icon={<AddIcon />} onClick={async () => {
+                    const name = storyInput.trim()
+                    if (!name) return
+                    await addPendingStory(name)
+                    await defineCurrentStory(name)
+                    setStoryInput("")
+                  }} />
+                </InputRightElement>
+              </InputGroup>
+
+              <Text mt='3' fontSize='sm' color='gray.600'>A pontuar</Text>
+              <VStack align='stretch' maxH='160px' overflowY='auto' spacing='1' mt='1'>
+                {pendingStories.length === 0 && <Text fontSize='xs' color='gray.500'>Sem estórias</Text>}
+                {pendingStories.map((s) => (
+                  <Flex key={s.key} justify='space-between' align='center' p='1' borderRadius='sm' _hover={{ bg: 'gray.50' }}>
+                    <Text fontSize='sm' noOfLines={1}>{s.name}</Text>
+                    <Button size='xs' variant='outline' onClick={() => handleSelectPendingAsCurrent(s)}>Selecionar</Button>
+                  </Flex>
+                ))}
+              </VStack>
+
+              <Divider my='2' />
+
+              <Text fontSize='sm' color='gray.600'>Pontuadas</Text>
+              <VStack align='stretch' maxH='160px' overflowY='auto' spacing='1' mt='1'>
+                {scoredStories.length === 0 && <Text fontSize='xs' color='gray.500'>Nada por aqui</Text>}
+                {scoredStories.map((s: { key: string; name: string; average: string }) => (
+                  <Flex key={s.key} justify='space-between' align='center' p='1' borderRadius='sm'>
+                    <Text fontSize='sm' noOfLines={1}>{s.name}</Text>
+                    <Badge colorScheme='purple'>{s.average}</Badge>
+                  </Flex>
+                ))}
+              </VStack>
+            </Box>
         </Box >
     );
 }
