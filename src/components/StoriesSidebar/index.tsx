@@ -1,26 +1,32 @@
+import { AddIcon, EditIcon, HamburgerIcon } from "@chakra-ui/icons";
 import {
-  Box,
-  Button,
-  Divider,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerHeader,
-  DrawerOverlay,
-  Flex,
-  IconButton,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Text,
-  VStack,
-  Badge,
-  useDisclosure,
-  Tooltip,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
+    Badge,
+    Box,
+    Button,
+    Divider,
+    Drawer,
+    DrawerBody,
+    DrawerCloseButton,
+    DrawerContent,
+    DrawerHeader,
+    DrawerOverlay,
+    Flex,
+    IconButton,
+    Input,
+    InputGroup,
+    InputRightElement,
+    Text,
+    Tooltip,
+    useDisclosure,
+    VStack,
 } from "@chakra-ui/react";
-import { AddIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface StoryPending {
   key: string;
@@ -40,6 +46,7 @@ interface StoriesSidebarProps {
   onStoryInputChange: (value: string) => void;
   onAddStory: (name: string) => void;
   onSelectPendingStory: (story: StoryPending) => void;
+  onUpdateStoryScore: (storyKey: string, newAverage: string) => void;
   currentStory: { name: string } | null;
 }
 
@@ -50,9 +57,19 @@ export function StoriesSidebar({
   onStoryInputChange,
   onAddStory,
   onSelectPendingStory,
+  onUpdateStoryScore,
   currentStory,
 }: StoriesSidebarProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { 
+    isOpen: isEditModalOpen, 
+    onOpen: onEditModalOpen, 
+    onClose: onEditModalClose 
+  } = useDisclosure();
+  
+  const [editingStory, setEditingStory] = useState<StoryScored | null>(null);
+  const [newScore, setNewScore] = useState("");
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   const handleAddStory = () => {
     const name = storyInput.trim();
@@ -64,6 +81,27 @@ export function StoriesSidebar({
     if (e.key === "Enter") {
       handleAddStory();
     }
+  };
+
+  const handleEditScore = (story: StoryScored) => {
+    setEditingStory(story);
+    setNewScore(story.average);
+    onEditModalOpen();
+  };
+
+  const handleConfirmEdit = () => {
+    if (editingStory && newScore.trim()) {
+      onUpdateStoryScore(editingStory.key, newScore.trim());
+      onEditModalClose();
+      setEditingStory(null);
+      setNewScore("");
+    }
+  };
+
+  const handleCancelEdit = () => {
+    onEditModalClose();
+    setEditingStory(null);
+    setNewScore("");
   };
 
   const pendingCount = pendingStories.length;
@@ -300,15 +338,31 @@ export function StoriesSidebar({
                           >
                             {story.name}
                           </Text>
-                          <Badge
-                            colorScheme="purple"
-                            variant="solid"
-                            fontSize="xs"
-                            px="2"
-                            py="1"
-                          >
-                            {story.average}
-                          </Badge>
+                          <Flex align="center" gap="2">
+                            <Badge
+                              colorScheme="purple"
+                              variant="solid"
+                              fontSize="xs"
+                              px="2"
+                              py="1"
+                            >
+                              {story.average}
+                            </Badge>
+                            <Tooltip label="Editar pontuação" placement="top">
+                              <IconButton
+                                aria-label="Editar pontuação"
+                                icon={<EditIcon />}
+                                size="sm"
+                                variant="ghost"
+                                colorScheme="blue"
+                                onClick={() => handleEditScore(story)}
+                                _hover={{
+                                  bg: "blue.100",
+                                  transform: "scale(1.1)",
+                                }}
+                              />
+                            </Tooltip>
+                          </Flex>
                         </Flex>
                       </Box>
                     ))
@@ -319,6 +373,69 @@ export function StoriesSidebar({
           </DrawerBody>
         </DrawerContent>
       </Drawer>
+
+      {/* Edit Score Modal */}
+      <AlertDialog
+        isOpen={isEditModalOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={handleCancelEdit}
+        isCentered
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              ✏️ Editar Pontuação
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              <Text mb="3">
+                Editando pontuação da estória:{" "}
+                <Text as="span" fontWeight="bold" color="blue.600">
+                  {editingStory?.name}
+                </Text>
+              </Text>
+              
+              <Text mb="2" fontSize="sm" color="gray.600">
+                Pontuação atual: {" "}
+                <Badge colorScheme="purple" fontSize="sm">
+                  {editingStory?.average}
+                </Badge>
+              </Text>
+
+              <Input
+                placeholder="Digite a nova pontuação..."
+                value={newScore}
+                onChange={(e) => setNewScore(e.target.value)}
+                focusBorderColor="purple.500"
+                autoFocus
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    handleConfirmEdit();
+                  }
+                }}
+              />
+              
+              <Text fontSize="xs" color="gray.500" mt="2">
+                💡 Dica: Use números decimais (ex: 3.5) ou símbolos especiais (ex: ?, ☕)
+              </Text>
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={handleCancelEdit}>
+                Cancelar
+              </Button>
+              <Button 
+                colorScheme="purple" 
+                onClick={handleConfirmEdit} 
+                ml={3}
+                isDisabled={!newScore.trim() || newScore.trim() === editingStory?.average}
+              >
+                Salvar
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 }
