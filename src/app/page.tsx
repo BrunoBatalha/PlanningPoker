@@ -1,9 +1,9 @@
 'use client'
-import { useToast } from "@chakra-ui/react";
-import * as realtimeDatabase from "firebase/database";
-import { app } from "../../firebase";
-import { useRouter } from "next/navigation";
 import ModalCreateUsername from "@/components/ModalCreateUsername";
+import { roomService } from "@/services/RoomService";
+import { userService } from "@/services/UserService";
+import { useToast } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Home() {
@@ -14,16 +14,9 @@ export default function Home() {
   async function handleSubmit({ username }: { username: string }) {
     setIsLoading(true)
     try {
-      const database = realtimeDatabase.getDatabase(app)
-      const roomsRef = realtimeDatabase.ref(database, `rooms`);
-      const responseSaveRoom = await realtimeDatabase.push(roomsRef, { isShowingAverage: false })
-      const roomKey = responseSaveRoom.key
-      const userRef = realtimeDatabase.ref(database, `rooms/${roomKey}/users`)
-      const responseSaveUser = await realtimeDatabase.push(userRef, { username, point: null })
-      if (!responseSaveUser.key) {
-        throw new Error("Response after save user not have key");
-      }
-      window.sessionStorage.setItem('currentUser', JSON.stringify({ key: responseSaveUser.key, username: username }))
+      const roomKey = await roomService.createRoom()
+      const userKey = await userService.addUserToRoom(roomKey!, username)
+      window.sessionStorage.setItem('currentUser', JSON.stringify({ key: userKey, username: username }))
       router.push(`/room/${roomKey}`);
     } catch (error) {
       toast({
