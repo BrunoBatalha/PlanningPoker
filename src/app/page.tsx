@@ -1,6 +1,6 @@
 import CreateRoomButton from "@/components/CreateRoomButton";
 import { CheckCircleIcon, Icon, StarIcon } from "@/components/Icons";
-import { Box, Button, Container, Heading, HStack, Image, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Container, Heading, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 
 export default function Home() {
@@ -8,7 +8,16 @@ export default function Home() {
     <Container maxW="6xl" py={12}>
       {/* Hero Section */}
       <VStack spacing={8} textAlign="center" mb={16}>
-        <Image 
+        <Heading
+          as="h1"
+          size="2xl"
+          fontWeight="bold"
+          bgGradient="linear(to-r, purple.600, blue.600)"
+          bgClip="text"
+        >
+          Battle Poker Online
+        </Heading>
+        {/* <Image 
           src="/logo-text.png" 
           alt="Planning Poker Online - Logo"
           maxH="120px"
@@ -21,10 +30,10 @@ export default function Home() {
               bgGradient="linear(to-r, purple.600, blue.600)"
               bgClip="text"
             >
-              Planning Poker Online
+              Battle Poker Online
             </Heading>
           }
-        />
+        /> */}
         
         <Text fontSize="xl" color="gray.600" maxW="2xl">
           Ferramenta gratuita de Planning Poker para equipes ágeis. 
