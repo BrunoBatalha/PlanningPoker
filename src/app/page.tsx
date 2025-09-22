@@ -155,15 +155,26 @@ export default function Home() {
           <Text fontSize="lg" color="gray.600" mb={4}>
             Quer saber mais sobre Planning Poker?
           </Text>
-          <Button 
-            as={Link} 
-            href="/o-que-e-planning-poker"
-            colorScheme="purple"
-            variant="outline"
-            size="lg"
-          >
-            Guia Completo: O que é Planning Poker?
-          </Button>
+          <HStack spacing={4} justify="center">
+            <Button 
+              as={Link} 
+              href="/o-que-e-planning-poker"
+              colorScheme="purple"
+              variant="outline"
+              size="lg"
+            >
+              Guia Completo
+            </Button>
+            <Button 
+              as={Link} 
+              href="/faq"
+              colorScheme="blue"
+              variant="outline"
+              size="lg"
+            >
+              FAQ - Perguntas Frequentes
+            </Button>
+          </HStack>
         </Box>
       </VStack>
     </Container>
