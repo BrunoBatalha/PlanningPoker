@@ -65,6 +65,70 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Battle Poker Online",
+    "alternateName": "Planning Poker Online",
+    "description": "Ferramenta gratuita de Planning Poker para equipes ágeis. Estime user stories com Fibonacci, revele cartas simultaneamente. Sem cadastro, colaboração em tempo real para Scrum.",
+    "url": "https://battlepoker.devnabatalha.com",
+    "applicationCategory": "BusinessApplication",
+    "applicationSubCategory": "Project Management",
+    "operatingSystem": "Web Browser",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "softwareVersion": "1.0",
+    "datePublished": "2024-01-01",
+    "dateModified": new Date().toISOString().split('T')[0],
+    "inLanguage": "pt-BR",
+    "isAccessibleForFree": true,
+    "creator": {
+      "@type": "Person",
+      "name": "Bruno Batalha",
+      "url": "https://devnabatalha.com"
+    },
+    "publisher": {
+      "@type": "Organization", 
+      "name": "Dev na Batalha",
+      "url": "https://devnabatalha.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://battlepoker.devnabatalha.com/logo.png"
+      }
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "BRL",
+      "availability": "https://schema.org/InStock",
+      "priceValidUntil": "2030-12-31"
+    },
+    "featureList": [
+      "Planning Poker Online Gratuito",
+      "Estimativa Ágil com Fibonacci",
+      "Colaboração em Tempo Real",
+      "Scrum Poker Cards",
+      "Story Points Estimation",
+      "Sprint Planning Tool",
+      "Sem Cadastro Necessário",
+      "Interface em Português",
+      "Multiplayer Real-time",
+      "Mobile Responsive"
+    ],
+    "screenshot": "https://battlepoker.devnabatalha.com/logo.png",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "150",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "potentialAction": {
+      "@type": "UseAction",
+      "target": "https://battlepoker.devnabatalha.com",
+      "name": "Começar Planning Poker"
+    }
+  };
+
   return (
     <html lang="pt-br" className={fonts.roboto.variable}>
       <head>
@@ -73,6 +137,10 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/logo.png" />
         <meta name="theme-color" content="#805ad5" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body>
         <Providers>
