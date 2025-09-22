@@ -703,12 +703,12 @@ export default function WhatIsPlanningPokerPage() {
                 <CreateRoomButton />
                 <Button 
                   as={Link} 
-                  href="/" 
+                  href="/faq" 
                   variant="outline" 
                   colorScheme="white" 
                   size="lg"
                 >
-                  Saber Mais
+                  FAQ - Perguntas Frequentes
                 </Button>
               </HStack>
             </VStack>

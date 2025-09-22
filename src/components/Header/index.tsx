@@ -1,5 +1,5 @@
 'use client'
-import { Box, Container, Heading, HStack, Image } from "@chakra-ui/react";
+import { Box, Button, Container, Heading, HStack, Image, Spacer } from "@chakra-ui/react";
 import Link from "next/link";
 
 interface HeaderProps {
@@ -50,6 +50,17 @@ export default function Header({ showFullLogo = false }: HeaderProps) {
               </HStack>
             )}
           </Link>
+          
+          <Spacer />
+          
+          <HStack spacing={2} display={{ base: "none", md: "flex" }}>
+            <Button as={Link} href="/o-que-e-planning-poker" variant="ghost" size="sm">
+              Guia
+            </Button>
+            <Button as={Link} href="/faq" variant="ghost" size="sm">
+              FAQ
+            </Button>
+          </HStack>
         </HStack>
       </Container>
     </Box>
