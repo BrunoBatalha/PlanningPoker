@@ -1,21 +1,30 @@
 import CreateRoomButton from "@/components/CreateRoomButton";
 import { CheckCircleIcon, Icon, StarIcon } from "@/components/Icons";
-import { Box, Container, Heading, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Container, Heading, HStack, Image, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <Container maxW="6xl" py={12}>
       {/* Hero Section */}
       <VStack spacing={8} textAlign="center" mb={16}>
-        <Heading 
-          as="h1" 
-          size="2xl" 
-          fontWeight="bold"
-          bgGradient="linear(to-r, purple.600, blue.600)"
-          bgClip="text"
-        >
-          Planning Poker Online
-        </Heading>
+        <Image 
+          src="/logo-text.png" 
+          alt="Planning Poker Online - Logo"
+          maxH="120px"
+          objectFit="contain"
+          fallback={
+            <Heading 
+              as="h1" 
+              size="2xl" 
+              fontWeight="bold"
+              bgGradient="linear(to-r, purple.600, blue.600)"
+              bgClip="text"
+            >
+              Planning Poker Online
+            </Heading>
+          }
+        />
         
         <Text fontSize="xl" color="gray.600" maxW="2xl">
           Ferramenta gratuita de Planning Poker para equipes ágeis. 
@@ -140,6 +149,22 @@ export default function Home() {
             </Text>
           </Box>
         </VStack>
+
+        {/* Learn More Section */}
+        <Box textAlign="center" mt={8}>
+          <Text fontSize="lg" color="gray.600" mb={4}>
+            Quer saber mais sobre Planning Poker?
+          </Text>
+          <Button 
+            as={Link} 
+            href="/o-que-e-planning-poker"
+            colorScheme="purple"
+            variant="outline"
+            size="lg"
+          >
+            Guia Completo: O que é Planning Poker?
+          </Button>
+        </Box>
       </VStack>
     </Container>
   );
