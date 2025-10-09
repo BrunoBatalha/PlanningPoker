@@ -1,4 +1,5 @@
 import { fonts } from "@/chakraUi/fonts";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Providers } from "./providers";
 
@@ -147,6 +148,7 @@ export default function RootLayout({
           {children}
         </Providers>
       </body>
+      <GoogleAnalytics gaId="G-8G413NF4HG" />
     </html>
   );
 }
