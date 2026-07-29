@@ -18,7 +18,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   AppShell,
@@ -27,11 +27,20 @@ import {
   GlassPanel,
   ParticipantCard,
   ResultsPanel,
+  RoundConfirmationDialog,
+  RoundHistory,
   RoundStatus,
+  RoundTitleField,
   type RoundPhase,
   VotingCard,
 } from "@/components";
-import { roomService } from "@/services/RoomService";
+import {
+  calculateRoundAverage,
+  formatRoundAverage,
+  getEffectiveRoundTitle,
+  type RoundHistoryItem,
+  roomService,
+} from "@/services/RoomService";
 import {
   type CurrentUser,
   type RoomUser,
@@ -43,6 +52,13 @@ interface ParamsUrl {
 }
 
 type RoomPageState = "loading" | "ready" | "not-found" | "error";
+
+interface RoundConfirmationSnapshot {
+  roundId: string;
+  title: string;
+  average: number | null;
+  fallbackId: string;
+}
 
 const POINTS = [
   "0",
@@ -72,8 +88,19 @@ export default function Page({
   const [participants, setParticipants] = useState<RoomUser[]>([]);
   const [pointSelected, setPointSelected] = useState<string | null>(null);
   const [isShowingAverage, setIsShowingAverage] = useState(false);
+  const [currentRoundId, setCurrentRoundId] = useState("");
+  const [currentRoundTitle, setCurrentRoundTitle] = useState("");
+  const [currentRoundFallbackId, setCurrentRoundFallbackId] = useState("");
+  const [roundTitleDraft, setRoundTitleDraft] = useState("");
+  const [history, setHistory] = useState<RoundHistoryItem[]>([]);
+  const [confirmation, setConfirmation] =
+    useState<RoundConfirmationSnapshot | null>(null);
   const [isVoteLoading, setIsVoteLoading] = useState(false);
+  const [isTitleSaving, setIsTitleSaving] = useState(false);
   const [isRoundActionLoading, setIsRoundActionLoading] = useState(false);
+  const currentRoundIdRef = useRef("");
+  const roundTitleDraftRef = useRef("");
+  const isRoundTitleDirtyRef = useRef(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -88,6 +115,12 @@ export default function Page({
 
         if (!existsRoom) {
           setPageState("not-found");
+          return;
+        }
+
+        await roomService.initializeCurrentRound(roomKey);
+
+        if (!isMounted) {
           return;
         }
 
@@ -150,7 +183,30 @@ export default function Page({
         }
 
         setIsShowingAverage(room.isShowingAverage);
+        setCurrentRoundId(room.currentRoundId);
+        setCurrentRoundTitle(room.currentRoundTitle);
+        setCurrentRoundFallbackId(room.currentRoundFallbackId);
+
+        if (currentRoundIdRef.current !== room.currentRoundId) {
+          currentRoundIdRef.current = room.currentRoundId;
+          roundTitleDraftRef.current = room.currentRoundTitle;
+          isRoundTitleDirtyRef.current = false;
+          setRoundTitleDraft(room.currentRoundTitle);
+          setConfirmation(null);
+        } else if (!isRoundTitleDirtyRef.current) {
+          roundTitleDraftRef.current = room.currentRoundTitle;
+          setRoundTitleDraft(room.currentRoundTitle);
+        }
       },
+      (error) => {
+        console.error(error);
+        setPageState("error");
+      },
+    );
+
+    const unsubscribeHistory = roomService.onHistoryUpdate(
+      roomKey,
+      setHistory,
       (error) => {
         console.error(error);
         setPageState("error");
@@ -160,6 +216,7 @@ export default function Page({
     return () => {
       unsubscribePlayers();
       unsubscribeRoom();
+      unsubscribeHistory();
     };
   }, [currentUser, pageState, roomKey, router]);
 
@@ -167,6 +224,18 @@ export default function Page({
     () => participants.filter((participant) => participant.point !== null).length,
     [participants],
   );
+  const currentAverage = useMemo(
+    () =>
+      calculateRoundAverage(
+        participants.map((participant) => participant.point),
+      ),
+    [participants],
+  );
+  const effectiveRoundTitle = getEffectiveRoundTitle(
+    currentRoundTitle,
+    currentRoundFallbackId,
+  );
+  const fallbackRoundTitle = `Story #${currentRoundFallbackId}`;
 
   const roundPhase: RoundPhase = isShowingAverage
     ? "revealed"
@@ -183,6 +252,67 @@ export default function Page({
       position: "top",
       isClosable: true,
     });
+  }
+
+  function showStaleRoundWarning() {
+    toast({
+      title: "A rodada foi alterada",
+      description:
+        "Os dados mudaram em outra aba. Revise as informações antes de confirmar novamente.",
+      status: "warning",
+      duration: 5000,
+      position: "top",
+      isClosable: true,
+    });
+  }
+
+  function handleRoundTitleChange(value: string) {
+    roundTitleDraftRef.current = value;
+    isRoundTitleDirtyRef.current = true;
+    setRoundTitleDraft(value);
+  }
+
+  async function saveRoundTitleDraft(): Promise<string | null> {
+    if (!currentRoundId) {
+      return null;
+    }
+
+    const normalizedTitle = roundTitleDraftRef.current.trim();
+
+    if (
+      !isRoundTitleDirtyRef.current &&
+      normalizedTitle === currentRoundTitle
+    ) {
+      return normalizedTitle;
+    }
+
+    setIsTitleSaving(true);
+
+    try {
+      const result = await roomService.saveCurrentRoundTitle(
+        roomKey,
+        currentRoundId,
+        normalizedTitle,
+      );
+
+      if (result.status === "stale") {
+        isRoundTitleDirtyRef.current = false;
+        showStaleRoundWarning();
+        return null;
+      }
+
+      isRoundTitleDirtyRef.current = false;
+      roundTitleDraftRef.current = normalizedTitle;
+      setRoundTitleDraft(normalizedTitle);
+      setCurrentRoundTitle(normalizedTitle);
+      return normalizedTitle;
+    } catch (error) {
+      console.error(error);
+      showActionError("Não foi possível salvar o item da rodada");
+      return null;
+    } finally {
+      setIsTitleSaving(false);
+    }
   }
 
   async function handleSetPoint(point: string) {
@@ -253,13 +383,48 @@ export default function Page({
     }
   }
 
-  async function startNewRound() {
+  async function prepareNewRound() {
     setIsRoundActionLoading(true);
 
     try {
-      await userService.resetPointsAllUsers(roomKey);
-      await roomService.hideAverage(roomKey);
-      setPointSelected(null);
+      const savedTitle = await saveRoundTitleDraft();
+
+      if (savedTitle === null) {
+        return;
+      }
+
+      setConfirmation({
+        roundId: currentRoundId,
+        title: getEffectiveRoundTitle(savedTitle, currentRoundFallbackId),
+        average: currentAverage,
+        fallbackId: currentRoundFallbackId,
+      });
+    } catch (error) {
+      console.error(error);
+      showActionError("Não foi possível preparar a nova rodada");
+    } finally {
+      setIsRoundActionLoading(false);
+    }
+  }
+
+  async function confirmNewRound() {
+    if (!confirmation) {
+      return;
+    }
+
+    setIsRoundActionLoading(true);
+
+    try {
+      const result = await roomService.confirmAndStartNextRound(
+        roomKey,
+        confirmation,
+      );
+
+      setConfirmation(null);
+
+      if (result.status === "stale") {
+        showStaleRoundWarning();
+      }
     } catch (error) {
       console.error(error);
       showActionError("Não foi possível iniciar uma nova rodada");
@@ -395,6 +560,22 @@ export default function Page({
           <VStack spacing={4} align="stretch" minW={0}>
             <GlassPanel p={{ base: 5, md: 7 }}>
               <VStack spacing={6} align="stretch">
+                <Box>
+                  <Text textStyle="eyebrow">Rodada atual</Text>
+                  <Heading as="h2" textStyle="h3" mt={1} mb={5}>
+                    {effectiveRoundTitle}
+                  </Heading>
+                  <RoundTitleField
+                    value={roundTitleDraft}
+                    fallbackTitle={fallbackRoundTitle}
+                    isSaving={isTitleSaving}
+                    onChange={handleRoundTitleChange}
+                    onSave={() => void saveRoundTitleDraft()}
+                  />
+                </Box>
+
+                <Divider borderColor="whiteAlpha.100" />
+
                 <HStack
                   justify="space-between"
                   align={{ base: "flex-start", md: "center" }}
@@ -412,7 +593,7 @@ export default function Page({
                     colorScheme={isShowingAverage ? "cyan" : "purple"}
                     leftIcon={isShowingAverage ? <RepeatIcon /> : undefined}
                     onClick={
-                      isShowingAverage ? startNewRound : revealCards
+                      isShowingAverage ? prepareNewRound : revealCards
                     }
                     isLoading={isRoundActionLoading}
                     loadingText={
@@ -546,9 +727,19 @@ export default function Page({
                 ) : null}
               </VStack>
             </GlassPanel>
+
+            <RoundHistory history={history} />
           </VStack>
         </Grid>
       </Container>
+      <RoundConfirmationDialog
+        isOpen={confirmation !== null}
+        title={confirmation?.title ?? ""}
+        averageLabel={formatRoundAverage(confirmation?.average ?? null)}
+        isLoading={isRoundActionLoading}
+        onCancel={() => setConfirmation(null)}
+        onConfirm={() => void confirmNewRound()}
+      />
     </AppShell>
   );
 }

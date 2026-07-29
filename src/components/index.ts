@@ -9,7 +9,10 @@ export { default as Header } from './Header';
 export * from './ModalCreateUsername';
 export * from './ParticipantCard';
 export * from './ResultsPanel';
+export * from './RoundConfirmationDialog';
+export * from './RoundHistory';
 export * from './RoundStatus';
+export * from './RoundTitleField';
 export * from './UsernameForm';
 export * from './VotingCard';
 

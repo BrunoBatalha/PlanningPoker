@@ -14,6 +14,10 @@ import {
 import { motion } from "framer-motion";
 
 import { GlassPanel } from "@/components/GlassPanel";
+import {
+  calculateRoundAverage,
+  formatRoundAverage,
+} from "@/services/RoomService";
 
 interface ResultsPanelProps {
   points: Array<string | null>;
@@ -64,17 +68,8 @@ export function ResultsPanel({ points }: ResultsPanelProps) {
     .filter((point): point is string => point !== null)
     .map(Number)
     .filter(Number.isFinite);
-  const average =
-    numericPoints.length > 0
-      ? numericPoints.reduce((total, point) => total + point, 0) /
-        numericPoints.length
-      : null;
-  const averageLabel =
-    average === null
-      ? null
-      : new Intl.NumberFormat("pt-BR", {
-          maximumFractionDigits: 2,
-        }).format(average);
+  const average = calculateRoundAverage(points);
+  const averageLabel = formatRoundAverage(average);
   const distribution = getDistribution(points);
   const total = Math.max(points.length, 1);
 
@@ -96,7 +91,7 @@ export function ResultsPanel({ points }: ResultsPanelProps) {
           <Text textStyle="eyebrow" color="signal.cyan">
             Média da rodada
           </Text>
-          {averageLabel ? (
+          {average !== null ? (
             <Heading
               as="p"
               textStyle="result"
@@ -106,7 +101,7 @@ export function ResultsPanel({ points }: ResultsPanelProps) {
             </Heading>
           ) : (
             <Heading as="p" textStyle="h4" color="ink.100">
-              Sem votos numéricos
+              {averageLabel}
             </Heading>
           )}
           <Text color="ink.300" textStyle="body-sm">
