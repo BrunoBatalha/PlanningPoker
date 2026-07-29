@@ -40,6 +40,7 @@ export type RoundMutationResult =
 interface StoredRoomUser {
   username: string;
   point: string | null;
+  postRevealVoteStatus?: "added" | "changed";
 }
 
 interface StoredHistoryItem {
@@ -277,13 +278,17 @@ async function confirmAndStartNextRound(
         ]),
       );
       const resetUsers = Object.fromEntries(
-        Object.entries(users).map(([userId, user]) => [
-          userId,
-          {
-            ...user,
-            point: null,
-          },
-        ]),
+        Object.entries(users).map(([userId, user]) => {
+          const { postRevealVoteStatus: _status, ...preservedUser } = user;
+
+          return [
+            userId,
+            {
+              ...preservedUser,
+              point: null,
+            },
+          ];
+        }),
       );
 
       return {
@@ -302,6 +307,51 @@ async function confirmAndStartNextRound(
             votes,
           },
         },
+      };
+    },
+  );
+
+  return transaction.committed
+    ? { status: "committed" }
+    : { status: "stale" };
+}
+
+async function redoRound(
+  roomKey: string,
+  expectedRoundId: string,
+): Promise<RoundMutationResult> {
+  const roomRef = ref(database, `rooms/${roomKey}`);
+  const nextRoundId = generateRoundId(roomKey);
+  const transaction = await runTransaction(
+    roomRef,
+    (currentData: StoredRoom | null) => {
+      if (
+        !currentData ||
+        !currentData.isShowingAverage ||
+        currentData.currentRoundId !== expectedRoundId
+      ) {
+        return;
+      }
+
+      const resetUsers = Object.fromEntries(
+        Object.entries(currentData.users ?? {}).map(([userId, user]) => {
+          const { postRevealVoteStatus: _status, ...preservedUser } = user;
+
+          return [
+            userId,
+            {
+              ...preservedUser,
+              point: null,
+            },
+          ];
+        }),
+      );
+
+      return {
+        ...currentData,
+        isShowingAverage: false,
+        currentRoundId: nextRoundId,
+        users: resetUsers,
       };
     },
   );
@@ -389,6 +439,7 @@ export const roomService = {
   hideAverage,
   saveCurrentRoundTitle,
   confirmAndStartNextRound,
+  redoRound,
   onRoomUpdate,
   onHistoryUpdate,
   // Aliases preservados para chamadas legadas.

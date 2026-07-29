@@ -26,6 +26,7 @@ import {
   FeedbackState,
   GlassPanel,
   ParticipantCard,
+  RedoRoundConfirmationDialog,
   ResultsPanel,
   RoundConfirmationDialog,
   RoundHistory,
@@ -95,6 +96,9 @@ export default function Page({
   const [history, setHistory] = useState<RoundHistoryItem[]>([]);
   const [confirmation, setConfirmation] =
     useState<RoundConfirmationSnapshot | null>(null);
+  const [redoConfirmationRoundId, setRedoConfirmationRoundId] = useState<
+    string | null
+  >(null);
   const [isVoteLoading, setIsVoteLoading] = useState(false);
   const [isTitleSaving, setIsTitleSaving] = useState(false);
   const [isRoundActionLoading, setIsRoundActionLoading] = useState(false);
@@ -193,6 +197,7 @@ export default function Page({
           isRoundTitleDirtyRef.current = false;
           setRoundTitleDraft(room.currentRoundTitle);
           setConfirmation(null);
+          setRedoConfirmationRoundId(null);
         } else if (!isRoundTitleDirtyRef.current) {
           roundTitleDraftRef.current = room.currentRoundTitle;
           setRoundTitleDraft(room.currentRoundTitle);
@@ -318,9 +323,9 @@ export default function Page({
   async function handleSetPoint(point: string) {
     if (
       !currentUser ||
-      pointSelected !== null ||
       isVoteLoading ||
-      isShowingAverage
+      (!isShowingAverage && pointSelected !== null) ||
+      (isShowingAverage && pointSelected === point)
     ) {
       return;
     }
@@ -330,12 +335,26 @@ export default function Page({
     setIsVoteLoading(true);
 
     try {
-      await userService.savePoint(
-        roomKey,
-        currentUser.key,
-        currentUser.username,
-        point,
-      );
+      if (isShowingAverage) {
+        const result = await userService.reviseRevealedPoint(
+          roomKey,
+          currentRoundId,
+          currentUser,
+          point,
+        );
+
+        if (result.status === "stale") {
+          setPointSelected(previousPoint);
+          showStaleRoundWarning();
+        }
+      } else {
+        await userService.savePoint(
+          roomKey,
+          currentUser.key,
+          currentUser.username,
+          point,
+        );
+      }
     } catch (error) {
       console.error(error);
       setPointSelected(previousPoint);
@@ -428,6 +447,51 @@ export default function Page({
     } catch (error) {
       console.error(error);
       showActionError("Não foi possível iniciar uma nova rodada");
+    } finally {
+      setIsRoundActionLoading(false);
+    }
+  }
+
+  async function prepareRedoRound() {
+    setIsRoundActionLoading(true);
+
+    try {
+      const savedTitle = await saveRoundTitleDraft();
+
+      if (savedTitle === null) {
+        return;
+      }
+
+      setRedoConfirmationRoundId(currentRoundId);
+    } catch (error) {
+      console.error(error);
+      showActionError("Não foi possível preparar a rodada");
+    } finally {
+      setIsRoundActionLoading(false);
+    }
+  }
+
+  async function confirmRedoRound() {
+    if (!redoConfirmationRoundId) {
+      return;
+    }
+
+    setIsRoundActionLoading(true);
+
+    try {
+      const result = await roomService.redoRound(
+        roomKey,
+        redoConfirmationRoundId,
+      );
+
+      setRedoConfirmationRoundId(null);
+
+      if (result.status === "stale") {
+        showStaleRoundWarning();
+      }
+    } catch (error) {
+      console.error(error);
+      showActionError("Não foi possível refazer a rodada");
     } finally {
       setIsRoundActionLoading(false);
     }
@@ -550,6 +614,7 @@ export default function Page({
                   key={participant.key}
                   username={participant.username}
                   point={participant.point}
+                  postRevealVoteStatus={participant.postRevealVoteStatus}
                   isCurrent={participant.key === currentUser?.key}
                   isRevealed={isShowingAverage}
                 />
@@ -587,24 +652,48 @@ export default function Page({
                     voteCount={voteCount}
                     participantCount={participants.length}
                   />
-                  <Button
-                    size="lg"
-                    variant={isShowingAverage ? "premium" : "glass"}
-                    colorScheme={isShowingAverage ? "cyan" : "purple"}
-                    leftIcon={isShowingAverage ? <RepeatIcon /> : undefined}
-                    onClick={
-                      isShowingAverage ? prepareNewRound : revealCards
-                    }
-                    isLoading={isRoundActionLoading}
-                    loadingText={
-                      isShowingAverage ? "Iniciando" : "Revelando"
-                    }
-                    w={{ base: "full", md: "auto" }}
-                  >
-                    {isShowingAverage
-                      ? "Iniciar nova rodada"
-                      : "Revelar cartas"}
-                  </Button>
+                  {isShowingAverage ? (
+                    <HStack
+                      spacing={3}
+                      w={{ base: "full", md: "auto" }}
+                      flexDir={{ base: "column", sm: "row" }}
+                    >
+                      <Button
+                        size="lg"
+                        variant="glass"
+                        leftIcon={<RepeatIcon />}
+                        onClick={prepareRedoRound}
+                        isLoading={isRoundActionLoading}
+                        loadingText="Preparando"
+                        w={{ base: "full", sm: "auto" }}
+                      >
+                        Refazer rodada
+                      </Button>
+                      <Button
+                        size="lg"
+                        variant="premium"
+                        colorScheme="cyan"
+                        onClick={prepareNewRound}
+                        isLoading={isRoundActionLoading}
+                        loadingText="Iniciando"
+                        w={{ base: "full", sm: "auto" }}
+                      >
+                        Iniciar nova rodada
+                      </Button>
+                    </HStack>
+                  ) : (
+                    <Button
+                      size="lg"
+                      variant="glass"
+                      colorScheme="purple"
+                      onClick={revealCards}
+                      isLoading={isRoundActionLoading}
+                      loadingText="Revelando"
+                      w={{ base: "full", md: "auto" }}
+                    >
+                      Revelar cartas
+                    </Button>
+                  )}
                 </HStack>
 
                 {isShowingAverage ? (
@@ -706,9 +795,10 @@ export default function Page({
                       value={value}
                       isSelected={pointSelected === value}
                       isDisabled={
-                        pointSelected !== null ||
                         isVoteLoading ||
-                        isShowingAverage
+                        (isShowingAverage
+                          ? pointSelected === value
+                          : pointSelected !== null)
                       }
                       onSelect={handleSetPoint}
                     />
@@ -721,8 +811,9 @@ export default function Page({
                     textStyle="body-sm"
                     textAlign="center"
                   >
-                    A votação está encerrada. Inicie uma nova rodada para votar
-                    novamente.
+                    {pointSelected
+                      ? "Seu voto está visível. Escolha outra carta para alterá-lo."
+                      : "Você ainda não votou. Escolha uma carta para registrar seu voto após a revelação."}
                   </Text>
                 ) : null}
               </VStack>
@@ -739,6 +830,12 @@ export default function Page({
         isLoading={isRoundActionLoading}
         onCancel={() => setConfirmation(null)}
         onConfirm={() => void confirmNewRound()}
+      />
+      <RedoRoundConfirmationDialog
+        isOpen={redoConfirmationRoundId !== null}
+        isLoading={isRoundActionLoading}
+        onCancel={() => setRedoConfirmationRoundId(null)}
+        onConfirm={() => void confirmRedoRound()}
       />
     </AppShell>
   );

@@ -8,6 +8,7 @@ export * from './GlassPanel';
 export { default as Header } from './Header';
 export * from './ModalCreateUsername';
 export * from './ParticipantCard';
+export * from './RedoRoundConfirmationDialog';
 export * from './ResultsPanel';
 export * from './RoundConfirmationDialog';
 export * from './RoundHistory';

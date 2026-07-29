@@ -11,9 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 
+import type { PostRevealVoteStatus } from "@/services/UserService";
+
 interface ParticipantCardProps {
   username: string;
   point: string | null;
+  postRevealVoteStatus: PostRevealVoteStatus | null;
   isRevealed: boolean;
   isCurrent?: boolean;
 }
@@ -21,6 +24,7 @@ interface ParticipantCardProps {
 export function ParticipantCard({
   username,
   point,
+  postRevealVoteStatus,
   isRevealed,
   isCurrent = false,
 }: ParticipantCardProps) {
@@ -50,8 +54,14 @@ export function ParticipantCard({
         color="white"
         flexShrink={0}
       />
-      <VStack spacing={1} align="flex-start" minW={0} flex={1}>
-        <HStack spacing={2} minW={0}>
+      <VStack
+        spacing={1}
+        align="flex-start"
+        minW={0}
+        flex={1}
+        aria-live="polite"
+      >
+        <HStack spacing={2} minW={0} flexWrap="wrap">
           <Text
             textStyle="body-sm"
             fontWeight="700"
@@ -66,19 +76,35 @@ export function ParticipantCard({
             </Tag>
           ) : null}
         </HStack>
-        <Text
-          textStyle="caption"
-          color={
-            status === "Não votou"
-              ? "signal.amber"
-              : point
-                ? "signal.green"
-                : "ink.300"
-          }
-          fontWeight="600"
-        >
-          {status}
-        </Text>
+        <HStack spacing={2} flexWrap="wrap">
+          <Text
+            textStyle="caption"
+            color={
+              status === "Não votou"
+                ? "signal.amber"
+                : point
+                  ? "signal.green"
+                  : "ink.300"
+            }
+            fontWeight="600"
+          >
+            {status}
+          </Text>
+          {isRevealed &&
+          point &&
+          postRevealVoteStatus === "added" ? (
+            <Tag size="sm" variant="subtle" colorScheme="blue">
+              Votou após revelação
+            </Tag>
+          ) : null}
+          {isRevealed &&
+          point &&
+          postRevealVoteStatus === "changed" ? (
+            <Tag size="sm" variant="subtle" colorScheme="orange">
+              Voto alterado
+            </Tag>
+          ) : null}
+        </HStack>
       </VStack>
       <AnimatePresence mode="wait">
         {isRevealed && point ? (

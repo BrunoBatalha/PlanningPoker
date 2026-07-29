@@ -3,8 +3,8 @@ import {
   push,
   ref,
   runTransaction,
-  set,
   type Unsubscribe,
+  update,
 } from "firebase/database";
 
 import { database } from "../../../firebase";
@@ -17,11 +17,38 @@ export interface CurrentUser {
 export interface RoomUser {
   username: string;
   point: string | null;
+  postRevealVoteStatus: PostRevealVoteStatus | null;
   key: string;
 }
 
-type StoredRoomUser = Omit<RoomUser, "key">;
+export type PostRevealVoteStatus = "added" | "changed";
+
+export type VoteMutationResult =
+  | { status: "committed" }
+  | { status: "unchanged" }
+  | { status: "stale" };
+
+interface StoredRoomUser {
+  username: string;
+  point?: string | null;
+  postRevealVoteStatus?: PostRevealVoteStatus;
+  [key: string]: unknown;
+}
+
 type UsersSnapshot = Record<string, StoredRoomUser>;
+
+interface StoredRoom {
+  isShowingAverage?: boolean;
+  currentRoundId?: string;
+  users?: UsersSnapshot;
+  [key: string]: unknown;
+}
+
+function normalizePostRevealVoteStatus(
+  status: unknown,
+): PostRevealVoteStatus | null {
+  return status === "added" || status === "changed" ? status : null;
+}
 
 async function addUserToRoom(roomId: string, username: string) {
   const userRef = ref(database, `rooms/${roomId}/users`);
@@ -65,11 +92,67 @@ function setCurrentUser(currentUser: CurrentUser) {
 async function savePoint(
   roomId: string,
   userId: string,
-  username: string,
+  _username: string,
   point: string | null,
 ) {
   const pointRef = ref(database, `rooms/${roomId}/users/${userId}`);
-  await set(pointRef, { username, point });
+  await update(pointRef, { point });
+}
+
+async function reviseRevealedPoint(
+  roomId: string,
+  expectedRoundId: string,
+  currentUser: CurrentUser,
+  point: string,
+): Promise<VoteMutationResult> {
+  const roomRef = ref(database, `rooms/${roomId}`);
+  let mutationStatus: VoteMutationResult["status"] = "stale";
+
+  const transaction = await runTransaction(
+    roomRef,
+    (currentData: StoredRoom | null) => {
+      const user = currentData?.users?.[currentUser.key];
+
+      if (
+        !currentData ||
+        !currentData.isShowingAverage ||
+        currentData.currentRoundId !== expectedRoundId ||
+        !user ||
+        user.username !== currentUser.username
+      ) {
+        mutationStatus = "stale";
+        return;
+      }
+
+      const previousPoint = user.point ?? null;
+
+      if (previousPoint === point) {
+        mutationStatus = "unchanged";
+        return currentData;
+      }
+
+      mutationStatus = "committed";
+
+      return {
+        ...currentData,
+        users: {
+          ...currentData.users,
+          [currentUser.key]: {
+            ...user,
+            point,
+            postRevealVoteStatus:
+              previousPoint === null ? "added" : "changed",
+          },
+        },
+      };
+    },
+  );
+
+  if (!transaction.committed) {
+    return { status: "stale" };
+  }
+
+  return { status: mutationStatus };
 }
 
 async function resetPointsAllUsers(roomId: string) {
@@ -82,6 +165,7 @@ async function resetPointsAllUsers(roomId: string) {
 
     Object.values(currentData).forEach((user) => {
       user.point = null;
+      delete user.postRevealVoteStatus;
     });
 
     return currentData;
@@ -109,6 +193,9 @@ function onPlayersUpdate(
           key,
           username: value.username,
           point: value.point ?? null,
+          postRevealVoteStatus: normalizePostRevealVoteStatus(
+            value.postRevealVoteStatus,
+          ),
         }),
       );
 
@@ -123,6 +210,7 @@ export const userService = {
   getCurrentUser,
   setCurrentUser,
   savePoint,
+  reviseRevealedPoint,
   resetPointsAllUsers,
   onPlayersUpdate,
 };
