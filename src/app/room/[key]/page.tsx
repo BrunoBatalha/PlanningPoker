@@ -150,13 +150,12 @@ export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }
     }
 
     function calculateAverage() {
-        const total = players.reduce((acc, current) => {
-            const value = Number(current.point)
-            return isNaN(value) ? acc : acc + value
-        }, 0)
-        const castToNumber = Number(pointSelected)
-        const value = isNaN(castToNumber) ? 0 : castToNumber
-        const average = (total + value) / (players.length + 1)
+        const numericPoints = [...players.map(player => player.point), pointSelected]
+            .filter((point): point is string => point !== null)
+            .map(Number)
+            .filter(point => !isNaN(point))
+        const total = numericPoints.reduce((acc, point) => acc + point, 0)
+        const average = total / numericPoints.length
         return average.toPrecision(3)
     }
 
