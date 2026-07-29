@@ -16,5 +16,6 @@ export * from './RoundStatus';
 export * from './RoundTitleField';
 export * from './RoomTour';
 export * from './UsernameForm';
+export * from './VoteWaitingGame';
 export * from './VotingCard';
 

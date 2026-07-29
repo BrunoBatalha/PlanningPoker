@@ -34,6 +34,7 @@ import {
   RoundTitleField,
   RoomTour,
   type RoundPhase,
+  VoteWaitingGame,
   VotingCard,
 } from "@/components";
 import {
@@ -89,6 +90,7 @@ export default function Page({
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [participants, setParticipants] = useState<RoomUser[]>([]);
   const [pointSelected, setPointSelected] = useState<string | null>(null);
+  const [gameRoundId, setGameRoundId] = useState<string | null>(null);
   const [isShowingAverage, setIsShowingAverage] = useState(false);
   const [currentRoundId, setCurrentRoundId] = useState("");
   const [currentRoundTitle, setCurrentRoundTitle] = useState("");
@@ -104,6 +106,8 @@ export default function Page({
   const [isTitleSaving, setIsTitleSaving] = useState(false);
   const [isRoundActionLoading, setIsRoundActionLoading] = useState(false);
   const currentRoundIdRef = useRef("");
+  const currentUserPointRef = useRef<string | null>(null);
+  const isShowingAverageRef = useRef(false);
   const roundTitleDraftRef = useRef("");
   const isRoundTitleDirtyRef = useRef(false);
 
@@ -172,6 +176,17 @@ export default function Page({
 
         setParticipants(users);
         setPointSelected(roomCurrentUser.point);
+        currentUserPointRef.current = roomCurrentUser.point;
+
+        if (
+          roomCurrentUser.point !== null &&
+          currentRoundIdRef.current &&
+          !isShowingAverageRef.current
+        ) {
+          setGameRoundId(
+            (activeRoundId) => activeRoundId ?? currentRoundIdRef.current,
+          );
+        }
       },
       (error) => {
         console.error(error);
@@ -187,13 +202,23 @@ export default function Page({
           return;
         }
 
+        const previousRoundId = currentRoundIdRef.current;
+        const isInitialRound = previousRoundId === "";
+        isShowingAverageRef.current = room.isShowingAverage;
         setIsShowingAverage(room.isShowingAverage);
         setCurrentRoundId(room.currentRoundId);
         setCurrentRoundTitle(room.currentRoundTitle);
         setCurrentRoundFallbackId(room.currentRoundFallbackId);
 
-        if (currentRoundIdRef.current !== room.currentRoundId) {
+        if (previousRoundId !== room.currentRoundId) {
           currentRoundIdRef.current = room.currentRoundId;
+          setGameRoundId(
+            isInitialRound &&
+              currentUserPointRef.current !== null &&
+              !room.isShowingAverage
+              ? room.currentRoundId
+              : null,
+          );
           roundTitleDraftRef.current = room.currentRoundTitle;
           isRoundTitleDirtyRef.current = false;
           setRoundTitleDraft(room.currentRoundTitle);
@@ -202,6 +227,10 @@ export default function Page({
         } else if (!isRoundTitleDirtyRef.current) {
           roundTitleDraftRef.current = room.currentRoundTitle;
           setRoundTitleDraft(room.currentRoundTitle);
+        }
+
+        if (room.isShowingAverage) {
+          setGameRoundId(null);
         }
       },
       (error) => {
@@ -242,6 +271,10 @@ export default function Page({
     currentRoundFallbackId,
   );
   const fallbackRoundTitle = `Story #${currentRoundFallbackId}`;
+  const isWaitingGameActive =
+    gameRoundId === currentRoundId &&
+    currentRoundId !== "" &&
+    !isShowingAverage;
 
   const roundPhase: RoundPhase = isShowingAverage
     ? "revealed"
@@ -355,6 +388,10 @@ export default function Page({
           currentUser.username,
           point,
         );
+
+        if (currentRoundIdRef.current && !isShowingAverageRef.current) {
+          setGameRoundId(currentRoundIdRef.current);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -700,14 +737,26 @@ export default function Page({
                   )}
                 </HStack>
 
-                <Box data-tour="room-round-results">
+                <Box
+                  data-tour="room-round-results"
+                  position="relative"
+                  minH={
+                    isWaitingGameActive
+                      ? "clamp(220px, 28vw, 300px)"
+                      : undefined
+                  }
+                >
+                  <VoteWaitingGame
+                    isActive={isWaitingGameActive}
+                    sessionId={currentRoundId}
+                  />
                   {isShowingAverage ? (
                     <ResultsPanel
                       points={participants.map(
                         (participant) => participant.point,
                       )}
                     />
-                  ) : (
+                  ) : !isWaitingGameActive ? (
                     <Box
                       minH={{ base: 36, md: 48 }}
                       display="grid"
@@ -732,7 +781,7 @@ export default function Page({
                         </Text>
                       </VStack>
                     </Box>
-                  )}
+                  ) : null}
                 </Box>
               </VStack>
             </GlassPanel>

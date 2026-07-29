@@ -56,7 +56,7 @@ const ROOM_TOUR_STEPS: Step[] = [
     placement: "top",
     title: "Resultado da estimativa",
     content:
-      "Antes da revelação, os votos ficam protegidos. Depois, este espaço apresenta as cartas e a média dos valores numéricos.",
+      "Depois de votar, você pode jogar enquanto espera pelo time. A distração e a pontuação são individuais; na revelação, este espaço apresenta o resultado.",
   },
   {
     target: '[data-tour="room-voting-cards"]',
