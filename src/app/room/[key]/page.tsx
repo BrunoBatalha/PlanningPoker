@@ -32,6 +32,7 @@ import {
   RoundHistory,
   RoundStatus,
   RoundTitleField,
+  RoomTour,
   type RoundPhase,
   VotingCard,
 } from "@/components";
@@ -537,6 +538,7 @@ export default function Page({
       <Container maxW="1440px" px={{ base: 3, sm: 4, md: 6 }} pt={4}>
         <GlassPanel
           as="header"
+          data-tour="room-header"
           strength="strong"
           px={{ base: 4, md: 5 }}
           py={3}
@@ -593,6 +595,7 @@ export default function Page({
         >
           <GlassPanel
             as="aside"
+            data-tour="room-participants"
             p={4}
             position={{ base: "static", lg: "sticky" }}
             top={4}
@@ -625,7 +628,7 @@ export default function Page({
           <VStack spacing={4} align="stretch" minW={0}>
             <GlassPanel p={{ base: 5, md: 7 }}>
               <VStack spacing={6} align="stretch">
-                <Box>
+                <Box data-tour="room-round-title">
                   <Text textStyle="eyebrow">Rodada atual</Text>
                   <Heading as="h2" textStyle="h3" mt={1} mb={5}>
                     {effectiveRoundTitle}
@@ -642,6 +645,7 @@ export default function Page({
                 <Divider borderColor="whiteAlpha.100" />
 
                 <HStack
+                  data-tour="room-round-actions"
                   justify="space-between"
                   align={{ base: "flex-start", md: "center" }}
                   flexDir={{ base: "column", md: "row" }}
@@ -696,38 +700,40 @@ export default function Page({
                   )}
                 </HStack>
 
-                {isShowingAverage ? (
-                  <ResultsPanel
-                    points={participants.map(
-                      (participant) => participant.point,
-                    )}
-                  />
-                ) : (
-                  <Box
-                    minH={{ base: 36, md: 48 }}
-                    display="grid"
-                    placeItems="center"
-                    borderRadius="2xl"
-                    border="1px dashed"
-                    borderColor="whiteAlpha.200"
-                    bg="rgba(4, 9, 23, 0.28)"
-                    textAlign="center"
-                    px={5}
-                  >
-                    <VStack spacing={2}>
-                      <Heading as="p" textStyle="h4">
-                        {voteCount === 0
-                          ? "A mesa está aberta"
-                          : "As cartas estão na mesa"}
-                      </Heading>
-                      <Text color="ink.300" textStyle="body-sm" maxW="md">
-                        {voteCount === 0
-                          ? "Cada participante escolhe sua estimativa sem influenciar o restante do time."
-                          : "Os valores continuam secretos. Revele quando o time estiver pronto para conversar."}
-                      </Text>
-                    </VStack>
-                  </Box>
-                )}
+                <Box data-tour="room-round-results">
+                  {isShowingAverage ? (
+                    <ResultsPanel
+                      points={participants.map(
+                        (participant) => participant.point,
+                      )}
+                    />
+                  ) : (
+                    <Box
+                      minH={{ base: 36, md: 48 }}
+                      display="grid"
+                      placeItems="center"
+                      borderRadius="2xl"
+                      border="1px dashed"
+                      borderColor="whiteAlpha.200"
+                      bg="rgba(4, 9, 23, 0.28)"
+                      textAlign="center"
+                      px={5}
+                    >
+                      <VStack spacing={2}>
+                        <Heading as="p" textStyle="h4">
+                          {voteCount === 0
+                            ? "A mesa está aberta"
+                            : "As cartas estão na mesa"}
+                        </Heading>
+                        <Text color="ink.300" textStyle="body-sm" maxW="md">
+                          {voteCount === 0
+                            ? "Cada participante escolhe sua estimativa sem influenciar o restante do time."
+                            : "Os valores continuam secretos. Revele quando o time estiver pronto para conversar."}
+                        </Text>
+                      </VStack>
+                    </Box>
+                  )}
+                </Box>
               </VStack>
             </GlassPanel>
 
@@ -784,6 +790,7 @@ export default function Page({
                 <Divider borderColor="whiteAlpha.100" />
 
                 <SimpleGrid
+                  data-tour="room-voting-cards"
                   columns={{ base: 4, sm: 7, xl: 13 }}
                   spacing={{ base: 2, md: 3 }}
                   role="group"
@@ -819,7 +826,9 @@ export default function Page({
               </VStack>
             </GlassPanel>
 
-            <RoundHistory history={history} />
+            <Box data-tour="room-history">
+              <RoundHistory history={history} />
+            </Box>
           </VStack>
         </Grid>
       </Container>
@@ -837,6 +846,7 @@ export default function Page({
         onCancel={() => setRedoConfirmationRoundId(null)}
         onConfirm={() => void confirmRedoRound()}
       />
+      <RoomTour />
     </AppShell>
   );
 }

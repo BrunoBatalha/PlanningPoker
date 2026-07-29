@@ -14,6 +14,7 @@ export * from './RoundConfirmationDialog';
 export * from './RoundHistory';
 export * from './RoundStatus';
 export * from './RoundTitleField';
+export * from './RoomTour';
 export * from './UsernameForm';
 export * from './VotingCard';
 
