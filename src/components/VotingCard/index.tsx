@@ -34,6 +34,8 @@ export function VotingCard({
       <Button
         type="button"
         variant="votingCard"
+        textStyle="code-card"
+        sx={{ fontVariantNumeric: "tabular-nums" }}
         w="full"
         minW={0}
         isDisabled={isDisabled}

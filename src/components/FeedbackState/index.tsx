@@ -66,10 +66,10 @@ export function FeedbackState({
           </Box>
         )}
         <VStack spacing={2}>
-          <Heading as="h1" size="lg">
+          <Heading as="h1" textStyle="h2">
             {title}
           </Heading>
-          <Text color="ink.300" maxW="sm">
+          <Text color="ink.300" maxW="sm" textStyle="body">
             {description}
           </Text>
         </VStack>

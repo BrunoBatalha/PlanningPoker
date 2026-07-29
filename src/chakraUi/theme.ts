@@ -16,8 +16,7 @@ const focusRing = {
 const Button: ComponentStyleConfig = {
   baseStyle: {
     borderRadius: "xl",
-    fontWeight: "700",
-    letterSpacing: "-0.01em",
+    textStyle: "button",
     transitionProperty:
       "background-color, border-color, color, box-shadow, transform",
     transitionDuration: "180ms",
@@ -71,12 +70,12 @@ const Button: ComponentStyleConfig = {
       minW: 14,
       h: { base: 20, md: 24 },
       px: 0,
+      textStyle: "code-card",
       color: "ink.50",
       bg: "rgba(17, 25, 49, 0.88)",
       border: "1px solid",
       borderColor: "whiteAlpha.200",
       borderRadius: "2xl",
-      fontSize: { base: "xl", md: "2xl" },
       boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.06)",
       _hover: {
         borderColor: "brand.300",
@@ -104,13 +103,14 @@ const Input: ComponentStyleConfig = {
     glass: {
       field: {
         h: 12,
+        textStyle: "body",
         bg: "rgba(8, 13, 30, 0.62)",
         border: "1px solid",
         borderColor: "whiteAlpha.200",
         borderRadius: "xl",
         color: "white",
         _placeholder: {
-          color: "whiteAlpha.500",
+          color: "ink.300",
         },
         _hover: {
           borderColor: "whiteAlpha.300",
@@ -174,7 +174,7 @@ const Modal: ComponentStyleConfig = {
     },
     header: {
       color: "white",
-      fontWeight: "800",
+      textStyle: "h4",
     },
   },
 };
@@ -183,16 +183,47 @@ const Tag: ComponentStyleConfig = {
   baseStyle: {
     container: {
       borderRadius: "full",
+      textStyle: "caption",
       fontWeight: "700",
     },
+  },
+};
+
+const Badge: ComponentStyleConfig = {
+  baseStyle: {
+    textStyle: "caption",
+    fontWeight: "700",
+    letterSpacing: "0.04em",
+  },
+};
+
+const FormLabel: ComponentStyleConfig = {
+  baseStyle: {
+    textStyle: "label",
+  },
+};
+
+const Accordion: ComponentStyleConfig = {
+  baseStyle: {
+    button: {
+      _focusVisible: focusRing,
+    },
+  },
+};
+
+const CloseButton: ComponentStyleConfig = {
+  baseStyle: {
+    _focusVisible: focusRing,
   },
 };
 
 export const theme = extendTheme({
   config,
   fonts: {
-    heading: '"Manrope Variable", ui-sans-serif, system-ui, sans-serif',
-    body: '"Inter Variable", ui-sans-serif, system-ui, sans-serif',
+    heading:
+      '"Manrope Variable", "Inter Variable", ui-sans-serif, system-ui, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif',
+    body:
+      '"Inter Variable", ui-sans-serif, system-ui, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif',
   },
   colors: {
     canvas: {
@@ -259,6 +290,9 @@ export const theme = extendTheme({
       },
       body: {
         color: "ink.100",
+        fontFamily: "body",
+        fontSize: "md",
+        lineHeight: "1.6",
         overflowX: "hidden",
       },
       "::selection": {
@@ -271,21 +305,128 @@ export const theme = extendTheme({
     },
   },
   textStyles: {
+    display: {
+      fontFamily: "heading",
+      fontSize: { base: "2.5rem", md: "4rem", xl: "4.5rem" },
+      fontWeight: "700",
+      lineHeight: { base: "1.05", md: "1.02" },
+      letterSpacing: "-0.035em",
+    },
+    h1: {
+      fontFamily: "heading",
+      fontSize: { base: "2rem", md: "3rem" },
+      fontWeight: "700",
+      lineHeight: { base: "1.15", md: "1.1" },
+      letterSpacing: "-0.025em",
+    },
+    h2: {
+      fontFamily: "heading",
+      fontSize: { base: "1.75rem", md: "2.25rem" },
+      fontWeight: "700",
+      lineHeight: { base: "1.2", md: "1.15" },
+      letterSpacing: "-0.02em",
+    },
+    h3: {
+      fontFamily: "heading",
+      fontSize: { base: "1.375rem", md: "1.5rem" },
+      fontWeight: "700",
+      lineHeight: "1.25",
+      letterSpacing: "-0.015em",
+    },
+    h4: {
+      fontFamily: "heading",
+      fontSize: { base: "1.125rem", md: "1.25rem" },
+      fontWeight: "700",
+      lineHeight: { base: "1.35", md: "1.3" },
+      letterSpacing: "-0.01em",
+    },
+    "body-lg": {
+      fontFamily: "body",
+      fontSize: { base: "1.125rem", md: "1.25rem" },
+      fontWeight: "400",
+      lineHeight: { base: "1.65", md: "1.6" },
+      letterSpacing: "normal",
+    },
+    body: {
+      fontFamily: "body",
+      fontSize: "1rem",
+      fontWeight: "400",
+      lineHeight: "1.6",
+      letterSpacing: "normal",
+    },
+    "body-sm": {
+      fontFamily: "body",
+      fontSize: "0.875rem",
+      fontWeight: "400",
+      lineHeight: "1.55",
+      letterSpacing: "normal",
+    },
+    caption: {
+      fontFamily: "body",
+      fontSize: "0.75rem",
+      fontWeight: "500",
+      lineHeight: "1.45",
+      letterSpacing: "0.01em",
+    },
+    button: {
+      fontFamily: "body",
+      fontSize: "1rem",
+      fontWeight: "700",
+      lineHeight: "1.2",
+      letterSpacing: "-0.01em",
+      textTransform: "none",
+    },
+    label: {
+      fontFamily: "body",
+      fontSize: "0.875rem",
+      fontWeight: "600",
+      lineHeight: "1.4",
+      letterSpacing: "normal",
+    },
+    "code-card": {
+      fontFamily: "heading",
+      fontSize: { base: "1.5rem", md: "1.75rem" },
+      fontWeight: "800",
+      lineHeight: "1",
+      letterSpacing: "-0.02em",
+      fontVariantNumeric: "tabular-nums",
+    },
     eyebrow: {
+      fontFamily: "body",
       color: "brand.200",
       fontSize: "xs",
-      fontWeight: "800",
-      letterSpacing: "0.16em",
+      fontWeight: "700",
+      lineHeight: "1.4",
+      letterSpacing: "0.1em",
       textTransform: "uppercase",
+    },
+    result: {
+      fontFamily: "heading",
+      fontSize: { base: "3rem", md: "4rem" },
+      fontWeight: "800",
+      lineHeight: "1",
+      letterSpacing: "-0.035em",
+      fontVariantNumeric: "tabular-nums",
     },
   },
   components: {
+    Accordion,
+    Badge,
     Button,
     Card,
+    CloseButton,
+    FormLabel,
     Heading: {
       baseStyle: {
         color: "ink.50",
-        letterSpacing: "-0.035em",
+        fontFamily: "heading",
+        fontWeight: "700",
+      },
+      sizes: {
+        typography: {},
+      },
+      defaultProps: {
+        size: "typography",
       },
     },
     Input,

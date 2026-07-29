@@ -150,10 +150,10 @@ export default function Page({ params }: { params: ParamsUrl }) {
                   <Icon as={FiLayers} boxSize={7} color="white" />
                 </Box>
                 <Text textStyle="eyebrow">Convite para o time</Text>
-                <Heading as="h1" size="xl" mt={2}>
+                <Heading as="h1" textStyle="h1" mt={2}>
                   Entre na sala
                 </Heading>
-                <Text color="ink.300" mt={3}>
+                <Text color="ink.300" mt={3} textStyle="body">
                   Digite seu nome e participe da próxima estimativa em tempo
                   real.
                 </Text>

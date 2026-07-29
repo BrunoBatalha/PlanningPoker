@@ -56,9 +56,15 @@ export function UsernameForm({
           aria-describedby="username-helper"
         />
         {isInvalid ? (
-          <FormErrorMessage>Digite seu nome para continuar.</FormErrorMessage>
+          <FormErrorMessage textStyle="body-sm">
+            Digite seu nome para continuar.
+          </FormErrorMessage>
         ) : (
-          <FormHelperText id="username-helper" color="ink.400">
+          <FormHelperText
+            id="username-helper"
+            color="ink.300"
+            textStyle="body-sm"
+          >
             Sem cadastro. O nome será usado apenas nesta sala.
           </FormHelperText>
         )}

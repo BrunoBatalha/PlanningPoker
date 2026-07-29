@@ -184,8 +184,7 @@ export default function Home() {
               <Box>
                 <Heading
                   as="h1"
-                  fontSize={{ base: "4xl", sm: "5xl", md: "6xl", xl: "7xl" }}
-                  lineHeight={{ base: 1.08, md: 1.02 }}
+                  textStyle="display"
                   maxW="4xl"
                 >
                   Estimativas mais honestas.{" "}
@@ -200,8 +199,7 @@ export default function Home() {
                 <Text
                   mt={6}
                   color="ink.300"
-                  fontSize={{ base: "lg", md: "xl" }}
-                  lineHeight="1.75"
+                  textStyle="body-lg"
                   maxW="2xl"
                 >
                   Reúna seu time, vote com cartas Fibonacci e revele todas as
@@ -227,8 +225,8 @@ export default function Home() {
               <HStack
                 spacing={{ base: 3, md: 6 }}
                 flexWrap="wrap"
-                color="ink.400"
-                fontSize="sm"
+                color="ink.300"
+                textStyle="body-sm"
               >
                 {["Sem cadastro", "Tempo real", "100% gratuito"].map((item) => (
                   <HStack key={item} spacing={1.5}>
@@ -280,8 +278,7 @@ export default function Home() {
                         index === 2 ? "glowBrand" : "0 14px 30px rgba(0,0,0,.25)"
                       }
                       color="white"
-                      fontWeight="900"
-                      fontSize={{ base: "xl", md: "2xl" }}
+                      textStyle="code-card"
                       transform={`rotate(${(index - 1.5) * 5}deg) translateY(${
                         Math.abs(index - 1.5) * 5
                       }px)`}
@@ -301,7 +298,7 @@ export default function Home() {
                         borderRadius="xl"
                         bg="whiteAlpha.50"
                       >
-                        <Text color="ink.200" fontSize="sm">
+                        <Text color="ink.200" textStyle="body-sm">
                           {participant}
                         </Text>
                         <Box
@@ -322,10 +319,10 @@ export default function Home() {
           <Box as="section" py={{ base: 14, md: 24 }}>
             <VStack spacing={4} textAlign="center" mb={10}>
               <Text textStyle="eyebrow">Feito para o ritmo do time</Text>
-              <Heading as="h2" size="2xl">
+              <Heading as="h2" textStyle="h2">
                 Planning Poker sem atrito
               </Heading>
-              <Text color="ink.300" maxW="2xl" fontSize="lg">
+              <Text color="ink.300" maxW="2xl" textStyle="body-lg">
                 Uma experiência leve para sprint planning, refinamentos e
                 estimativas remotas.
               </Text>
@@ -343,10 +340,10 @@ export default function Home() {
                   >
                     <Icon as={benefit.icon} color={benefit.color} boxSize={5} />
                   </Box>
-                  <Heading as="h3" size="md">
+                  <Heading as="h3" textStyle="h3">
                     {benefit.title}
                   </Heading>
-                  <Text color="ink.300" mt={3} lineHeight="1.75">
+                  <Text color="ink.300" mt={3} textStyle="body">
                     {benefit.description}
                   </Text>
                 </GlassPanel>
@@ -362,10 +359,10 @@ export default function Home() {
           >
             <Box>
               <Text textStyle="eyebrow">Como funciona</Text>
-              <Heading as="h2" size="2xl" mt={3}>
+              <Heading as="h2" textStyle="h2" mt={3}>
                 Da criação ao consenso em quatro passos
               </Heading>
-              <Text color="ink.300" mt={5} fontSize="lg" lineHeight="1.75">
+              <Text color="ink.300" mt={5} textStyle="body-lg">
                 O fluxo foi desenhado para manter a atenção na história em
                 discussão — não na ferramenta.
               </Text>
@@ -381,17 +378,17 @@ export default function Home() {
                   alignItems="start"
                 >
                   <Text
+                    textStyle="label"
                     color="brand.200"
-                    fontWeight="900"
                     letterSpacing="0.08em"
                   >
                     {step.number}
                   </Text>
                   <Box>
-                    <Heading as="h3" size="sm">
+                    <Heading as="h3" textStyle="h4">
                       {step.title}
                     </Heading>
-                    <Text color="ink.300" mt={2} lineHeight="1.7">
+                    <Text color="ink.300" mt={2} textStyle="body">
                       {step.description}
                     </Text>
                   </Box>
@@ -432,10 +429,10 @@ export default function Home() {
                       Convite por link
                     </Text>
                   </HStack>
-                  <Heading as="h2" size="xl">
+                  <Heading as="h2" textStyle="h2">
                     Sua próxima estimativa começa agora
                   </Heading>
-                  <Text color="ink.300" mt={3} fontSize="lg">
+                  <Text color="ink.300" mt={3} textStyle="body-lg">
                     Crie uma sala, envie o link e deixe o Battle Poker cuidar da
                     revelação simultânea.
                   </Text>
@@ -457,10 +454,10 @@ export default function Home() {
           >
             <Box>
               <Text textStyle="eyebrow">Aprenda mais</Text>
-              <Heading as="h2" size="xl" mt={3}>
+              <Heading as="h2" textStyle="h2" mt={3}>
                 Planning Poker para equipes ágeis
               </Heading>
-              <Text color="ink.300" mt={4} maxW="3xl">
+              <Text color="ink.300" mt={4} maxW="3xl" textStyle="body">
                 Planning Poker é uma técnica de estimativa baseada em consenso.
                 Cada pessoa escolhe uma carta em segredo e todas são reveladas
                 ao mesmo tempo, reduzindo o viés de ancoragem.
@@ -494,8 +491,8 @@ export default function Home() {
             direction={{ base: "column", sm: "row" }}
             justify="space-between"
             spacing={3}
-            color="ink.400"
-            fontSize="sm"
+            color="ink.300"
+            textStyle="body-sm"
           >
             <Text>Battle Poker — Planning Poker online gratuito.</Text>
             <HStack spacing={4}>
@@ -518,7 +515,7 @@ function RoundPreviewStatus() {
         bg="signal.indigo"
         boxShadow="0 0 18px rgba(155, 138, 251, 0.55)"
       />
-      <Text color="ink.100" fontSize="sm" fontWeight="800">
+      <Text color="ink.100" textStyle="body-sm" fontWeight="700">
         Votos secretos
       </Text>
       <Icon as={FiEyeOff} color="ink.400" />

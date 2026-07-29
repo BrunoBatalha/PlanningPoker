@@ -55,10 +55,10 @@ export function RoundStatus({
         boxShadow={`0 0 18px ${content.glow}`}
       />
       <VStack spacing={0.5} align="flex-start">
-        <Text color="ink.50" fontWeight="800">
+        <Text color="ink.50" textStyle="label" fontWeight="700">
           {content.label}
         </Text>
-        <Text color="ink.300" fontSize="sm">
+        <Text color="ink.300" textStyle="body-sm">
           {content.description} {voteCount} de {participantCount} votaram.
         </Text>
       </VStack>

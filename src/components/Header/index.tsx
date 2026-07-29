@@ -58,14 +58,22 @@ export default function Header({ showFullLogo = false }: HeaderProps) {
             <Box>
               <Text
                 color="white"
-                fontWeight="900"
-                letterSpacing="-0.035em"
+                fontFamily="heading"
+                fontSize="md"
+                fontWeight="800"
+                letterSpacing="-0.025em"
                 lineHeight="1"
               >
                 Battle Poker
               </Text>
               {showFullLogo ? (
-                <Text color="ink.400" fontSize="xs" mt={1}>
+                <Text
+                  color="ink.300"
+                  textStyle="caption"
+                  mt={1}
+                  display={{ base: "none", sm: "block" }}
+                  whiteSpace="nowrap"
+                >
                   Planning Poker para times ágeis
                 </Text>
               ) : null}

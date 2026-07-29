@@ -99,18 +99,17 @@ export function ResultsPanel({ points }: ResultsPanelProps) {
           {averageLabel ? (
             <Heading
               as="p"
-              fontSize={{ base: "5xl", md: "6xl" }}
-              lineHeight="1"
+              textStyle="result"
               color="white"
             >
               {averageLabel}
             </Heading>
           ) : (
-            <Heading as="p" size="lg" color="ink.100">
+            <Heading as="p" textStyle="h4" color="ink.100">
               Sem votos numéricos
             </Heading>
           )}
-          <Text color="ink.300" fontSize="sm">
+          <Text color="ink.300" textStyle="body-sm">
             {numericPoints.length}{" "}
             {numericPoints.length === 1 ? "voto numérico" : "votos numéricos"}
           </Text>
@@ -121,7 +120,7 @@ export function ResultsPanel({ points }: ResultsPanelProps) {
         <VStack spacing={4} align="stretch">
           <Box>
             <Text textStyle="eyebrow">Distribuição</Text>
-            <Heading as="h2" size="md" mt={1}>
+            <Heading as="h2" textStyle="h4" mt={1}>
               Como o time votou
             </Heading>
           </Box>
@@ -129,10 +128,10 @@ export function ResultsPanel({ points }: ResultsPanelProps) {
             {distribution.map((item) => (
               <Box key={item.value}>
                 <HStack justify="space-between" mb={1.5}>
-                  <Text color="ink.100" fontWeight="800" fontSize="sm">
+                  <Text color="ink.100" textStyle="body-sm" fontWeight="700">
                     {item.value}
                   </Text>
-                  <Text color="ink.300" fontSize="xs">
+                  <Text color="ink.300" textStyle="caption">
                     {item.count} {item.count === 1 ? "voto" : "votos"}
                   </Text>
                 </HStack>

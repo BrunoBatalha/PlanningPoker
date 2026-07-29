@@ -76,7 +76,12 @@ export default function WhatIsPlanningPokerPage() {
       <Box as="main">
       <Container maxW="4xl" py={{ base: 10, md: 16 }} px={{ base: 4, md: 6 }}>
         {/* Breadcrumbs */}
-        <Breadcrumb spacing="8px" separator={<ChevronRightIcon color="ink.400" />} mb={8}>
+        <Breadcrumb
+          spacing="8px"
+          separator={<ChevronRightIcon color="ink.400" />}
+          mb={8}
+          textStyle="body-sm"
+        >
           <BreadcrumbItem>
             <BreadcrumbLink as={Link} href="/" color="brand.200">
               <Text>Início</Text>
@@ -97,14 +102,13 @@ export default function WhatIsPlanningPokerPage() {
             </Badge>
             <Heading 
               as="h1" 
-              size="2xl" 
+              textStyle="h1"
               mb={4}
               color="ink.50"
-              lineHeight="1.2"
             >
               O que é Planning Poker? Guia Completo da Técnica de Estimativa Ágil
             </Heading>
-            <Text fontSize="xl" color="ink.300" lineHeight="1.6" mb={6}>
+            <Text textStyle="body-lg" color="ink.300" mb={6} maxW="70ch">
               Descubra como o <strong>Planning Poker</strong> revoluciona a estimativa de projetos ágeis. 
               Aprenda a técnica, benefícios e como implementar em sua equipe Scrum de forma eficiente.
             </Text>
@@ -115,7 +119,7 @@ export default function WhatIsPlanningPokerPage() {
         {/* Table of Contents */}
         <Card mb={8} bg="rgba(96, 165, 250, 0.08)" borderLeft="4px solid" borderLeftColor="signal.blue">
           <CardHeader pb={2}>
-            <Heading as="h2" size="md" color="signal.blue">
+            <Heading as="h2" textStyle="h4" color="signal.blue">
               📋 Índice do Conteúdo
             </Heading>
           </CardHeader>
@@ -138,11 +142,11 @@ export default function WhatIsPlanningPokerPage() {
           
           {/* Section 1: Definition */}
           <Box id="definicao">
-            <Heading as="h2" size="xl" mb={6} color="ink.50">
+            <Heading as="h2" textStyle="h2" mb={6} color="ink.50">
               O que é Planning Poker?
             </Heading>
             
-            <Text fontSize="lg" mb={4} lineHeight="1.7">
+            <Text textStyle="body-lg" mb={4} maxW="70ch">
               O <strong>Planning Poker</strong> (também conhecido como <strong>Scrum Poker</strong>) é uma técnica de 
               <strong> estimativa ágil</strong> baseada em consenso, amplamente utilizada em metodologias ágeis 
               como Scrum e Kanban. Foi criada por James Grenning em 2002 e popularizada por Mike Cohn.
@@ -150,13 +154,13 @@ export default function WhatIsPlanningPokerPage() {
             
             <Alert status="info" mb={6}>
               <AlertIcon />
-              <Text>
+              <Text textStyle="body">
                 <strong>Definição:</strong> Planning Poker é um método colaborativo onde equipes usam cartas 
                 numeradas para estimar o esforço, complexidade ou tamanho de tarefas em projetos de software.
               </Text>
             </Alert>
 
-            <Text fontSize="lg" mb={4} lineHeight="1.7">
+            <Text textStyle="body-lg" mb={4} maxW="70ch">
               Esta técnica combina elementos de <strong>estimativa por analogia</strong>, <strong>opinião de especialistas</strong> 
               e <strong>desagregação</strong> para criar estimativas mais precisas e reduzir o viés de ancoragem 
               que pode ocorrer em estimativas tradicionais.
@@ -167,19 +171,19 @@ export default function WhatIsPlanningPokerPage() {
 
           {/* Section 2: How it Works */}
           <Box id="como-funciona">
-            <Heading as="h2" size="xl" mb={6} color="ink.50">
+            <Heading as="h2" textStyle="h2" mb={6} color="ink.50">
               Como Funciona o Planning Poker
             </Heading>
             
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mb={6}>
               <Card>
                 <CardHeader>
-                  <Heading as="h3" size="md" color="brand.200">
+                  <Heading as="h3" textStyle="h3" color="brand.200">
                     🎯 Objetivo Principal
                   </Heading>
                 </CardHeader>
                 <CardBody>
-                  <Text>
+                  <Text textStyle="body">
                     Obter estimativas consensuais evitando influência mútua entre membros da equipe, 
                     resultando em previsões mais precisas.
                   </Text>
@@ -188,12 +192,12 @@ export default function WhatIsPlanningPokerPage() {
               
               <Card>
                 <CardHeader>
-                  <Heading as="h3" size="md" color="signal.green">
+                  <Heading as="h3" textStyle="h3" color="signal.green">
                     ⚡ Processo Dinâmico
                   </Heading>
                 </CardHeader>
                 <CardBody>
-                  <Text>
+                  <Text textStyle="body">
                     Combina discussão em grupo com votação individual, garantindo que todas as 
                     perspectivas sejam consideradas na estimativa final.
                   </Text>
@@ -201,11 +205,11 @@ export default function WhatIsPlanningPokerPage() {
               </Card>
             </SimpleGrid>
 
-            <Heading as="h3" size="lg" mb={4} color="ink.100">
+            <Heading as="h3" textStyle="h3" mb={4} color="ink.100">
               Processo do Planning Poker:
             </Heading>
             
-            <OrderedList spacing={3} fontSize="lg">
+            <OrderedList spacing={3} textStyle="body-lg" maxW="70ch">
               <ListItem>
                 <strong>Apresentação da User Story:</strong> O Product Owner apresenta a história 
                 de usuário que será estimada
@@ -232,11 +236,11 @@ export default function WhatIsPlanningPokerPage() {
 
           {/* Section 3: Fibonacci Sequence */}
           <Box id="sequencia-fibonacci">
-            <Heading as="h2" size="xl" mb={6} color="ink.50">
+            <Heading as="h2" textStyle="h2" mb={6} color="ink.50">
               Por que usar a Sequência de Fibonacci?
             </Heading>
             
-            <Text fontSize="lg" mb={4} lineHeight="1.7">
+            <Text textStyle="body-lg" mb={4} maxW="70ch">
               A <strong>sequência de Fibonacci</strong> (0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89) é amplamente 
               usada no Planning Poker por refletir a <strong>incerteza natural</strong> em estimativas de software.
             </Text>
@@ -244,10 +248,10 @@ export default function WhatIsPlanningPokerPage() {
             <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} mb={6}>
               <Card bg="rgba(251, 191, 36, 0.08)" borderLeft="4px solid" borderLeftColor="signal.amber">
                 <CardBody>
-                  <Heading as="h4" size="sm" mb={2} color="signal.amber">
+                  <Heading as="h4" textStyle="h4" mb={2} color="signal.amber">
                     🎯 Precisão Natural
                   </Heading>
-                  <Text fontSize="sm">
+                  <Text textStyle="body-sm">
                     Conforme as tarefas ficam maiores, nossa capacidade de estimar com precisão diminui. 
                     Os intervalos maiores da sequência refletem essa realidade.
                   </Text>
@@ -256,10 +260,10 @@ export default function WhatIsPlanningPokerPage() {
               
               <Card bg="rgba(96, 165, 250, 0.08)" borderLeft="4px solid" borderLeftColor="signal.blue">
                 <CardBody>
-                  <Heading as="h4" size="sm" mb={2} color="signal.blue">
+                  <Heading as="h4" textStyle="h4" mb={2} color="signal.blue">
                     ⚖️ Evita Falsas Precisões
                   </Heading>
-                  <Text fontSize="sm">
+                  <Text textStyle="body-sm">
                     Impede que a equipe gaste tempo debatendo se uma tarefa é 16 ou 17 pontos, 
                     quando a diferença real é insignificante.
                   </Text>
@@ -268,10 +272,10 @@ export default function WhatIsPlanningPokerPage() {
               
               <Card bg="rgba(74, 222, 128, 0.08)" borderLeft="4px solid" borderLeftColor="signal.green">
                 <CardBody>
-                  <Heading as="h4" size="sm" mb={2} color="signal.green">
+                  <Heading as="h4" textStyle="h4" mb={2} color="signal.green">
                     🚀 Força Divisão
                   </Heading>
-                  <Text fontSize="sm">
+                  <Text textStyle="body-sm">
                     Tarefas muito grandes (21+ pontos) indicam necessidade de quebrar em 
                     subtarefas menores e mais gerenciáveis.
                   </Text>
@@ -284,17 +288,17 @@ export default function WhatIsPlanningPokerPage() {
 
           {/* Section 4: Benefits */}
           <Box id="beneficios">
-            <Heading as="h2" size="xl" mb={6} color="ink.50">
+            <Heading as="h2" textStyle="h2" mb={6} color="ink.50">
               Benefícios do Planning Poker
             </Heading>
             
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
               <VStack spacing={4} align="stretch">
-                <Heading as="h3" size="lg" color="brand.200" mb={2}>
+                <Heading as="h3" textStyle="h3" color="brand.200" mb={2}>
                   🎯 Para a Equipe
                 </Heading>
                 
-                <List spacing={3}>
+                <List spacing={3} textStyle="body">
                   <ListItem>
                     <ListIcon as={CheckCircleIcon} color="green.500" />
                     <Text as="span" fontWeight="semibold">Reduz viés de ancoragem:</Text> Evita que estimativas 
@@ -319,11 +323,11 @@ export default function WhatIsPlanningPokerPage() {
               </VStack>
               
               <VStack spacing={4} align="stretch">
-                <Heading as="h3" size="lg" color="signal.blue" mb={2}>
+                <Heading as="h3" textStyle="h3" color="signal.blue" mb={2}>
                   📈 Para o Projeto
                 </Heading>
                 
-                <List spacing={3}>
+                <List spacing={3} textStyle="body">
                   <ListItem>
                     <ListIcon as={StarIcon} color="blue.500" />
                     <Text as="span" fontWeight="semibold">Planejamento mais confiável:</Text> Estimativas 
@@ -353,7 +357,7 @@ export default function WhatIsPlanningPokerPage() {
 
           {/* Section 5: Step by Step */}
           <Box id="passo-a-passo">
-            <Heading as="h2" size="xl" mb={6} color="ink.50">
+            <Heading as="h2" textStyle="h2" mb={6} color="ink.50">
               Como Fazer Planning Poker: Passo a Passo Detalhado
             </Heading>
             
@@ -422,24 +426,23 @@ export default function WhatIsPlanningPokerPage() {
                         display="flex" 
                         alignItems="center" 
                         justifyContent="center" 
-                        fontWeight="bold"
-                        fontSize="lg"
+                        textStyle="h4"
                         flexShrink={0}
                       >
                         {item.step}
                       </Box>
                       <VStack align="start" spacing={3} flex={1}>
-                        <Heading as="h3" size="md" color="ink.100">
+                        <Heading as="h3" textStyle="h3" color="ink.100">
                           {item.title}
                         </Heading>
-                        <Text fontSize="md" lineHeight="1.6">
+                        <Text textStyle="body">
                           {item.content}
                         </Text>
                         <Box>
-                          <Text fontSize="sm" fontWeight="semibold" color="ink.300" mb={2}>
+                          <Text textStyle="label" color="ink.300" mb={2}>
                             💡 Dicas:
                           </Text>
-                          <UnorderedList fontSize="sm" color="ink.300" pl={4}>
+                          <UnorderedList textStyle="body-sm" color="ink.300" pl={4}>
                             {item.tips.map((tip, tipIndex) => (
                               <ListItem key={tipIndex}>{tip}</ListItem>
                             ))}
@@ -457,22 +460,30 @@ export default function WhatIsPlanningPokerPage() {
 
           {/* Section 6: Card Types */}
           <Box id="cartas">
-            <Heading as="h2" size="xl" mb={6} color="ink.50">
+            <Heading as="h2" textStyle="h2" mb={6} color="ink.50">
               Tipos de Cartas e Valores no Planning Poker
             </Heading>
             
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mb={6}>
               <Card>
                 <CardHeader>
-                  <Heading as="h3" size="md" color="brand.200">
+                  <Heading as="h3" textStyle="h3" color="brand.200">
                     🔢 Sequência Fibonacci Clássica
                   </Heading>
                 </CardHeader>
                 <CardBody>
-                  <Text mb={3}>A mais utilizada em Planning Poker:</Text>
+                  <Text mb={3} textStyle="body">A mais utilizada em Planning Poker:</Text>
                   <Flex wrap="wrap" gap={2}>
                     {['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89'].map(value => (
-                      <Badge key={value} colorScheme="purple" fontSize="md" p={2}>
+                      <Badge
+                        key={value}
+                        colorScheme="purple"
+                        p={2}
+                        fontFamily="heading"
+                        fontSize="md"
+                        fontWeight="800"
+                        sx={{ fontVariantNumeric: "tabular-nums" }}
+                      >
                         {value}
                       </Badge>
                     ))}
@@ -482,7 +493,7 @@ export default function WhatIsPlanningPokerPage() {
               
               <Card>
                 <CardHeader>
-                  <Heading as="h3" size="md" color="signal.blue">
+                  <Heading as="h3" textStyle="h3" color="signal.blue">
                     ⚡ Cartas Especiais
                   </Heading>
                 </CardHeader>
@@ -490,22 +501,22 @@ export default function WhatIsPlanningPokerPage() {
                   <VStack align="start" spacing={2}>
                     <HStack>
                       <Badge colorScheme="orange" fontSize="md">?</Badge>
-                      <Text fontSize="sm">Não sei / Preciso de mais informações</Text>
+                      <Text textStyle="body-sm">Não sei / Preciso de mais informações</Text>
                     </HStack>
                     <HStack>
                       <Badge colorScheme="green" fontSize="md">☕</Badge>
-                      <Text fontSize="sm">Preciso de uma pausa</Text>
+                      <Text textStyle="body-sm">Preciso de uma pausa</Text>
                     </HStack>
                     <HStack>
                       <Badge colorScheme="red" fontSize="md">∞</Badge>
-                      <Text fontSize="sm">Tarefa muito grande / Impossível estimar</Text>
+                      <Text textStyle="body-sm">Tarefa muito grande / Impossível estimar</Text>
                     </HStack>
                   </VStack>
                 </CardBody>
               </Card>
             </SimpleGrid>
 
-            <Heading as="h3" size="lg" mb={4} color="ink.100">
+            <Heading as="h3" textStyle="h3" mb={4} color="ink.100">
               Interpretação dos Valores:
             </Heading>
             
@@ -526,7 +537,7 @@ export default function WhatIsPlanningPokerPage() {
                       <Badge colorScheme={item.color} fontSize="lg" minW="8">
                         {item.value}
                       </Badge>
-                      <Text fontSize="sm">{item.meaning}</Text>
+                      <Text textStyle="body-sm">{item.meaning}</Text>
                     </HStack>
                   </CardBody>
                 </Card>
@@ -538,14 +549,14 @@ export default function WhatIsPlanningPokerPage() {
 
           {/* Section 7: Tips and Best Practices */}
           <Box id="dicas">
-            <Heading as="h2" size="xl" mb={6} color="ink.50">
+            <Heading as="h2" textStyle="h2" mb={6} color="ink.50">
               Dicas e Melhores Práticas
             </Heading>
             
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
               <Card bg="rgba(74, 222, 128, 0.08)" borderLeft="4px solid" borderLeftColor="signal.green">
                 <CardHeader>
-                  <Heading as="h3" size="md" color="signal.green">
+                  <Heading as="h3" textStyle="h3" color="signal.green">
                     ✅ Faça Assim
                   </Heading>
                 </CardHeader>
@@ -564,7 +575,7 @@ export default function WhatIsPlanningPokerPage() {
               
               <Card bg="rgba(251, 113, 133, 0.08)" borderLeft="4px solid" borderLeftColor="signal.red">
                 <CardHeader>
-                  <Heading as="h3" size="md" color="signal.red">
+                  <Heading as="h3" textStyle="h3" color="signal.red">
                     ❌ Evite Fazer
                   </Heading>
                 </CardHeader>
@@ -587,11 +598,11 @@ export default function WhatIsPlanningPokerPage() {
 
           {/* Section 8: Tools */}
           <Box id="ferramentas">
-            <Heading as="h2" size="xl" mb={6} color="ink.50">
+            <Heading as="h2" textStyle="h2" mb={6} color="ink.50">
               Ferramentas para Planning Poker Online
             </Heading>
             
-            <Text fontSize="lg" mb={6} lineHeight="1.7">
+            <Text textStyle="body-lg" mb={6} maxW="70ch">
               Com equipes remotas se tornando cada vez mais comuns, ferramentas online para Planning Poker 
               são essenciais. Nossa plataforma oferece tudo que você precisa para sessões eficazes:
             </Text>
@@ -600,10 +611,10 @@ export default function WhatIsPlanningPokerPage() {
               <Card bg="rgba(112, 72, 245, 0.08)" borderTop="4px solid" borderTopColor="brand.400">
                 <CardBody textAlign="center">
                   <Icon as={CheckCircleIcon} w={12} h={12} color="purple.500" mb={4} />
-                  <Heading as="h3" size="md" mb={3} color="brand.200">
+                  <Heading as="h3" textStyle="h3" mb={3} color="brand.200">
                     Colaboração em Tempo Real
                   </Heading>
-                  <Text fontSize="sm">
+                  <Text textStyle="body-sm">
                     Veja as escolhas de todos simultaneamente, exatamente como no Planning Poker presencial.
                   </Text>
                 </CardBody>
@@ -612,10 +623,10 @@ export default function WhatIsPlanningPokerPage() {
               <Card bg="rgba(96, 165, 250, 0.08)" borderTop="4px solid" borderTopColor="signal.blue">
                 <CardBody textAlign="center">
                   <Icon as={StarIcon} w={12} h={12} color="blue.500" mb={4} />
-                  <Heading as="h3" size="md" mb={3} color="signal.blue">
+                  <Heading as="h3" textStyle="h3" mb={3} color="signal.blue">
                     Sem Cadastro Necessário
                   </Heading>
-                  <Text fontSize="sm">
+                  <Text textStyle="body-sm">
                     Comece em segundos! Crie uma sala, compartilhe o link e sua equipe pode participar imediatamente.
                   </Text>
                 </CardBody>
@@ -624,10 +635,10 @@ export default function WhatIsPlanningPokerPage() {
               <Card bg="rgba(74, 222, 128, 0.08)" borderTop="4px solid" borderTopColor="signal.green">
                 <CardBody textAlign="center">
                   <Icon as={CheckCircleIcon} w={12} h={12} color="green.500" mb={4} />
-                  <Heading as="h3" size="md" mb={3} color="signal.green">
+                  <Heading as="h3" textStyle="h3" mb={3} color="signal.green">
                     100% Gratuito
                   </Heading>
-                  <Text fontSize="sm">
+                  <Text textStyle="body-sm">
                     Nossa ferramenta é completamente gratuita, sem limitações de uso ou número de participantes.
                   </Text>
                 </CardBody>
@@ -636,10 +647,10 @@ export default function WhatIsPlanningPokerPage() {
 
           <Card bgGradient="linear(to-r, brand.600, #15658A)" color="white" p={{ base: 6, md: 8 }}>
               <VStack spacing={4} textAlign="center">
-                <Heading as="h3" size="lg">
+                <Heading as="h3" textStyle="h3">
                   Pronto para começar seu Planning Poker?
                 </Heading>
-                <Text fontSize="lg">
+                <Text textStyle="body-lg">
                   Crie uma sala agora e experimente a diferença que o Planning Poker faz no seu time!
                 </Text>
                 <CreateRoomButton />
@@ -649,7 +660,7 @@ export default function WhatIsPlanningPokerPage() {
 
           {/* FAQ Section */}
           <Box>
-            <Heading as="h2" size="xl" mb={6} color="ink.50">
+            <Heading as="h2" textStyle="h2" mb={6} color="ink.50">
               Perguntas Frequentes sobre Planning Poker
             </Heading>
             
@@ -678,10 +689,10 @@ export default function WhatIsPlanningPokerPage() {
               ].map((faq, index) => (
                 <Card key={index}>
                   <CardBody>
-                    <Heading as="h3" size="md" mb={3} color="ink.100">
+                    <Heading as="h3" textStyle="h3" mb={3} color="ink.100">
                       {faq.question}
                     </Heading>
-                    <Text color="ink.300" lineHeight="1.6">
+                    <Text color="ink.300" textStyle="body">
                       {faq.answer}
                     </Text>
                   </CardBody>
@@ -693,10 +704,10 @@ export default function WhatIsPlanningPokerPage() {
           {/* Call to Action Footer */}
           <Card bgGradient="linear(to-r, brand.600, violet.600)" color="white" textAlign="center" p={{ base: 6, md: 8 }}>
             <VStack spacing={4}>
-              <Heading as="h2" size="xl">
+              <Heading as="h2" textStyle="h2">
                 Transforme seu Planning com Planning Poker
               </Heading>
-              <Text fontSize="lg" maxW="2xl">
+              <Text textStyle="body-lg" maxW="2xl">
                 Junte-se a milhares de equipes que já melhoraram suas estimativas e planejamento 
                 usando nossa ferramenta gratuita de Planning Poker online.
               </Text>

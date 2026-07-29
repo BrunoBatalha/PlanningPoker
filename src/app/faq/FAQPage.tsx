@@ -273,6 +273,7 @@ export default function FAQPage() {
             spacing="8px"
             separator={<ChevronRightIcon color="ink.400" />}
             mb={6}
+            textStyle="body-sm"
           >
             <BreadcrumbItem>
               <BreadcrumbLink as={NextLink} href="/">
@@ -290,14 +291,13 @@ export default function FAQPage() {
           <VStack spacing={6} textAlign="center" mb={12}>
             <Heading
               as="h1"
-              size="2xl"
+              textStyle="h1"
               bgGradient="linear(to-r, brand.200, signal.cyan)"
               bgClip="text"
-              fontWeight="bold"
             >
               Perguntas Frequentes
             </Heading>
-            <Text fontSize="xl" color="ink.300" maxW="3xl">
+            <Text textStyle="body-lg" color="ink.300" maxW="3xl">
               Encontre respostas para as principais dúvidas sobre Planning Poker, 
               metodologia ágil e como usar o Battle Poker para melhorar suas estimativas.
             </Text>
@@ -306,23 +306,23 @@ export default function FAQPage() {
             <SimpleGrid columns={{ base: 2, md: 4 }} spacing={4} w="full" maxW="2xl">
               <GlassPanel p={4} textAlign="center">
                 <Icon as={QuestionIcon} color="signal.blue" mb={2} />
-                <Text fontWeight="bold" fontSize="2xl">25+</Text>
-                <Text fontSize="sm" color="ink.300">Perguntas</Text>
+                <Text textStyle="h3">25+</Text>
+                <Text textStyle="body-sm" color="ink.300">Perguntas</Text>
               </GlassPanel>
               <GlassPanel p={4} textAlign="center">
                 <Icon as={FaUsers} color="signal.green" mb={2} />
-                <Text fontWeight="bold" fontSize="2xl">4</Text>
-                <Text fontSize="sm" color="ink.300">Categorias</Text>
+                <Text textStyle="h3">4</Text>
+                <Text textStyle="body-sm" color="ink.300">Categorias</Text>
               </GlassPanel>
               <GlassPanel p={4} textAlign="center">
                 <Icon as={FaClock} color="signal.amber" mb={2} />
-                <Text fontWeight="bold" fontSize="2xl">5min</Text>
-                <Text fontSize="sm" color="ink.300">Leitura Média</Text>
+                <Text textStyle="h3">5min</Text>
+                <Text textStyle="body-sm" color="ink.300">Leitura Média</Text>
               </GlassPanel>
               <GlassPanel p={4} textAlign="center">
                 <Icon as={CheckCircleIcon} color="brand.300" mb={2} />
-                <Text fontWeight="bold" fontSize="2xl">100%</Text>
-                <Text fontSize="sm" color="ink.300">Úteis</Text>
+                <Text textStyle="h3">100%</Text>
+                <Text textStyle="body-sm" color="ink.300">Úteis</Text>
               </GlassPanel>
             </SimpleGrid>
           </VStack>
@@ -332,7 +332,7 @@ export default function FAQPage() {
             <VStack spacing={8} align="stretch">
               {/* Category Filters */}
               <Box>
-                <Heading size="md" mb={4}>Categorias</Heading>
+                <Heading as="h2" textStyle="h4" mb={4}>Categorias</Heading>
                 <SimpleGrid columns={{ base: 2, md: 4 }} spacing={4}>
                   {Object.entries(categoryLabels).map(([key, label]) => {
                     const IconComponent = categoryIcons[key as keyof typeof categoryIcons]
@@ -349,8 +349,8 @@ export default function FAQPage() {
                       >
                         <Icon as={IconComponent} color={`${categoryColors[key as keyof typeof categoryColors]}.500`} mr={2} />
                         <Box>
-                          <Text fontWeight="medium">{label}</Text>
-                          <Text fontSize="sm" color="ink.400">{count} perguntas</Text>
+                          <Text textStyle="label">{label}</Text>
+                          <Text textStyle="body-sm" color="ink.300">{count} perguntas</Text>
                         </Box>
                       </Flex>
                     )
@@ -362,31 +362,34 @@ export default function FAQPage() {
 
               {/* FAQ Accordion */}
               <Box>
-                <Heading size="md" mb={6}>Todas as Perguntas</Heading>
+                <Heading as="h2" textStyle="h4" mb={6}>Todas as Perguntas</Heading>
                 <Accordion allowMultiple>
                   {faqData.map((faq, index) => (
                     <AccordionItem key={faq.id} border="1px" borderColor={borderColor} borderRadius="lg" mb={4}>
-                      <h2>
-                        <AccordionButton p={6} _hover={{ bg: hoverBg }}>
+                      <h3>
+                        <AccordionButton p={{ base: 4, md: 6 }} _hover={{ bg: hoverBg }}>
                           <Box flex="1" textAlign="left">
-                            <Flex align="center" gap={3}>
+                            <Flex
+                              direction={{ base: "column", sm: "row" }}
+                              align={{ base: "flex-start", sm: "center" }}
+                              gap={{ base: 2, sm: 3 }}
+                            >
                               <Badge 
                                 colorScheme={categoryColors[faq.category]} 
                                 variant="subtle"
-                                fontSize="xs"
                               >
                                 {categoryLabels[faq.category]}
                               </Badge>
-                              <Text fontWeight="medium" fontSize="lg">
+                              <Text textStyle="h4">
                                 {faq.question}
                               </Text>
                             </Flex>
                           </Box>
                           <AccordionIcon />
                         </AccordionButton>
-                      </h2>
-                      <AccordionPanel p={6} pt={0}>
-                        <Text lineHeight="tall" color="ink.300">
+                      </h3>
+                      <AccordionPanel p={{ base: 4, md: 6 }} pt={0}>
+                        <Text textStyle="body" color="ink.300">
                           {faq.answer}
                         </Text>
                       </AccordionPanel>
@@ -399,8 +402,8 @@ export default function FAQPage() {
 
               {/* CTA Section */}
               <VStack spacing={6} textAlign="center">
-                <Heading size="lg">Ainda tem dúvidas?</Heading>
-                <Text color="ink.300" maxW="2xl">
+                <Heading as="h2" textStyle="h2">Ainda tem dúvidas?</Heading>
+                <Text color="ink.300" maxW="2xl" textStyle="body">
                   Não encontrou a resposta que procurava? Experimente o Battle Poker 
                   e descubra como o Planning Poker pode transformar suas estimativas ágeis.
                 </Text>
@@ -426,7 +429,7 @@ export default function FAQPage() {
                 </SimpleGrid>
                 
                 <Box mt={8} p={6} bg="whiteAlpha.50" borderRadius="2xl" border="1px solid" borderColor="whiteAlpha.100">
-                  <Text fontSize="sm" color="ink.300" textAlign="center">
+                  <Text textStyle="body-sm" color="ink.300" textAlign="center">
                     💡 <strong>Dica:</strong> Marque esta página nos favoritos para consultar sempre que precisar!
                   </Text>
                 </Box>

@@ -14,6 +14,7 @@ import {
   Tag,
   Text,
   useToast,
+  VisuallyHidden,
   VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
@@ -303,6 +304,7 @@ export default function Page({
 
   return (
     <AppShell pb={{ base: 6, md: 10 }}>
+      <VisuallyHidden as="h1">Sala de Planning Poker</VisuallyHidden>
       <Container maxW="1440px" px={{ base: 3, sm: 4, md: 6 }} pt={4}>
         <GlassPanel
           as="header"
@@ -320,10 +322,15 @@ export default function Page({
                 color="white"
               />
               <Box minW={0}>
-                <Text color="ink.400" fontSize="xs">
+                <Text color="ink.300" textStyle="caption">
                   Você está na sala
                 </Text>
-                <Text color="ink.100" fontWeight="800" noOfLines={1}>
+                <Text
+                  color="ink.100"
+                  textStyle="label"
+                  fontWeight="700"
+                  noOfLines={1}
+                >
                   {currentUser?.username}
                 </Text>
               </Box>
@@ -364,7 +371,7 @@ export default function Page({
             <HStack justify="space-between" mb={4}>
               <Box>
                 <Text textStyle="eyebrow">Time</Text>
-                <Heading as="h2" size="md" mt={1}>
+                <Heading as="h2" textStyle="h4" mt={1}>
                   Participantes
                 </Heading>
               </Box>
@@ -438,12 +445,12 @@ export default function Page({
                     px={5}
                   >
                     <VStack spacing={2}>
-                      <Heading as="p" size="md">
+                      <Heading as="p" textStyle="h4">
                         {voteCount === 0
                           ? "A mesa está aberta"
                           : "As cartas estão na mesa"}
                       </Heading>
-                      <Text color="ink.300" fontSize="sm" maxW="md">
+                      <Text color="ink.300" textStyle="body-sm" maxW="md">
                         {voteCount === 0
                           ? "Cada participante escolhe sua estimativa sem influenciar o restante do time."
                           : "Os valores continuam secretos. Revele quando o time estiver pronto para conversar."}
@@ -464,7 +471,7 @@ export default function Page({
                 >
                   <Box>
                     <Text textStyle="eyebrow">Sua estimativa</Text>
-                    <Heading as="h2" size="md" mt={1}>
+                    <Heading as="h2" textStyle="h4" mt={1}>
                       Escolha uma carta
                     </Heading>
                   </Box>
@@ -479,9 +486,15 @@ export default function Page({
                       border="1px solid"
                       borderColor="brand.500"
                     >
-                      <Text color="ink.200" fontSize="sm">
+                      <Text color="ink.200" textStyle="body-sm">
                         Voto guardado:{" "}
-                        <Text as="span" color="white" fontWeight="900">
+                        <Text
+                          as="span"
+                          color="white"
+                          fontFamily="heading"
+                          fontWeight="800"
+                          sx={{ fontVariantNumeric: "tabular-nums" }}
+                        >
                           {pointSelected}
                         </Text>
                       </Text>
@@ -522,7 +535,11 @@ export default function Page({
                 </SimpleGrid>
 
                 {isShowingAverage ? (
-                  <Text color="ink.400" fontSize="sm" textAlign="center">
+                  <Text
+                    color="ink.300"
+                    textStyle="body-sm"
+                    textAlign="center"
+                  >
                     A votação está encerrada. Inicie uma nova rodada para votar
                     novamente.
                   </Text>

@@ -53,7 +53,7 @@ export function ParticipantCard({
       <VStack spacing={1} align="flex-start" minW={0} flex={1}>
         <HStack spacing={2} minW={0}>
           <Text
-            fontSize="sm"
+            textStyle="body-sm"
             fontWeight="700"
             color="ink.100"
             noOfLines={1}
@@ -67,15 +67,15 @@ export function ParticipantCard({
           ) : null}
         </HStack>
         <Text
-          fontSize="xs"
+          textStyle="caption"
           color={
             status === "Não votou"
               ? "signal.amber"
               : point
                 ? "signal.green"
-                : "ink.400"
+                : "ink.300"
           }
-          fontWeight="700"
+          fontWeight="600"
         >
           {status}
         </Text>
@@ -103,8 +103,9 @@ export function ParticipantCard({
             border="1px solid"
             borderColor="rgba(77, 227, 227, 0.35)"
             color="signal.cyan"
-            fontSize="lg"
-            fontWeight="900"
+            textStyle="code-card"
+            fontSize={{ base: "xl", md: "2xl" }}
+            fontWeight="800"
             flexShrink={0}
           >
             {point}
