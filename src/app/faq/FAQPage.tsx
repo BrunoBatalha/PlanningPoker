@@ -1,6 +1,6 @@
 'use client'
 
-import Header from '@/components/Header'
+import { AppShell, GlassPanel, Header } from '@/components'
 import { CheckCircleIcon, ChevronRightIcon, QuestionIcon } from '@chakra-ui/icons'
 import {
     Accordion,
@@ -21,7 +21,6 @@ import {
     Icon,
     SimpleGrid,
     Text,
-    useColorModeValue,
     VStack
 } from '@chakra-ui/react'
 import Head from 'next/head'
@@ -210,11 +209,9 @@ const categoryIcons = {
 }
 
 export default function FAQPage() {
-  const bgColor = useColorModeValue('gray.50', 'gray.900')
-  const cardBg = useColorModeValue('white', 'gray.800')
-  const borderColor = useColorModeValue('gray.200', 'gray.700')
-  const hoverBg = useColorModeValue('gray.50', 'gray.700')
-  const categoryBg = useColorModeValue('gray.50', 'gray.700')
+  const borderColor = 'whiteAlpha.200'
+  const hoverBg = 'whiteAlpha.100'
+  const categoryBg = 'whiteAlpha.50'
 
   // Schema JSON-LD para FAQ
   const faqSchema = {
@@ -251,7 +248,7 @@ export default function FAQPage() {
   }
 
   return (
-    <>
+    <AppShell>
       <Head>
         <script
           type="application/ld+json"
@@ -269,12 +266,12 @@ export default function FAQPage() {
 
       <Header />
       
-      <Box bg={bgColor} minH="100vh">
-        <Container maxW="container.xl" py={8}>
+      <Box as="main">
+        <Container maxW="7xl" py={{ base: 10, md: 16 }} px={{ base: 4, md: 6 }}>
           {/* Breadcrumbs */}
           <Breadcrumb
             spacing="8px"
-            separator={<ChevronRightIcon color="gray.500" />}
+            separator={<ChevronRightIcon color="ink.400" />}
             mb={6}
           >
             <BreadcrumbItem>
@@ -283,7 +280,7 @@ export default function FAQPage() {
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink href="#" color="blue.500" fontWeight="medium">
+              <BreadcrumbLink href="#" color="brand.200" fontWeight="medium">
                 FAQ
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -294,44 +291,44 @@ export default function FAQPage() {
             <Heading
               as="h1"
               size="2xl"
-              bgGradient="linear(to-r, blue.400, purple.500)"
+              bgGradient="linear(to-r, brand.200, signal.cyan)"
               bgClip="text"
               fontWeight="bold"
             >
               Perguntas Frequentes
             </Heading>
-            <Text fontSize="xl" color="gray.600" maxW="3xl">
+            <Text fontSize="xl" color="ink.300" maxW="3xl">
               Encontre respostas para as principais dúvidas sobre Planning Poker, 
               metodologia ágil e como usar o Battle Poker para melhorar suas estimativas.
             </Text>
             
             {/* Stats Cards */}
             <SimpleGrid columns={{ base: 2, md: 4 }} spacing={4} w="full" maxW="2xl">
-              <Box bg={cardBg} p={4} borderRadius="lg" border="1px" borderColor={borderColor}>
-                <Icon as={QuestionIcon} color="blue.500" mb={2} />
+              <GlassPanel p={4} textAlign="center">
+                <Icon as={QuestionIcon} color="signal.blue" mb={2} />
                 <Text fontWeight="bold" fontSize="2xl">25+</Text>
-                <Text fontSize="sm" color="gray.600">Perguntas</Text>
-              </Box>
-              <Box bg={cardBg} p={4} borderRadius="lg" border="1px" borderColor={borderColor}>
-                <Icon as={FaUsers} color="green.500" mb={2} />
+                <Text fontSize="sm" color="ink.300">Perguntas</Text>
+              </GlassPanel>
+              <GlassPanel p={4} textAlign="center">
+                <Icon as={FaUsers} color="signal.green" mb={2} />
                 <Text fontWeight="bold" fontSize="2xl">4</Text>
-                <Text fontSize="sm" color="gray.600">Categorias</Text>
-              </Box>
-              <Box bg={cardBg} p={4} borderRadius="lg" border="1px" borderColor={borderColor}>
-                <Icon as={FaClock} color="orange.500" mb={2} />
+                <Text fontSize="sm" color="ink.300">Categorias</Text>
+              </GlassPanel>
+              <GlassPanel p={4} textAlign="center">
+                <Icon as={FaClock} color="signal.amber" mb={2} />
                 <Text fontWeight="bold" fontSize="2xl">5min</Text>
-                <Text fontSize="sm" color="gray.600">Leitura Média</Text>
-              </Box>
-              <Box bg={cardBg} p={4} borderRadius="lg" border="1px" borderColor={borderColor}>
-                <Icon as={CheckCircleIcon} color="purple.500" mb={2} />
+                <Text fontSize="sm" color="ink.300">Leitura Média</Text>
+              </GlassPanel>
+              <GlassPanel p={4} textAlign="center">
+                <Icon as={CheckCircleIcon} color="brand.300" mb={2} />
                 <Text fontWeight="bold" fontSize="2xl">100%</Text>
-                <Text fontSize="sm" color="gray.600">Úteis</Text>
-              </Box>
+                <Text fontSize="sm" color="ink.300">Úteis</Text>
+              </GlassPanel>
             </SimpleGrid>
           </VStack>
 
           {/* FAQ Content */}
-          <Box bg={cardBg} borderRadius="xl" border="1px" borderColor={borderColor} p={8}>
+          <GlassPanel p={{ base: 5, md: 8 }} strength="strong">
             <VStack spacing={8} align="stretch">
               {/* Category Filters */}
               <Box>
@@ -353,7 +350,7 @@ export default function FAQPage() {
                         <Icon as={IconComponent} color={`${categoryColors[key as keyof typeof categoryColors]}.500`} mr={2} />
                         <Box>
                           <Text fontWeight="medium">{label}</Text>
-                          <Text fontSize="sm" color="gray.600">{count} perguntas</Text>
+                          <Text fontSize="sm" color="ink.400">{count} perguntas</Text>
                         </Box>
                       </Flex>
                     )
@@ -389,7 +386,7 @@ export default function FAQPage() {
                         </AccordionButton>
                       </h2>
                       <AccordionPanel p={6} pt={0}>
-                        <Text lineHeight="tall" color="gray.700">
+                        <Text lineHeight="tall" color="ink.300">
                           {faq.answer}
                         </Text>
                       </AccordionPanel>
@@ -403,7 +400,7 @@ export default function FAQPage() {
               {/* CTA Section */}
               <VStack spacing={6} textAlign="center">
                 <Heading size="lg">Ainda tem dúvidas?</Heading>
-                <Text color="gray.600" maxW="2xl">
+                <Text color="ink.300" maxW="2xl">
                   Não encontrou a resposta que procurava? Experimente o Battle Poker 
                   e descubra como o Planning Poker pode transformar suas estimativas ágeis.
                 </Text>
@@ -411,7 +408,7 @@ export default function FAQPage() {
                   <Button
                     as={NextLink}
                     href="/"
-                    colorScheme="blue"
+                    variant="premium"
                     size="lg"
                     leftIcon={<Icon as={FaUsers} />}
                   >
@@ -420,7 +417,7 @@ export default function FAQPage() {
                   <Button
                     as={NextLink}
                     href="/o-que-e-planning-poker"
-                    variant="outline"
+                    variant="glass"
                     size="lg"
                     leftIcon={<Icon as={FaLightbulb} />}
                   >
@@ -428,16 +425,16 @@ export default function FAQPage() {
                   </Button>
                 </SimpleGrid>
                 
-                <Box mt={8} p={6} bg={useColorModeValue('blue.50', 'blue.900')} borderRadius="lg">
-                  <Text fontSize="sm" color="gray.600" textAlign="center">
+                <Box mt={8} p={6} bg="whiteAlpha.50" borderRadius="2xl" border="1px solid" borderColor="whiteAlpha.100">
+                  <Text fontSize="sm" color="ink.300" textAlign="center">
                     💡 <strong>Dica:</strong> Marque esta página nos favoritos para consultar sempre que precisar!
                   </Text>
                 </Box>
               </VStack>
             </VStack>
-          </Box>
+          </GlassPanel>
         </Container>
       </Box>
-    </>
+    </AppShell>
   )
 }

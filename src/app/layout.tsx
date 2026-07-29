@@ -1,12 +1,14 @@
-import { fonts } from "@/chakraUi/fonts";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/manrope";
+
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: {
-    default: "Planning Poker Online Gratuito | Ferramenta de Estimativa Ágil",
-    template: "%s | Planning Poker Online"
+    default: "Battle Poker | Planning Poker Online Gratuito",
+    template: "%s | Battle Poker"
   },
   description: "Planning Poker gratuito para equipes ágeis. Estime user stories com Fibonacci, revele cartas simultaneamente. Sem cadastro, colaboração em tempo real para Scrum.",
   keywords: [
@@ -26,9 +28,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'pt_BR',
     url: 'https://battlepoker.devnabatalha.com',
-    title: 'Planning Poker Online Gratuito | Ferramenta de Estimativa Ágil',
+    title: 'Battle Poker | Planning Poker Online Gratuito',
     description: 'Planning Poker gratuito para equipes ágeis. Estime user stories com Fibonacci, revele cartas simultaneamente.',
-    siteName: 'Planning Poker Online',
+    siteName: 'Battle Poker',
     images: [
       {
         url: '/logo.png',
@@ -40,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Planning Poker Online Gratuito',
+    title: 'Battle Poker | Planning Poker Online Gratuito',
     description: 'Ferramenta gratuita de Planning Poker para equipes ágeis',
     images: ['/logo.png'],
     creator: '@planningpoker'
@@ -126,17 +128,17 @@ export default function RootLayout({
     "potentialAction": {
       "@type": "UseAction",
       "target": "https://battlepoker.devnabatalha.com",
-      "name": "Começar Planning Poker"
+      "name": "Começar Battle Poker"
     }
   };
 
   return (
-    <html lang="pt-br" className={fonts.roboto.variable}>
+    <html lang="pt-BR">
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/logo.png" />
         <link rel="apple-touch-icon" href="/logo.png" />
-        <meta name="theme-color" content="#805ad5" />
+        <meta name="theme-color" content="#080D1D" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script
           type="application/ld+json"

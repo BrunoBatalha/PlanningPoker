@@ -1,11 +1,11 @@
 {
-  "name": "Planning Poker Online",
-  "short_name": "Planning Poker",
+  "name": "Battle Poker",
+  "short_name": "Battle Poker",
   "description": "Ferramenta gratuita de Planning Poker para equipes ágeis",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#805ad5",
+  "background_color": "#050816",
+  "theme_color": "#080D1D",
   "orientation": "portrait-primary",
   "icons": [
     {

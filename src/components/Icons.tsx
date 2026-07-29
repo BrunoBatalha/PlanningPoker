@@ -1,5 +1,10 @@
 'use client'
-import { CheckCircleIcon, Icon, StarIcon } from "@chakra-ui/icons";
+import {
+  CheckCircleIcon,
+  ChevronRightIcon,
+  Icon,
+  StarIcon,
+} from "@chakra-ui/icons";
 
-export { CheckCircleIcon, Icon, StarIcon };
+export { CheckCircleIcon, ChevronRightIcon, Icon, StarIcon };
 

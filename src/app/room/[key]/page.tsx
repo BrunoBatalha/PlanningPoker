@@ -1,274 +1,537 @@
 'use client'
-import { ButtonShareRoom, CardOtherPlayer, CardPoint, EffectDisable } from "@/components";
-import { roomService } from "@/services/RoomService";
-import { userService } from "@/services/UserService";
-import { AddIcon } from "@chakra-ui/icons";
-import { Avatar, Box, Button, Flex, Heading, Tag, Wrap, WrapItem, useToast } from "@chakra-ui/react";
-import { onValue, ref } from "firebase/database";
-import { AnimatePresence, motion } from "framer-motion";
+
+import { AddIcon, RepeatIcon } from "@chakra-ui/icons";
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Heading,
+  HStack,
+  SimpleGrid,
+  Tag,
+  Text,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { database } from "../../../../firebase";
-/**
- *
-rooms
-    id	-> unique value to share with players		
-        isShowingAverage: boolean
-        stories []
-            id
-                name: string
-                average: string
-        users []
-            id
-                username: string
-                point: string
- */
 
-interface User {
-    username: string,
-    point: string | null
-    key?: string
-}
-
-interface CurrentUser {
-    username: string,
-    key: string
-}
+import {
+  AppShell,
+  ButtonShareRoom,
+  FeedbackState,
+  GlassPanel,
+  ParticipantCard,
+  ResultsPanel,
+  RoundStatus,
+  type RoundPhase,
+  VotingCard,
+} from "@/components";
+import { roomService } from "@/services/RoomService";
+import {
+  type CurrentUser,
+  type RoomUser,
+  userService,
+} from "@/services/UserService";
 
 interface ParamsUrl {
-    key: string
+  key: string;
 }
 
+type RoomPageState = "loading" | "ready" | "not-found" | "error";
 
+const POINTS = [
+  "0",
+  "1",
+  "2",
+  "3",
+  "5",
+  "8",
+  "13",
+  "21",
+  "34",
+  "55",
+  "89",
+  "?",
+  "☕",
+];
 
-const POINTS = ['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89', '?', '☕']
+export default function Page({
+  params: { key: roomKey },
+}: {
+  params: ParamsUrl;
+}) {
+  const router = useRouter();
+  const toast = useToast();
+  const [pageState, setPageState] = useState<RoomPageState>("loading");
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+  const [participants, setParticipants] = useState<RoomUser[]>([]);
+  const [pointSelected, setPointSelected] = useState<string | null>(null);
+  const [isShowingAverage, setIsShowingAverage] = useState(false);
+  const [isVoteLoading, setIsVoteLoading] = useState(false);
+  const [isRoundActionLoading, setIsRoundActionLoading] = useState(false);
 
-export default function Page({ params: { key: roomKey } }: { params: ParamsUrl }) {
-    const router = useRouter()
-    const toast = useToast()
-    const [currentUser, setCurrentUser] = useState<CurrentUser>()
-    const [pointSelected, setPointSelected] = useState<string | null>(null)
-    const [players, setPlayers] = useState<User[]>([])
-    const [isShowAverage, setIsShowAverage] = useState(false)
+  useEffect(() => {
+    let isMounted = true;
 
-    const leftCardPlayerList = useMemo(() => {
-        const playersLeft = players.length > 1 ? players.slice(0, players.length / 2) : players
-        return playersLeft.map((p, index) => (
-            <CardOtherPlayer
-                key={index}
-                point={p.point}
-                username={p.username}
-                showPoint={isShowAverage}
-            />
-        ))
-    }, [players, isShowAverage])
+    async function initializeRoom() {
+      try {
+        const existsRoom = await roomService.roomExists(roomKey);
 
-    const rigthCardPlayerList = useMemo(() => {
-        const playersRight = players.length > 1 ? players.slice(players.length / 2, players.length) : []
-        return playersRight.map((p, index) => (
-            <CardOtherPlayer
-                key={index}
-                point={p.point}
-                username={p.username}
-                showPoint={isShowAverage}
-            />
-        ))
-    }, [players, isShowAverage])
-
-    useEffect(() => {
-        const initialLoads = async () => {
-            const existsRoom = await roomService.roomExists(roomKey)
-            if (!existsRoom) {
-                console.error('Room is not valid')
-                router.push('/')
-                return;
-            }
-
-            const user = userService.getCurrentUser();
-            if (!user) {
-                console.error("User in storage is not valid");
-                router.push(`/room/join/${roomKey}`)
-                return;
-            }
-
-            setCurrentUser(user)
+        if (!isMounted) {
+          return;
         }
 
-        initialLoads()
-    }, [roomKey, router])
-
-    useEffect(() => {
-        if (currentUser?.key) {
-            userService.onPlayersUpdate(roomKey, (users) => {
-                const currentUserIndex = users.findIndex(p => p.key === currentUser.key);
-                setPointSelected(users[currentUserIndex].point)            
-                setPlayers(users.filter(u => u.key !== currentUser.key))
-            })
-        }
-    }, [currentUser, roomKey])
-
-    useEffect(() => {
-        const onShowAverage = () => {
-            const usersRef = ref(database, `rooms/${roomKey}`);
-            onValue(usersRef, (snapshot) => {
-                const data = snapshot.val();
-                setIsShowAverage(!!data.isShowingAverage)
-            });
+        if (!existsRoom) {
+          setPageState("not-found");
+          return;
         }
 
-        onShowAverage()
-    }, [roomKey])
+        const storedUser = userService.getCurrentUser();
 
-    async function handleSetPoint(point: string) {
-        setPointSelected(point)
-        savePoint(point)
-    }
-
-    async function savePoint(point: string | null) {
-        try {
-            if (!currentUser) {
-                throw new Error("Current user is not valid");
-            }
-            await userService.savePoint(roomKey, currentUser.key, currentUser.username, point!)
-        } catch (error) {
-            console.error(error)
-            toast({
-                title: 'Não foi possível concluir a ação',
-                description: "Entre em contato com o suporte.",
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-                position: 'top',
-            })
-            setPointSelected(null)
+        if (!storedUser) {
+          router.replace(`/room/join/${roomKey}`);
+          return;
         }
+
+        setCurrentUser(storedUser);
+        setPageState("ready");
+      } catch (error) {
+        console.error(error);
+        if (isMounted) {
+          setPageState("error");
+        }
+      }
     }
 
-    function undoPoint() {
-        setPointSelected(null)
-        savePoint(null)
+    initializeRoom();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [roomKey, router]);
+
+  useEffect(() => {
+    if (!currentUser || pageState !== "ready") {
+      return;
     }
 
-    function calculateAverage() {
-        const numericPoints = [...players.map(player => player.point), pointSelected]
-            .filter((point): point is string => point !== null)
-            .map(Number)
-            .filter(point => !isNaN(point))
-        const total = numericPoints.reduce((acc, point) => acc + point, 0)
-        const average = total / numericPoints.length
-        return average.toPrecision(3)
-    }
+    const unsubscribePlayers = userService.onPlayersUpdate(
+      roomKey,
+      (users) => {
+        const roomCurrentUser = users.find(
+          (participant) => participant.key === currentUser.key,
+        );
 
-    async function handleClickNewRound() {
-        await userService.resetPointsAllUsers(roomKey)
-        setPointSelected(null)
-        savePoint(null)
-        await roomService.hiddenAvarage(roomKey)
-    }
+        if (!roomCurrentUser) {
+          router.replace(`/room/join/${roomKey}`);
+          return;
+        }
 
-    return (
-        <Box h='100vh' py='12' overflow='hidden' position='relative'>
-            <Flex flexDir='column' position='absolute' top='4' left='4' gap='2'>
-                <Tag variant='subtle'>
-                    <Avatar
-                        // src={`https://api.multiavatar.com/${currentUser?.key ?? ''}.svg`}
-                        size='xs'
-                        name={currentUser?.username}
-                        ml={-1}
-                        mr={2}
-                    />
-                    {currentUser?.username}
-                </Tag>
-
-
-                <ButtonShareRoom />
-                <Button leftIcon={<AddIcon />} variant='outline' onClick={() => router.push('/')}>
-                    Nova sala
-                </Button>
-            </Flex>
-            <Flex h='80%' mx='12' flex='2'>
-                <Flex flex='1' flexDir='column' gap='4' flexWrap='wrap' justifyContent='center'>
-                    {leftCardPlayerList}
-                </Flex>
-                <Flex flex='2' alignItems='center' justifyContent='center'>
-                    {!isShowAverage && <Button size='lg' onClick={() => roomService.showAvarage(roomKey)}>REVELAR CARTAS</Button>}
-                    {isShowAverage &&
-                        <Box>
-                            <Heading size='4xl' textAlign='center'>{calculateAverage()}</Heading>
-                            <Button mt='4' w='full' onClick={handleClickNewRound}>Nova rodada</Button>
-                        </Box>
-                    }
-                </Flex>
-                <Flex flex='1' flexDir='column' gap='4' flexWrap='wrap' justifyContent='center' alignItems='flex-end'>
-                    {rigthCardPlayerList}
-                </Flex>
-            </Flex>
-
-            <Flex flex='1' flexDir='column' w='full' gap='8'>
-                <Box textAlign='center'>
-                    <AnimatePresence>
-                        {pointSelected && (
-                            <Box as={motion.div} display='inline-block'>
-                                <CardPoint
-                                    headingSize='xl'
-                                    point={pointSelected}
-                                />
-                                <Button
-                                    as={motion.button}
-                                    variants={{ hidden: { opacity: 0, }, visible: { opacity: 1, } }}
-                                    initial='hidden'
-                                    animate="visible"
-                                    mt='4'
-                                    variant='link'
-                                    onClick={undoPoint}>Desfazer</Button>
-                            </Box>
-                        )}
-                    </AnimatePresence>
-                </Box>
-
-                <Flex justifyContent='center'>
-                    <Box pos='relative'>
-                        <EffectDisable isVisible={!!pointSelected} />
-
-                        <Wrap
-                            display='inline-block'
-                            p='8'
-                            gap='4'
-                            as={motion.div}
-                            variants={{
-                                hidden: {
-                                    opacity: 1,
-                                    scale: 0
-                                },
-                                visible: {
-                                    opacity: 1,
-                                    scale: 1,
-                                    transition: { delayChildren: 0.3, staggerChildren: 0.1 }
-                                }
-                            }}
-                            initial='hidden'
-                            animate="visible"
-                            bgColor='purple.100'
-                        >
-                            {POINTS.map((value) => (
-                                <WrapItem key={value}>
-                                    <CardPoint
-                                        headingSize='md'
-                                        point={value}
-                                        cardProps={{
-                                            as: motion.div,
-                                            onClick: () => handleSetPoint(value),
-                                            whileHover: { scale: 1.1 },
-                                            _hover: { cursor: 'pointer' }
-                                        }}
-                                    />
-                                </WrapItem>
-                            ))}
-                        </Wrap>
-                    </Box>
-                </Flex>
-            </Flex>
-        </Box >
+        setParticipants(users);
+        setPointSelected(roomCurrentUser.point);
+      },
+      (error) => {
+        console.error(error);
+        setPageState("error");
+      },
     );
-}
 
+    const unsubscribeRoom = roomService.onRoomUpdate(
+      roomKey,
+      (room) => {
+        if (!room) {
+          setPageState("not-found");
+          return;
+        }
+
+        setIsShowingAverage(room.isShowingAverage);
+      },
+      (error) => {
+        console.error(error);
+        setPageState("error");
+      },
+    );
+
+    return () => {
+      unsubscribePlayers();
+      unsubscribeRoom();
+    };
+  }, [currentUser, pageState, roomKey, router]);
+
+  const voteCount = useMemo(
+    () => participants.filter((participant) => participant.point !== null).length,
+    [participants],
+  );
+
+  const roundPhase: RoundPhase = isShowingAverage
+    ? "revealed"
+    : voteCount > 0
+      ? "secret"
+      : "waiting";
+
+  function showActionError(title: string) {
+    toast({
+      title,
+      description: "Verifique sua conexão e tente novamente.",
+      status: "error",
+      duration: 4000,
+      position: "top",
+      isClosable: true,
+    });
+  }
+
+  async function handleSetPoint(point: string) {
+    if (
+      !currentUser ||
+      pointSelected !== null ||
+      isVoteLoading ||
+      isShowingAverage
+    ) {
+      return;
+    }
+
+    const previousPoint = pointSelected;
+    setPointSelected(point);
+    setIsVoteLoading(true);
+
+    try {
+      await userService.savePoint(
+        roomKey,
+        currentUser.key,
+        currentUser.username,
+        point,
+      );
+    } catch (error) {
+      console.error(error);
+      setPointSelected(previousPoint);
+      showActionError("Não foi possível registrar seu voto");
+    } finally {
+      setIsVoteLoading(false);
+    }
+  }
+
+  async function undoPoint() {
+    if (!currentUser || isVoteLoading || isShowingAverage) {
+      return;
+    }
+
+    const previousPoint = pointSelected;
+    setPointSelected(null);
+    setIsVoteLoading(true);
+
+    try {
+      await userService.savePoint(
+        roomKey,
+        currentUser.key,
+        currentUser.username,
+        null,
+      );
+    } catch (error) {
+      console.error(error);
+      setPointSelected(previousPoint);
+      showActionError("Não foi possível desfazer seu voto");
+    } finally {
+      setIsVoteLoading(false);
+    }
+  }
+
+  async function revealCards() {
+    setIsRoundActionLoading(true);
+
+    try {
+      await roomService.showAverage(roomKey);
+    } catch (error) {
+      console.error(error);
+      showActionError("Não foi possível revelar as cartas");
+    } finally {
+      setIsRoundActionLoading(false);
+    }
+  }
+
+  async function startNewRound() {
+    setIsRoundActionLoading(true);
+
+    try {
+      await userService.resetPointsAllUsers(roomKey);
+      await roomService.hideAverage(roomKey);
+      setPointSelected(null);
+    } catch (error) {
+      console.error(error);
+      showActionError("Não foi possível iniciar uma nova rodada");
+    } finally {
+      setIsRoundActionLoading(false);
+    }
+  }
+
+  if (pageState !== "ready") {
+    return (
+      <AppShell display="grid" placeItems="center" py={8}>
+        <Container maxW="lg" px={4}>
+          {pageState === "loading" ? (
+            <FeedbackState
+              status="loading"
+              title="Preparando a mesa"
+              description="Estamos sincronizando a sala e os participantes."
+            />
+          ) : null}
+          {pageState === "not-found" ? (
+            <FeedbackState
+              status="error"
+              title="Sala não encontrada"
+              description="Esta sala pode ter expirado ou o link não é válido."
+              actionHref="/"
+              actionLabel="Criar uma nova sala"
+            />
+          ) : null}
+          {pageState === "error" ? (
+            <FeedbackState
+              status="error"
+              title="A sala perdeu a conexão"
+              description="Recarregue a página para tentar sincronizar novamente."
+              actionHref={`/room/${roomKey}`}
+              actionLabel="Recarregar sala"
+            />
+          ) : null}
+        </Container>
+      </AppShell>
+    );
+  }
+
+  return (
+    <AppShell pb={{ base: 6, md: 10 }}>
+      <Container maxW="1440px" px={{ base: 3, sm: 4, md: 6 }} pt={4}>
+        <GlassPanel
+          as="header"
+          strength="strong"
+          px={{ base: 4, md: 5 }}
+          py={3}
+          mb={4}
+        >
+          <HStack spacing={3} flexWrap="wrap">
+            <HStack spacing={3} minW={0} flex={{ base: "1 1 100%", sm: 1 }}>
+              <Avatar
+                name={currentUser?.username}
+                size="sm"
+                bg="brand.600"
+                color="white"
+              />
+              <Box minW={0}>
+                <Text color="ink.400" fontSize="xs">
+                  Você está na sala
+                </Text>
+                <Text color="ink.100" fontWeight="800" noOfLines={1}>
+                  {currentUser?.username}
+                </Text>
+              </Box>
+              <Tag
+                ml={{ base: "auto", sm: 2 }}
+                colorScheme="purple"
+                variant="subtle"
+              >
+                #{roomKey.slice(0, 6)}
+              </Tag>
+            </HStack>
+            <HStack spacing={2} w={{ base: "full", sm: "auto" }}>
+              <ButtonShareRoom size="sm" flex={{ base: 1, sm: "initial" }} />
+              <Button
+                leftIcon={<AddIcon />}
+                variant="subtle"
+                size="sm"
+                onClick={() => router.push("/")}
+                flex={{ base: 1, sm: "initial" }}
+              >
+                Nova sala
+              </Button>
+            </HStack>
+          </HStack>
+        </GlassPanel>
+
+        <Grid
+          templateColumns={{ base: "1fr", lg: "minmax(250px, 0.75fr) 2.25fr" }}
+          gap={4}
+          alignItems="start"
+        >
+          <GlassPanel
+            as="aside"
+            p={4}
+            position={{ base: "static", lg: "sticky" }}
+            top={4}
+          >
+            <HStack justify="space-between" mb={4}>
+              <Box>
+                <Text textStyle="eyebrow">Time</Text>
+                <Heading as="h2" size="md" mt={1}>
+                  Participantes
+                </Heading>
+              </Box>
+              <Tag colorScheme="purple" variant="subtle">
+                {participants.length}
+              </Tag>
+            </HStack>
+            <VStack spacing={2.5} align="stretch">
+              {participants.map((participant) => (
+                <ParticipantCard
+                  key={participant.key}
+                  username={participant.username}
+                  point={participant.point}
+                  isCurrent={participant.key === currentUser?.key}
+                  isRevealed={isShowingAverage}
+                />
+              ))}
+            </VStack>
+          </GlassPanel>
+
+          <VStack spacing={4} align="stretch" minW={0}>
+            <GlassPanel p={{ base: 5, md: 7 }}>
+              <VStack spacing={6} align="stretch">
+                <HStack
+                  justify="space-between"
+                  align={{ base: "flex-start", md: "center" }}
+                  flexDir={{ base: "column", md: "row" }}
+                  spacing={4}
+                >
+                  <RoundStatus
+                    phase={roundPhase}
+                    voteCount={voteCount}
+                    participantCount={participants.length}
+                  />
+                  <Button
+                    size="lg"
+                    variant={isShowingAverage ? "premium" : "glass"}
+                    colorScheme={isShowingAverage ? "cyan" : "purple"}
+                    leftIcon={isShowingAverage ? <RepeatIcon /> : undefined}
+                    onClick={
+                      isShowingAverage ? startNewRound : revealCards
+                    }
+                    isLoading={isRoundActionLoading}
+                    loadingText={
+                      isShowingAverage ? "Iniciando" : "Revelando"
+                    }
+                    w={{ base: "full", md: "auto" }}
+                  >
+                    {isShowingAverage
+                      ? "Iniciar nova rodada"
+                      : "Revelar cartas"}
+                  </Button>
+                </HStack>
+
+                {isShowingAverage ? (
+                  <ResultsPanel
+                    points={participants.map(
+                      (participant) => participant.point,
+                    )}
+                  />
+                ) : (
+                  <Box
+                    minH={{ base: 36, md: 48 }}
+                    display="grid"
+                    placeItems="center"
+                    borderRadius="2xl"
+                    border="1px dashed"
+                    borderColor="whiteAlpha.200"
+                    bg="rgba(4, 9, 23, 0.28)"
+                    textAlign="center"
+                    px={5}
+                  >
+                    <VStack spacing={2}>
+                      <Heading as="p" size="md">
+                        {voteCount === 0
+                          ? "A mesa está aberta"
+                          : "As cartas estão na mesa"}
+                      </Heading>
+                      <Text color="ink.300" fontSize="sm" maxW="md">
+                        {voteCount === 0
+                          ? "Cada participante escolhe sua estimativa sem influenciar o restante do time."
+                          : "Os valores continuam secretos. Revele quando o time estiver pronto para conversar."}
+                      </Text>
+                    </VStack>
+                  </Box>
+                )}
+              </VStack>
+            </GlassPanel>
+
+            <GlassPanel p={{ base: 5, md: 7 }}>
+              <VStack spacing={5} align="stretch">
+                <HStack
+                  justify="space-between"
+                  align={{ base: "flex-start", sm: "center" }}
+                  flexDir={{ base: "column", sm: "row" }}
+                  spacing={3}
+                >
+                  <Box>
+                    <Text textStyle="eyebrow">Sua estimativa</Text>
+                    <Heading as="h2" size="md" mt={1}>
+                      Escolha uma carta
+                    </Heading>
+                  </Box>
+                  {pointSelected && !isShowingAverage ? (
+                    <HStack
+                      justify="space-between"
+                      w={{ base: "full", sm: "auto" }}
+                      px={3}
+                      py={2}
+                      borderRadius="xl"
+                      bg="rgba(112, 72, 245, 0.14)"
+                      border="1px solid"
+                      borderColor="brand.500"
+                    >
+                      <Text color="ink.200" fontSize="sm">
+                        Voto guardado:{" "}
+                        <Text as="span" color="white" fontWeight="900">
+                          {pointSelected}
+                        </Text>
+                      </Text>
+                      <Button
+                        variant="ghost"
+                        size="xs"
+                        color="brand.200"
+                        onClick={undoPoint}
+                        isLoading={isVoteLoading}
+                      >
+                        Desfazer
+                      </Button>
+                    </HStack>
+                  ) : null}
+                </HStack>
+
+                <Divider borderColor="whiteAlpha.100" />
+
+                <SimpleGrid
+                  columns={{ base: 4, sm: 7, xl: 13 }}
+                  spacing={{ base: 2, md: 3 }}
+                  role="group"
+                  aria-label="Cartas de estimativa"
+                >
+                  {POINTS.map((value) => (
+                    <VotingCard
+                      key={value}
+                      value={value}
+                      isSelected={pointSelected === value}
+                      isDisabled={
+                        pointSelected !== null ||
+                        isVoteLoading ||
+                        isShowingAverage
+                      }
+                      onSelect={handleSetPoint}
+                    />
+                  ))}
+                </SimpleGrid>
+
+                {isShowingAverage ? (
+                  <Text color="ink.400" fontSize="sm" textAlign="center">
+                    A votação está encerrada. Inicie uma nova rodada para votar
+                    novamente.
+                  </Text>
+                ) : null}
+              </VStack>
+            </GlassPanel>
+          </VStack>
+        </Grid>
+      </Container>
+    </AppShell>
+  );
+}
