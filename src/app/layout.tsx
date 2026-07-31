@@ -9,7 +9,7 @@ import Script from "next/script";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://battlepoker.devnabatalha.com"),
+  metadataBase: new URL("https://planningpoker.devnabatalha.com"),
   applicationName: "Battle Poker",
   authors: [{ name: "Battle Poker" }],
   creator: "Battle Poker",

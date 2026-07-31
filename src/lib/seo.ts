@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-export const SITE_URL = "https://battlepoker.devnabatalha.com";
+export const SITE_URL = "https://planningpoker.devnabatalha.com";
 
 const SOCIAL_IMAGE = {
   url: `${SITE_URL}/logo.png`,

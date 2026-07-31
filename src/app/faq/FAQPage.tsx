@@ -268,13 +268,13 @@ export default function FAQPage() {
         '@type': 'ListItem',
         position: 1,
         name: t('home'),
-        item: `https://battlepoker.devnabatalha.com${prefix}`
+        item: `https://planningpoker.devnabatalha.com${prefix}`
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'FAQ',
-        item: `https://battlepoker.devnabatalha.com${prefix}/faq`
+        item: `https://planningpoker.devnabatalha.com${prefix}/faq`
       }
     ]
   }
