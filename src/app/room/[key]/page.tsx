@@ -38,10 +38,12 @@ import {
   VotingCard,
 } from "@/components";
 import {
+  getRoundVoteExtremes,
   hasStrictNumericUnanimity,
   VOTING_POINTS,
   type RoundOutcome,
   type RoundVoteSnapshot,
+  type VoteExtremumStatus,
 } from "@/domain/estimation";
 import {
   calculateRoundAverage,
@@ -262,6 +264,30 @@ export default function Page({
       ),
     [participants],
   );
+  const participantExtremumStatuses = useMemo(() => {
+    const statuses = new Map<string, VoteExtremumStatus>();
+
+    if (!isShowingAverage) {
+      return statuses;
+    }
+
+    const extremes = getRoundVoteExtremes(participants);
+
+    if (extremes.kind === "consensus") {
+      extremes.participants.forEach((participant) => {
+        statuses.set(participant.key, "consensus");
+      });
+    } else if (extremes.kind === "spread") {
+      extremes.minimum.participants.forEach((participant) => {
+        statuses.set(participant.key, "minimum");
+      });
+      extremes.maximum.participants.forEach((participant) => {
+        statuses.set(participant.key, "maximum");
+      });
+    }
+
+    return statuses;
+  }, [isShowingAverage, participants]);
   const effectiveRoundTitle = getEffectiveRoundTitle(
     currentRoundTitle,
     currentRoundFallbackId,
@@ -670,6 +696,9 @@ export default function Page({
                   username={participant.username}
                   point={participant.point}
                   postRevealVoteStatus={participant.postRevealVoteStatus}
+                  extremumStatus={
+                    participantExtremumStatuses.get(participant.key) ?? null
+                  }
                   isCurrent={participant.key === currentUser?.key}
                   isRevealed={isShowingAverage}
                 />
@@ -768,11 +797,7 @@ export default function Page({
                     />
                   ) : null}
                   {isShowingAverage ? (
-                    <ResultsPanel
-                      points={participants.map(
-                        (participant) => participant.point,
-                      )}
-                    />
+                    <ResultsPanel participants={participants} />
                   ) : !isWaitingGameActive ? (
                     <Box
                       minH={{ base: 36, md: 48 }}
