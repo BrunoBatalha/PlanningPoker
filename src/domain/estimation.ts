@@ -41,6 +41,79 @@ export interface RoundVoteSnapshot {
   point: string | null;
 }
 
+export interface VoteExtremeParticipant {
+  key: string;
+  username: string;
+}
+
+export interface VoteExtremeGroup {
+  value: number;
+  participants: VoteExtremeParticipant[];
+}
+
+export type RoundVoteExtremes =
+  | { kind: "none" }
+  | {
+      kind: "consensus";
+      value: number;
+      participants: VoteExtremeParticipant[];
+    }
+  | {
+      kind: "spread";
+      minimum: VoteExtremeGroup;
+      maximum: VoteExtremeGroup;
+    };
+
+export type VoteExtremumStatus = "minimum" | "maximum" | "consensus";
+
+export function getRoundVoteExtremes(
+  votes: readonly RoundVoteSnapshot[],
+): RoundVoteExtremes {
+  const numericVotes = votes.flatMap((vote) => {
+    if (vote.point === null) {
+      return [];
+    }
+
+    const value = Number(vote.point);
+
+    return Number.isFinite(value)
+      ? [{ key: vote.key, username: vote.username, value }]
+      : [];
+  });
+
+  if (numericVotes.length === 0) {
+    return { kind: "none" };
+  }
+
+  const values = numericVotes.map((vote) => vote.value);
+  const minimumValue = Math.min(...values);
+  const maximumValue = Math.max(...values);
+  const participantsAt = (value: number) =>
+    numericVotes
+      .filter((vote) => vote.value === value)
+      .map(({ key, username }) => ({ key, username }));
+
+  if (minimumValue === maximumValue) {
+    return {
+      kind: "consensus",
+      value: minimumValue,
+      participants: participantsAt(minimumValue),
+    };
+  }
+
+  return {
+    kind: "spread",
+    minimum: {
+      value: minimumValue,
+      participants: participantsAt(minimumValue),
+    },
+    maximum: {
+      value: maximumValue,
+      participants: participantsAt(maximumValue),
+    },
+  };
+}
+
 export function isNumericEstimationPoint(
   point: unknown,
 ): point is NumericEstimationPoint {
