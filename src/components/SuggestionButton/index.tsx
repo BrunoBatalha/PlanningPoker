@@ -23,7 +23,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { FiMessageSquare } from "react-icons/fi";
 
 import { useLocale, useTranslations } from "@/i18n";
@@ -31,6 +31,12 @@ import {
   SUGGESTION_MAX_LENGTH,
   suggestionService,
 } from "@/services/SuggestionService";
+
+const OPEN_SUGGESTION_EVENT = "battle-poker:open-suggestion";
+
+export function openSuggestionDialog() {
+  window.dispatchEvent(new Event(OPEN_SUGGESTION_EVENT));
+}
 
 export function SuggestionButton() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,6 +53,12 @@ export function SuggestionButton() {
   const isEmpty = normalizedMessage.length === 0;
   const isTooLong = normalizedMessage.length > SUGGESTION_MAX_LENGTH;
   const isInvalid = hasSubmitted && (isEmpty || isTooLong);
+  const isRoomPage = /^\/(?:en\/)?room\/[^/]+\/?$/.test(pathname);
+
+  useEffect(() => {
+    window.addEventListener(OPEN_SUGGESTION_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_SUGGESTION_EVENT, onOpen);
+  }, [onOpen]);
 
   function handleClose() {
     if (isSubmitting) {
@@ -102,7 +114,8 @@ export function SuggestionButton() {
 
   return (
     <>
-      <Tooltip label={t("buttonLabel")} placement="left" hasArrow>
+      {!isRoomPage ? (
+        <Tooltip label={t("buttonLabel")} placement="left" hasArrow>
         <IconButton
           aria-label={t("buttonLabel")}
           icon={<Icon as={FiMessageSquare} boxSize={5} />}
@@ -126,7 +139,8 @@ export function SuggestionButton() {
           }}
           _active={{ transform: "translateY(0)" }}
         />
-      </Tooltip>
+        </Tooltip>
+      ) : null}
 
       <Modal
         isOpen={isOpen}

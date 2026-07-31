@@ -9,6 +9,7 @@ export { default as Header } from './Header';
 export { default as ModalCreateRoom } from './ModalCreateRoom';
 export type { CreateRoomFormValues } from './ModalCreateRoom';
 export * from './ParticipantCard';
+export * from './PartialRevealConfirmationDialog';
 export * from './RedoRoundConfirmationDialog';
 export * from './ResultsPanel';
 export * from './RoundConfirmationDialog';

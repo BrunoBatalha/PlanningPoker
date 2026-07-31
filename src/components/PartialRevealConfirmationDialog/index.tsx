@@ -16,21 +16,26 @@ import { useRef } from "react";
 
 import { useTranslations } from "@/i18n";
 
-interface RedoRoundConfirmationDialogProps {
+interface PartialRevealConfirmationDialogProps {
   isOpen: boolean;
+  pendingCount: number;
+  voteCount: number;
   isLoading: boolean;
   onCancel: () => void;
   onConfirm: () => void;
 }
 
-export function RedoRoundConfirmationDialog({
+export function PartialRevealConfirmationDialog({
   isOpen,
+  pendingCount,
+  voteCount,
   isLoading,
   onCancel,
   onConfirm,
-}: RedoRoundConfirmationDialogProps) {
+}: PartialRevealConfirmationDialogProps) {
   const cancelRef = useRef<HTMLButtonElement>(null);
-  const t = useTranslations("redoRoundDialog");
+  const t = useTranslations("partialRevealDialog");
+  const hasVotes = voteCount > 0;
 
   return (
     <AlertDialog
@@ -38,10 +43,13 @@ export function RedoRoundConfirmationDialog({
       leastDestructiveRef={cancelRef}
       onClose={isLoading ? () => undefined : onCancel}
       isCentered
+      returnFocusOnClose
     >
       <AlertDialogOverlay bg="blackAlpha.700" backdropFilter="blur(6px)">
         <AlertDialogContent
           mx={4}
+          maxH="calc(100dvh - 2rem)"
+          overflowY="auto"
           bg="canvas.800"
           border="1px solid"
           borderColor="whiteAlpha.200"
@@ -49,16 +57,25 @@ export function RedoRoundConfirmationDialog({
           boxShadow="glassStrong"
         >
           <AlertDialogHeader color="ink.50" fontFamily="heading">
-            {t("title")}
+            {pendingCount > 0 ? t("title") : t("readyTitle")}
           </AlertDialogHeader>
           <AlertDialogBody>
-            <VStack align="stretch" spacing={3}>
-              <Text color="ink.300">
-                {t("description")}
+            <VStack align="stretch" spacing={3} aria-live="polite">
+              <Text color="ink.200">
+                {pendingCount > 0
+                  ? t(pendingCount === 1 ? "descriptionOne" : "descriptionMany", {
+                      count: pendingCount,
+                    })
+                  : t("readyDescription")}
               </Text>
-              <Text color="orange.200" textStyle="body-sm">
-                {t("preserved")}
+              <Text color="ink.300" textStyle="body-sm">
+                {t("consequence")}
               </Text>
+              {!hasVotes ? (
+                <Text color="orange.200" textStyle="body-sm">
+                  {t("noVotes")}
+                </Text>
+              ) : null}
             </VStack>
           </AlertDialogBody>
           <AlertDialogFooter>
@@ -78,11 +95,12 @@ export function RedoRoundConfirmationDialog({
                 {t("cancel")}
               </Button>
               <Button
-                colorScheme="cyan"
+                colorScheme="purple"
                 variant="premium"
                 onClick={onConfirm}
+                isDisabled={!hasVotes}
                 isLoading={isLoading}
-                loadingText={t("loading")}
+                loadingText={t("revealing")}
                 w={{ base: "full", sm: "auto" }}
               >
                 {t("confirm")}

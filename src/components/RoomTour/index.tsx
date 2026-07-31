@@ -1,9 +1,12 @@
 "use client";
 
 import {
+  Button,
   Icon,
-  IconButton,
-  Tooltip,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   usePrefersReducedMotion,
 } from "@chakra-ui/react";
 import { useCallback, useEffect } from "react";
@@ -14,7 +17,10 @@ import {
   type Step,
   useJoyride,
 } from "react-joyride";
-import { FiHelpCircle } from "react-icons/fi";
+import { FiHelpCircle, FiMessageSquare, FiPlayCircle } from "react-icons/fi";
+
+import { openSuggestionDialog } from "@/components/SuggestionButton";
+import { useTranslations } from "@/i18n";
 
 import {
   hasSeenTour,
@@ -22,62 +28,33 @@ import {
   TOUR_VERSIONS,
 } from "@/services/TourService";
 
-const ROOM_TOUR_STEPS: Step[] = [
-  {
-    target: '[data-tour="room-header"]',
-    placement: "bottom",
-    title: "Sua sala",
-    content:
-      "Aqui você vê sua identificação, copia o convite para o time e pode criar outra sala quando precisar.",
-  },
-  {
-    target: '[data-tour="room-participants"]',
-    placement: "right",
-    title: "Participantes",
-    content:
-      "Acompanhe quem já votou. As estimativas individuais continuam secretas até as cartas serem reveladas.",
-  },
-  {
-    target: '[data-tour="room-round-title"]',
-    placement: "bottom",
-    title: "Rodada atual",
-    content:
-      "Dê um nome para a história ou tarefa que o time está estimando. A alteração é compartilhada com todos na sala.",
-  },
-  {
-    target: '[data-tour="room-round-actions"]',
-    placement: "bottom",
-    title: "Andamento da rodada",
-    content:
-      "Veja quantas pessoas votaram e use a ação disponível para revelar as cartas, refazer ou iniciar uma nova rodada.",
-  },
-  {
-    target: '[data-tour="room-round-results"]',
-    placement: "top",
-    title: "Resultado da estimativa",
-    content:
-      "Depois de votar, escolha Pong ou Corta Essa! enquanto espera pelo time. O jogo e a pontuação são individuais; na revelação, este espaço apresenta o resultado.",
-  },
-  {
-    target: '[data-tour="room-voting-cards"]',
-    placement: "top",
-    title: "Escolha sua carta",
-    content:
-      "Selecione uma estimativa. Use “?” quando precisar de mais informações e “☕” quando o time precisar de uma pausa.",
-  },
-  {
-    target: '[data-tour="room-history"]',
-    placement: "top",
-    title: "Histórico de rodadas",
-    content:
-      "As rodadas concluídas ficam registradas aqui para o time consultar os resultados anteriores.",
-  },
-];
+function getRoomTourSteps(
+  t: ReturnType<typeof useTranslations>,
+): Step[] {
+  const targets = [
+    ['[data-tour="room-header"]', "bottom"],
+    ['[data-tour="room-participants"]', "right"],
+    ['[data-tour="room-round-title"]', "bottom"],
+    ['[data-tour="room-round-actions"]', "bottom"],
+    ['[data-tour="room-round-results"]', "top"],
+    ['[data-tour="room-voting-cards"]', "top"],
+    ['[data-tour="room-history"]', "top"],
+  ] as const;
+
+  return targets.map(([target, placement], index) => ({
+    target,
+    placement,
+    title: t(`steps.${index + 1}.title`),
+    content: t(`steps.${index + 1}.content`),
+  }));
+}
 
 const ROOM_TOUR_VERSION = TOUR_VERSIONS.room;
 
 export function RoomTour() {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const helpT = useTranslations("roomHelp");
+  const tourT = useTranslations("roomTour");
 
   const handleTourEvent = useCallback<EventHandler>((data, controls) => {
     const hasFinished =
@@ -120,16 +97,16 @@ export function RoomTour() {
       zIndex: 1600,
     },
     locale: {
-      back: "Voltar",
-      close: "Fechar",
-      last: "Concluir",
-      next: "Próximo",
-      nextWithProgress: "Próximo ({current} de {total})",
-      open: "Abrir tutorial",
-      skip: "Pular",
+      back: tourT("tour.back"),
+      close: tourT("tour.close"),
+      last: tourT("tour.last"),
+      next: tourT("tour.next"),
+      nextWithProgress: tourT("tour.nextWithProgress"),
+      open: tourT("tour.open"),
+      skip: tourT("tour.skip"),
     },
     scrollToFirstStep: true,
-    steps: ROOM_TOUR_STEPS,
+    steps: getRoomTourSteps(tourT),
     styles: {
       buttonBack: {
         color: "#B8C0D9",
@@ -177,20 +154,19 @@ export function RoomTour() {
   return (
     <>
       {Tour}
-      <Tooltip label="Ver tutorial desta tela" placement="left" hasArrow>
-        <IconButton
-          aria-label="Ver tutorial desta tela"
-          icon={<Icon as={FiHelpCircle} boxSize={6} />}
-          onClick={() => controls.start(0)}
+      <Menu placement="top-end">
+        <MenuButton
+          as={Button}
+          aria-label={helpT("label")}
+          leftIcon={<Icon as={FiHelpCircle} boxSize={5} />}
           position="fixed"
           right={{ base: 4, md: 6 }}
           bottom={{
-            base: "calc(env(safe-area-inset-bottom, 0px) + 76px)",
-            md: "84px",
+            base: "calc(env(safe-area-inset-bottom, 0px) + 16px)",
+            md: 6,
           }}
-          boxSize={12}
-          minW={12}
-          borderRadius="full"
+          minH={12}
+          borderRadius="xl"
           color="white"
           bgGradient="linear(to-br, brand.400, violet.500)"
           boxShadow="0 14px 34px rgba(20, 12, 70, 0.46)"
@@ -200,8 +176,30 @@ export function RoomTour() {
             transform: "translateY(-2px)",
           }}
           _active={{ transform: "translateY(0)" }}
-        />
-      </Tooltip>
+        >
+          {helpT("label")}
+        </MenuButton>
+        <MenuList
+          bg="canvas.800"
+          borderColor="whiteAlpha.200"
+          zIndex="dropdown"
+        >
+          <MenuItem
+            icon={<Icon as={FiPlayCircle} />}
+            bg="transparent"
+            onClick={() => controls.start(0)}
+          >
+            {helpT("tutorial")}
+          </MenuItem>
+          <MenuItem
+            icon={<Icon as={FiMessageSquare} />}
+            bg="transparent"
+            onClick={openSuggestionDialog}
+          >
+            {helpT("suggestion")}
+          </MenuItem>
+        </MenuList>
+      </Menu>
     </>
   );
 }

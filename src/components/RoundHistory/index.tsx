@@ -1,6 +1,5 @@
 "use client";
 
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Accordion,
   AccordionButton,
@@ -18,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 
 import { GlassPanel } from "@/components/GlassPanel";
+import { useLocale, useTranslations } from "@/i18n";
 import { formatRoundAverage } from "@/services/RoomService";
 import type { RoundHistoryItem } from "@/services/RoomService";
 
@@ -25,55 +25,57 @@ interface RoundHistoryProps {
   history: RoundHistoryItem[];
 }
 
-const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
-  dateStyle: "short",
-  timeStyle: "short",
-});
-
-function getOutcomeLabel(round: RoundHistoryItem): string {
+function getOutcomeLabel(
+  round: RoundHistoryItem,
+  t: ReturnType<typeof useTranslations>,
+): string {
   switch (round.outcome.kind) {
     case "estimated":
-      return `Estimativa final: ${round.outcome.agreedEstimate}`;
+      return t("finalEstimate", { value: round.outcome.agreedEstimate });
     case "no_consensus":
-      return "Sem consenso";
+      return t("noConsensus");
     case "postponed":
-      return "História adiada";
+      return t("postponed");
     default:
-      return "Estimativa final não registrada";
+      return t("legacy");
   }
 }
 
 export function RoundHistory({ history }: RoundHistoryProps) {
+  const locale = useLocale();
+  const t = useTranslations("roomHistory");
+  const dateFormatter = new Intl.DateTimeFormat(locale, {
+    dateStyle: "short",
+    timeStyle: "short",
+  });
+
+  if (history.length === 0) {
+    return (
+      <Box
+        as="section"
+        px={{ base: 2, md: 3 }}
+        py={3}
+        borderTop="1px solid"
+        borderColor="whiteAlpha.100"
+      >
+        <Text color="ink.300" textStyle="body-sm">
+          {t("empty")}
+        </Text>
+      </Box>
+    );
+  }
+
   return (
     <GlassPanel as="section" p={{ base: 5, md: 7 }}>
       <VStack align="stretch" spacing={5}>
         <Box>
-          <Text textStyle="eyebrow">Decisões anteriores</Text>
+          <Text textStyle="eyebrow">{t("eyebrow")}</Text>
           <Heading as="h2" textStyle="h4" mt={1}>
-            Histórico da sala
+            {t("title")}
           </Heading>
         </Box>
 
-        {history.length === 0 ? (
-          <Box
-            borderRadius="2xl"
-            border="1px dashed"
-            borderColor="whiteAlpha.200"
-            bg="rgba(4, 9, 23, 0.28)"
-            p={{ base: 5, md: 6 }}
-            textAlign="center"
-          >
-            <ChevronDownIcon boxSize={6} color="ink.400" mb={2} />
-            <Text color="ink.200" fontWeight="700">
-              Nenhuma rodada confirmada
-            </Text>
-            <Text color="ink.300" textStyle="body-sm" mt={1}>
-              As estimativas aparecerão aqui depois que o grupo iniciar uma
-              nova rodada.
-            </Text>
-          </Box>
-        ) : (
-          <Accordion allowMultiple reduceMotion>
+        <Accordion allowMultiple reduceMotion>
             {history.map((round) => (
               <AccordionItem
                 key={round.id}
@@ -103,7 +105,7 @@ export function RoundHistory({ history }: RoundHistoryProps) {
                       {round.title}
                     </Text>
                     <Tag flexShrink={0} colorScheme="cyan" variant="subtle">
-                      {getOutcomeLabel(round)}
+                      {getOutcomeLabel(round, t)}
                     </Tag>
                   </HStack>
                   <AccordionIcon ml={2} />
@@ -111,18 +113,20 @@ export function RoundHistory({ history }: RoundHistoryProps) {
                 <AccordionPanel px={{ base: 2, md: 3 }} pb={5}>
                   <VStack align="stretch" spacing={4}>
                     <Text color="ink.300" textStyle="caption">
-                      Confirmada em{" "}
+                      {t("confirmedAt")}{" "}
                       {round.confirmedAt > 0
                         ? dateFormatter.format(round.confirmedAt)
-                        : "data indisponível"}
+                        : t("dateUnavailable")}
                     </Text>
                     <Text color="ink.300" textStyle="body-sm">
-                      Média dos votos: {formatRoundAverage(round.average)}
+                      {t("average", {
+                        average: formatRoundAverage(round.average, locale),
+                      })}
                     </Text>
                     <Divider borderColor="whiteAlpha.100" />
                     {round.votes.length === 0 ? (
                       <Text color="ink.300" textStyle="body-sm">
-                        Esta rodada foi confirmada sem participantes.
+                        {t("noParticipants")}
                       </Text>
                     ) : (
                       <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={2}>
@@ -139,7 +143,7 @@ export function RoundHistory({ history }: RoundHistoryProps) {
                               {vote.username}
                             </Text>
                             <Text color="ink.50" fontWeight="800">
-                              {vote.point ?? "Não votou"}
+                              {vote.point ?? t("didNotVote")}
                             </Text>
                           </HStack>
                         ))}
@@ -149,8 +153,7 @@ export function RoundHistory({ history }: RoundHistoryProps) {
                 </AccordionPanel>
               </AccordionItem>
             ))}
-          </Accordion>
-        )}
+        </Accordion>
       </VStack>
     </GlassPanel>
   );

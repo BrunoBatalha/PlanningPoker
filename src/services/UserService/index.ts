@@ -1,8 +1,10 @@
 import {
+  onDisconnect,
   onValue,
   push,
   ref,
   runTransaction,
+  serverTimestamp,
   type Unsubscribe,
   update,
 } from "firebase/database";
@@ -19,6 +21,25 @@ export interface RoomUser {
   point: string | null;
   postRevealVoteStatus: PostRevealVoteStatus | null;
   key: string;
+}
+
+export const PRESENCE_GRACE_PERIOD_MS = 120_000;
+
+export type PresenceStatus =
+  | "online"
+  | "reconnecting"
+  | "offline"
+  | "unknown";
+
+export interface RoomUserPresence {
+  connectionCount: number;
+  lastDisconnectedAt: number | null;
+}
+
+export type PresenceSnapshot = Record<string, RoomUserPresence>;
+
+export interface PresenceConnectionController {
+  disconnect: () => Promise<void>;
 }
 
 export type PostRevealVoteStatus = "added" | "changed";
@@ -42,6 +63,11 @@ interface StoredRoom {
   currentRoundId?: string;
   users?: UsersSnapshot;
   [key: string]: unknown;
+}
+
+interface StoredPresence {
+  connections?: Record<string, boolean>;
+  lastDisconnectedAt?: number;
 }
 
 function normalizePostRevealVoteStatus(
@@ -87,6 +113,139 @@ function getCurrentUser(): CurrentUser | null {
 
 function setCurrentUser(currentUser: CurrentUser) {
   window.sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
+}
+
+export function getPresenceStatus(
+  presence: RoomUserPresence | undefined,
+  now = Date.now(),
+): PresenceStatus {
+  if (!presence) {
+    return "unknown";
+  }
+
+  if (presence.connectionCount > 0) {
+    return "online";
+  }
+
+  if (presence.lastDisconnectedAt === null) {
+    return "unknown";
+  }
+
+  return now - presence.lastDisconnectedAt < PRESENCE_GRACE_PERIOD_MS
+    ? "reconnecting"
+    : "offline";
+}
+
+function connectPresence(
+  roomId: string,
+  userId: string,
+  onError?: (error: Error) => void,
+): PresenceConnectionController {
+  const connectedRef = ref(database, ".info/connected");
+  const userPresenceRef = ref(database, `rooms/${roomId}/presence/${userId}`);
+  const connectionRef = push(
+    ref(database, `rooms/${roomId}/presence/${userId}/connections`),
+  );
+
+  if (!connectionRef.key) {
+    throw new Error("Não foi possível gerar a conexão do participante.");
+  }
+
+  let isStopped = false;
+  let isRegistered = false;
+  const disconnectOperation = onDisconnect(userPresenceRef);
+  const connectionPath = `connections/${connectionRef.key}`;
+
+  const unsubscribe = onValue(
+    connectedRef,
+    async (snapshot) => {
+      if (!snapshot.val() || isStopped) {
+        return;
+      }
+
+      try {
+        await disconnectOperation.update({
+          [connectionPath]: null,
+          lastDisconnectedAt: serverTimestamp(),
+        });
+
+        if (isStopped) {
+          return;
+        }
+
+        await update(userPresenceRef, {
+          [connectionPath]: true,
+        });
+        isRegistered = true;
+      } catch (error) {
+        onError?.(error as Error);
+      }
+    },
+    (error) => onError?.(error),
+  );
+
+  return {
+    async disconnect() {
+      if (isStopped) {
+        return;
+      }
+
+      isStopped = true;
+      unsubscribe();
+
+      if (!isRegistered) {
+        return;
+      }
+
+      try {
+        await update(userPresenceRef, {
+          [connectionPath]: null,
+          lastDisconnectedAt: serverTimestamp(),
+        });
+        await disconnectOperation.cancel();
+        isRegistered = false;
+      } catch (error) {
+        onError?.(error as Error);
+      }
+    },
+  };
+}
+
+function onPresenceUpdate(
+  roomId: string,
+  callback: (presence: PresenceSnapshot) => void,
+  onError?: (error: Error) => void,
+): Unsubscribe {
+  const presenceRef = ref(database, `rooms/${roomId}/presence`);
+
+  return onValue(
+    presenceRef,
+    (snapshot) => {
+      if (!snapshot.exists()) {
+        callback({});
+        return;
+      }
+
+      const storedPresence = snapshot.val() as Record<string, StoredPresence>;
+      const presence = Object.fromEntries(
+        Object.entries(storedPresence).map(([userId, value]) => [
+          userId,
+          {
+            connectionCount: Object.values(value.connections ?? {}).filter(
+              Boolean,
+            ).length,
+            lastDisconnectedAt:
+              typeof value.lastDisconnectedAt === "number"
+                ? value.lastDisconnectedAt
+                : null,
+          },
+        ]),
+      );
+
+      callback(presence);
+    },
+    (error) => onError?.(error),
+  );
 }
 
 async function savePoint(
@@ -209,6 +368,8 @@ export const userService = {
   addUserToRoom,
   getCurrentUser,
   setCurrentUser,
+  connectPresence,
+  onPresenceUpdate,
   savePoint,
   reviseRevealedPoint,
   resetPointsAllUsers,

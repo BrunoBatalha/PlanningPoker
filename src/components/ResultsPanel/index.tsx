@@ -28,6 +28,7 @@ import type { RoomUser } from "@/services/UserService";
 
 interface ResultsPanelProps {
   participants: RoomUser[];
+  activePendingCount: number;
 }
 
 interface ExtremeCardProps {
@@ -96,14 +97,19 @@ function ExtremeCard({
   );
 }
 
-export function ResultsPanel({ participants }: ResultsPanelProps) {
+export function ResultsPanel({
+  participants,
+  activePendingCount,
+}: ResultsPanelProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const locale = useLocale();
   const t = useTranslations("results");
   const points = participants.map((participant) => participant.point);
-  const numericPoints = points
-    .filter((point): point is string => point !== null)
-    .map(Number)
+  const votedParticipants = participants.filter(
+    (participant) => participant.point !== null,
+  );
+  const numericPoints = votedParticipants
+    .map((participant) => Number(participant.point))
     .filter(Number.isFinite);
   const average = calculateRoundAverage(points);
   const averageLabel =
@@ -115,6 +121,80 @@ export function ResultsPanel({ participants }: ResultsPanelProps) {
   const distribution = getVoteDistribution(points);
   const extremes = getRoundVoteExtremes(participants);
   const total = Math.max(points.length, 1);
+  const hasOnlyNumericVotes =
+    votedParticipants.length > 0 &&
+    numericPoints.length === votedParticipants.length;
+  const hasConsensus =
+    activePendingCount === 0 &&
+    hasOnlyNumericVotes &&
+    new Set(numericPoints).size === 1;
+  const hasNumericSpread = new Set(numericPoints).size > 1;
+  const isSingleVote = votedParticipants.length === 1;
+
+  if (hasConsensus && extremes.kind === "consensus") {
+    return (
+      <GlassPanel
+        as="section"
+        p={{ base: 5, md: 7 }}
+        borderColor="rgba(74, 222, 128, 0.3)"
+        aria-live="polite"
+      >
+        <VStack spacing={4} align="stretch">
+          <Box>
+            <Text textStyle="eyebrow" color="signal.green">
+              {t("consensusEyebrow")}
+            </Text>
+            <Heading as="h2" textStyle="h3" mt={1}>
+              {t("consensusSummary", { value: extremes.value })}
+            </Heading>
+            <Text color="ink.300" textStyle="body-sm" mt={2}>
+              {t("consensusDescription")}
+            </Text>
+          </Box>
+          <ParticipantTags participants={extremes.participants} />
+          <Text color="ink.300" textStyle="caption">
+            {t("averageSecondary", { average: averageLabel })}
+          </Text>
+        </VStack>
+      </GlassPanel>
+    );
+  }
+
+  if (isSingleVote) {
+    const participant = votedParticipants[0];
+
+    return (
+      <GlassPanel
+        as="section"
+        p={{ base: 5, md: 7 }}
+        aria-live="polite"
+      >
+        <HStack justify="space-between" align="center" spacing={5}>
+          <Box minW={0}>
+            <Text textStyle="eyebrow">{t("singleVoteEyebrow")}</Text>
+            <Heading as="h2" textStyle="h4" mt={1}>
+              {participant.username}
+            </Heading>
+            <Text color="ink.300" textStyle="body-sm" mt={1}>
+              {average === null
+                ? t("noNumericAverage")
+                : t("averageSecondary", { average: averageLabel })}
+            </Text>
+            <Text color="ink.300" textStyle="caption" mt={1}>
+              {t("singleDistribution", { value: participant.point ?? "—" })}
+            </Text>
+          </Box>
+          <Text
+            color="signal.cyan"
+            textStyle="code-card"
+            fontSize={{ base: "3xl", md: "4xl" }}
+          >
+            {participant.point}
+          </Text>
+        </HStack>
+      </GlassPanel>
+    );
+  }
 
   return (
     <Grid
@@ -126,33 +206,29 @@ export function ResultsPanel({ participants }: ResultsPanelProps) {
       w="full"
     >
       <GlassPanel
-        p={{ base: 6, md: 8 }}
+        p={{ base: 5, md: 7 }}
         borderColor="rgba(77, 227, 227, 0.28)"
-        boxShadow="glowCyan"
       >
         <VStack spacing={2} align="flex-start">
           <Text textStyle="eyebrow" color="signal.cyan">
             {t("averageEyebrow")}
           </Text>
-          {average !== null ? (
-            <Heading as="p" textStyle="result" color="white">
-              {averageLabel}
-            </Heading>
-          ) : (
-            <Heading as="p" textStyle="h4" color="ink.100">
-              {averageLabel}
-            </Heading>
-          )}
+          <Heading
+            as="p"
+            textStyle={average === null ? "h4" : "result"}
+            color={average === null ? "ink.100" : "white"}
+          >
+            {averageLabel}
+          </Heading>
           <Text color="ink.300" textStyle="body-sm">
-            {numericPoints.length}{" "}
-            {numericPoints.length === 1
-              ? t("numericVote")
-              : t("numericVotes")}
+            {t(numericPoints.length === 1 ? "numericVoteCount" : "numericVotesCount", {
+              count: numericPoints.length,
+            })}
           </Text>
         </VStack>
       </GlassPanel>
 
-      <GlassPanel p={{ base: 6, md: 8 }}>
+      <GlassPanel p={{ base: 5, md: 7 }}>
         <VStack spacing={4} align="stretch">
           <Box>
             <Text textStyle="eyebrow">{t("distributionEyebrow")}</Text>
@@ -168,8 +244,9 @@ export function ResultsPanel({ participants }: ResultsPanelProps) {
                     {item.value === "Não votou" ? t("didNotVote") : item.value}
                   </Text>
                   <Text color="ink.300" textStyle="caption">
-                    {item.count}{" "}
-                    {item.count === 1 ? t("vote") : t("votes")}
+                    {t(item.count === 1 ? "voteCount" : "votesCount", {
+                      count: item.count,
+                    })}
                   </Text>
                 </HStack>
                 <Progress
@@ -185,11 +262,11 @@ export function ResultsPanel({ participants }: ResultsPanelProps) {
         </VStack>
       </GlassPanel>
 
-      {extremes.kind !== "none" ? (
+      {hasNumericSpread && extremes.kind === "spread" ? (
         <GlassPanel
           as="section"
           gridColumn={{ base: "1", lg: "1 / -1" }}
-          p={{ base: 6, md: 8 }}
+          p={{ base: 5, md: 7 }}
           borderColor="rgba(163, 141, 255, 0.28)"
           aria-labelledby="discussion-points-title"
         >
@@ -200,53 +277,23 @@ export function ResultsPanel({ participants }: ResultsPanelProps) {
                 {t("discussionTitle")}
               </Heading>
               <Text color="ink.300" textStyle="body-sm" mt={2} maxW="2xl">
-                {extremes.kind === "consensus"
-                  ? t("consensusDescription")
-                  : t("discussionDescription")}
+                {t("discussionDescription")}
               </Text>
             </Box>
-
-            {extremes.kind === "consensus" ? (
-              <Box
-                p={{ base: 4, md: 5 }}
-                borderRadius="2xl"
-                border="1px solid"
-                borderColor="rgba(74, 222, 128, 0.3)"
-                bg="rgba(74, 222, 128, 0.07)"
-              >
-                <VStack spacing={4} align="stretch">
-                  <HStack justify="space-between" align="baseline" spacing={4}>
-                    <Text textStyle="label" color="ink.100" fontWeight="700">
-                      {t("consensusLabel")}
-                    </Text>
-                    <Text
-                      color="signal.green"
-                      textStyle="code-card"
-                      fontSize={{ base: "2xl", md: "3xl" }}
-                      flexShrink={0}
-                    >
-                      {extremes.value}
-                    </Text>
-                  </HStack>
-                  <ParticipantTags participants={extremes.participants} />
-                </VStack>
-              </Box>
-            ) : (
-              <SimpleGrid columns={{ base: 1, md: 2 }} spacing={3}>
-                <ExtremeCard
-                  label={t("minimumLabel")}
-                  value={extremes.minimum.value}
-                  participants={extremes.minimum.participants}
-                  accentColor="signal.indigo"
-                />
-                <ExtremeCard
-                  label={t("maximumLabel")}
-                  value={extremes.maximum.value}
-                  participants={extremes.maximum.participants}
-                  accentColor="signal.cyan"
-                />
-              </SimpleGrid>
-            )}
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={3}>
+              <ExtremeCard
+                label={t("minimumLabel")}
+                value={extremes.minimum.value}
+                participants={extremes.minimum.participants}
+                accentColor="signal.indigo"
+              />
+              <ExtremeCard
+                label={t("maximumLabel")}
+                value={extremes.maximum.value}
+                participants={extremes.maximum.participants}
+                accentColor="signal.cyan"
+              />
+            </SimpleGrid>
           </VStack>
         </GlassPanel>
       ) : null}

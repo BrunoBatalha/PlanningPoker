@@ -3,6 +3,8 @@
 import { Box, Button, usePrefersReducedMotion } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
+import { useTranslations } from "@/i18n";
+
 interface VotingCardProps {
   value: string;
   isSelected: boolean;
@@ -17,6 +19,9 @@ export function VotingCard({
   onSelect,
 }: VotingCardProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const t = useTranslations("votingCard");
+  const accessibleValue =
+    value === "?" ? t("question") : value === "☕" ? t("pause") : value;
 
   return (
     <Box
@@ -40,7 +45,7 @@ export function VotingCard({
         minW={0}
         isDisabled={isDisabled}
         aria-pressed={isSelected}
-        aria-label={`Votar ${value === "☕" ? "pausa" : value}`}
+        aria-label={t("vote", { value: accessibleValue })}
         onClick={() => onSelect(value)}
         color={isSelected ? "white" : "ink.100"}
         borderColor={isSelected ? "brand.300" : undefined}

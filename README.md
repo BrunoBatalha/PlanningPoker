@@ -42,3 +42,11 @@ No PlanningPoker, os usuários podem criar uma sala de sessão onde cada membro 
 
 ### Link
 [PlannigPoker](https://planning-poker-inky.vercel.app)
+
+### Presença no Firebase Realtime Database
+
+A tela da sala registra presença por conexão em
+`rooms/{roomId}/presence/{userId}`. A configuração do Realtime Database deve
+permitir que os mesmos participantes que leem e atualizam uma sala também
+leiam e atualizem esse caminho. O repositório não contém regras Firebase
+versionadas; valide essa permissão no projeto Firebase antes do deploy.

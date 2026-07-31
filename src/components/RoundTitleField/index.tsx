@@ -8,21 +8,25 @@ import {
 } from "@chakra-ui/react";
 import type { KeyboardEvent } from "react";
 
+import { useTranslations } from "@/i18n";
+
+export type RoundTitleSaveStatus = "idle" | "saving" | "saved" | "error";
+
 interface RoundTitleFieldProps {
   value: string;
-  fallbackTitle: string;
-  isSaving: boolean;
+  status: RoundTitleSaveStatus;
   onChange: (value: string) => void;
   onSave: () => void;
 }
 
 export function RoundTitleField({
   value,
-  fallbackTitle,
-  isSaving,
+  status,
   onChange,
   onSave,
 }: RoundTitleFieldProps) {
+  const t = useTranslations("roomTitle");
+
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key !== "Enter") {
       return;
@@ -33,18 +37,18 @@ export function RoundTitleField({
   }
 
   return (
-    <FormControl>
+    <FormControl isInvalid={status === "error"}>
       <FormLabel color="ink.100" textStyle="label" mb={2}>
-        Item da rodada
+        {t("label")}
       </FormLabel>
       <Input
         value={value}
         onChange={(event) => onChange(event.target.value)}
         onBlur={onSave}
         onKeyDown={handleKeyDown}
-        placeholder={fallbackTitle}
+        placeholder={t("placeholder")}
         aria-describedby="round-title-help"
-        isDisabled={isSaving}
+        isDisabled={status === "saving"}
         variant="filled"
         bg="whiteAlpha.100"
         borderColor="whiteAlpha.200"
@@ -55,10 +59,13 @@ export function RoundTitleField({
           boxShadow: "0 0 0 1px var(--chakra-colors-brand-400)",
         }}
       />
-      <FormHelperText id="round-title-help" color="ink.300" textStyle="caption">
-        {isSaving
-          ? "Salvando para todos..."
-          : `Opcional. Sem um nome, usaremos ${fallbackTitle}.`}
+      <FormHelperText
+        id="round-title-help"
+        color={status === "error" ? "red.200" : "ink.300"}
+        textStyle="caption"
+        aria-live="polite"
+      >
+        {t(status)}
       </FormHelperText>
     </FormControl>
   );

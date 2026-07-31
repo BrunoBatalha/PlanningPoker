@@ -2,6 +2,11 @@
 
 import { ArrowBackIcon, RepeatIcon } from "@chakra-ui/icons";
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Avatar,
   Box,
   Button,
@@ -26,12 +31,14 @@ import {
   FeedbackState,
   GlassPanel,
   ParticipantCard,
+  PartialRevealConfirmationDialog,
   RedoRoundConfirmationDialog,
   ResultsPanel,
   RoundConfirmationDialog,
   RoundHistory,
   RoundStatus,
   RoundTitleField,
+  type RoundTitleSaveStatus,
   RoomTour,
   type RoundPhase,
   VoteWaitingGame,
@@ -54,10 +61,15 @@ import {
 } from "@/services/RoomService";
 import {
   type CurrentUser,
+  getPresenceStatus,
+  PRESENCE_GRACE_PERIOD_MS,
+  type PresenceConnectionController,
+  type PresenceSnapshot,
+  type PresenceStatus,
   type RoomUser,
   userService,
 } from "@/services/UserService";
-import { LanguageSwitcher, useLocale } from "@/i18n";
+import { LanguageSwitcher, useLocale, useTranslations } from "@/i18n";
 
 interface ParamsUrl {
   key: string;
@@ -74,17 +86,22 @@ interface RoundConfirmationSnapshot {
   suggestedOutcome: RoundOutcome | null;
 }
 
+type RoomParticipant = RoomUser & { presenceStatus: PresenceStatus };
+
 export default function Page({
   params: { key: roomKey },
 }: {
   params: ParamsUrl;
 }) {
   const locale = useLocale();
+  const t = useTranslations("room");
   const router = useRouter();
   const toast = useToast();
   const [pageState, setPageState] = useState<RoomPageState>("loading");
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [participants, setParticipants] = useState<RoomUser[]>([]);
+  const [presence, setPresence] = useState<PresenceSnapshot>({});
+  const [presenceNow, setPresenceNow] = useState(() => Date.now());
   const [pointSelected, setPointSelected] = useState<string | null>(null);
   const [gameRoundId, setGameRoundId] = useState<string | null>(null);
   const [isShowingAverage, setIsShowingAverage] = useState(false);
@@ -99,14 +116,20 @@ export default function Page({
   const [redoConfirmationRoundId, setRedoConfirmationRoundId] = useState<
     string | null
   >(null);
+  const [isPartialRevealOpen, setIsPartialRevealOpen] = useState(false);
   const [isVoteLoading, setIsVoteLoading] = useState(false);
-  const [isTitleSaving, setIsTitleSaving] = useState(false);
+  const [titleSaveStatus, setTitleSaveStatus] =
+    useState<RoundTitleSaveStatus>("idle");
   const [isRoundActionLoading, setIsRoundActionLoading] = useState(false);
+  const [isLeavingRoom, setIsLeavingRoom] = useState(false);
   const currentRoundIdRef = useRef("");
   const currentUserPointRef = useRef<string | null>(null);
   const isShowingAverageRef = useRef(false);
   const roundTitleDraftRef = useRef("");
   const isRoundTitleDirtyRef = useRef(false);
+  const presenceConnectionRef = useRef<PresenceConnectionController | null>(
+    null,
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -191,6 +214,22 @@ export default function Page({
       },
     );
 
+    const presenceConnection = userService.connectPresence(
+      roomKey,
+      currentUser.key,
+      (error) => console.error(error),
+    );
+    presenceConnectionRef.current = presenceConnection;
+
+    const unsubscribePresence = userService.onPresenceUpdate(
+      roomKey,
+      (nextPresence) => {
+        setPresence(nextPresence);
+        setPresenceNow(Date.now());
+      },
+      (error) => console.error(error),
+    );
+
     const unsubscribeRoom = roomService.onRoomUpdate(
       roomKey,
       (room) => {
@@ -222,6 +261,7 @@ export default function Page({
           setRoundTitleDraft(room.currentRoundTitle);
           setConfirmation(null);
           setRedoConfirmationRoundId(null);
+          setIsPartialRevealOpen(false);
         } else if (!isRoundTitleDirtyRef.current) {
           roundTitleDraftRef.current = room.currentRoundTitle;
           setRoundTitleDraft(room.currentRoundTitle);
@@ -248,15 +288,74 @@ export default function Page({
 
     return () => {
       unsubscribePlayers();
+      unsubscribePresence();
       unsubscribeRoom();
       unsubscribeHistory();
+      if (presenceConnectionRef.current === presenceConnection) {
+        presenceConnectionRef.current = null;
+      }
+      void presenceConnection.disconnect();
     };
   }, [currentUser, pageState, roomKey, router, locale]);
+
+  useEffect(() => {
+    const nextExpiry = Object.values(presence)
+      .filter(
+        (entry) =>
+          entry.connectionCount === 0 && entry.lastDisconnectedAt !== null,
+      )
+      .map(
+        (entry) =>
+          (entry.lastDisconnectedAt as number) +
+          PRESENCE_GRACE_PERIOD_MS -
+          presenceNow,
+      )
+      .filter((remaining) => remaining > 0)
+      .sort((a, b) => a - b)[0];
+
+    if (nextExpiry === undefined) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(
+      () => setPresenceNow(Date.now()),
+      nextExpiry + 50,
+    );
+
+    return () => window.clearTimeout(timeoutId);
+  }, [presence, presenceNow]);
 
   const voteCount = useMemo(
     () => participants.filter((participant) => participant.point !== null).length,
     [participants],
   );
+  const participantsWithPresence = useMemo<RoomParticipant[]>(
+    () =>
+      participants.map((participant) => ({
+        ...participant,
+        presenceStatus:
+          participant.key === currentUser?.key
+            ? "online"
+            : getPresenceStatus(presence[participant.key], presenceNow),
+      })),
+    [currentUser?.key, participants, presence, presenceNow],
+  );
+  const activeParticipants = useMemo(
+    () =>
+      participantsWithPresence.filter(
+        (participant) =>
+          participant.presenceStatus === "online" ||
+          participant.presenceStatus === "reconnecting",
+      ),
+    [participantsWithPresence],
+  );
+  const activePendingCount = useMemo(
+    () =>
+      activeParticipants.filter((participant) => participant.point === null)
+        .length,
+    [activeParticipants],
+  );
+  const inactiveCount = participantsWithPresence.length - activeParticipants.length;
   const currentAverage = useMemo(
     () =>
       calculateRoundAverage(
@@ -292,18 +391,149 @@ export default function Page({
     currentRoundTitle,
     currentRoundFallbackId,
   );
-  const fallbackRoundTitle = `Story #${currentRoundFallbackId}`;
   const isWaitingGameActive =
     isWaitingGameAllowed &&
     gameRoundId === currentRoundId &&
     currentRoundId !== "" &&
-    !isShowingAverage;
+    !isShowingAverage &&
+    pointSelected !== null &&
+    activePendingCount > 0;
 
   const roundPhase: RoundPhase = isShowingAverage
     ? "revealed"
-    : voteCount > 0
-      ? "secret"
-      : "waiting";
+    : pointSelected === null
+      ? "waiting"
+      : activePendingCount > 0
+        ? "secret"
+        : "ready";
+
+  function renderParticipantCards() {
+    return participantsWithPresence.map((participant) => (
+      <ParticipantCard
+        key={participant.key}
+        username={participant.username}
+        point={participant.point}
+        postRevealVoteStatus={participant.postRevealVoteStatus}
+        extremumStatus={
+          participantExtremumStatuses.get(participant.key) ?? null
+        }
+        isCurrent={participant.key === currentUser?.key}
+        isRevealed={isShowingAverage}
+        presenceStatus={participant.presenceStatus}
+      />
+    ));
+  }
+
+  function renderVotingPanel() {
+    const title = isShowingAverage
+      ? t("voting.reviseTitle")
+      : pointSelected
+        ? t("voting.registeredTitle")
+        : t("voting.chooseTitle");
+    const description = isShowingAverage
+      ? pointSelected
+        ? t("voting.revealedWithVote")
+        : t("voting.revealedWithoutVote")
+      : pointSelected
+        ? t("voting.registeredDescription", { pending: activePendingCount })
+        : t("voting.secretDescription");
+
+    return (
+      <GlassPanel p={{ base: 5, md: 7 }}>
+        <VStack spacing={5} align="stretch">
+          <HStack
+            justify="space-between"
+            align={{ base: "flex-start", sm: "center" }}
+            flexDir={{ base: "column", sm: "row" }}
+            spacing={3}
+          >
+            <Box>
+              <Text textStyle="eyebrow">{t("voting.eyebrow")}</Text>
+              <Heading as="h2" textStyle="h4" mt={1}>
+                {title}
+              </Heading>
+              <Text color="ink.300" textStyle="body-sm" mt={2} maxW="2xl">
+                {description}
+              </Text>
+            </Box>
+            {pointSelected && !isShowingAverage ? (
+              <HStack
+                justify="space-between"
+                w={{ base: "full", sm: "auto" }}
+                px={3}
+                py={2}
+                borderRadius="xl"
+                bg="rgba(112, 72, 245, 0.14)"
+                border="1px solid"
+                borderColor="brand.500"
+                aria-live="polite"
+              >
+                <Text color="ink.200" textStyle="body-sm">
+                  {t("voting.registered", { point: pointSelected })}
+                </Text>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  minH={11}
+                  color="brand.200"
+                  onClick={undoPoint}
+                  isLoading={isVoteLoading}
+                >
+                  {t("voting.remove")}
+                </Button>
+              </HStack>
+            ) : null}
+          </HStack>
+
+          <Divider borderColor="whiteAlpha.100" />
+
+          <SimpleGrid
+            data-tour="room-voting-cards"
+            columns={{ base: 4, sm: 7, xl: 13 }}
+            spacing={{ base: 2, md: 3 }}
+            role="group"
+            aria-label={t("voting.cardsAria")}
+          >
+            {VOTING_POINTS.map((value) => (
+              <VotingCard
+                key={value}
+                value={value}
+                isSelected={pointSelected === value}
+                isDisabled={
+                  isVoteLoading ||
+                  (isShowingAverage
+                    ? pointSelected === value
+                    : pointSelected !== null)
+                }
+                onSelect={handleSetPoint}
+              />
+            ))}
+          </SimpleGrid>
+
+          <HStack
+            spacing={{ base: 3, md: 5 }}
+            flexWrap="wrap"
+            color="ink.300"
+            textStyle="caption"
+            aria-label={t("voting.specialAria")}
+          >
+            <Text>
+              <Text as="span" color="ink.100" fontWeight="800">
+                ?
+              </Text>{" "}
+              — {t("voting.questionCard")}
+            </Text>
+            <Text>
+              <Text as="span" color="ink.100" fontWeight="800">
+                ☕
+              </Text>{" "}
+              — {t("voting.pauseCard")}
+            </Text>
+          </HStack>
+        </VStack>
+      </GlassPanel>
+    );
+  }
 
   function showActionError(title: string) {
     toast({
@@ -332,6 +562,7 @@ export default function Page({
     roundTitleDraftRef.current = value;
     isRoundTitleDirtyRef.current = true;
     setRoundTitleDraft(value);
+    setTitleSaveStatus("idle");
   }
 
   async function saveRoundTitleDraft(): Promise<string | null> {
@@ -348,7 +579,7 @@ export default function Page({
       return normalizedTitle;
     }
 
-    setIsTitleSaving(true);
+    setTitleSaveStatus("saving");
 
     try {
       const result = await roomService.saveCurrentRoundTitle(
@@ -359,6 +590,7 @@ export default function Page({
 
       if (result.status === "stale") {
         isRoundTitleDirtyRef.current = false;
+        setTitleSaveStatus("error");
         showStaleRoundWarning();
         return null;
       }
@@ -367,13 +599,13 @@ export default function Page({
       roundTitleDraftRef.current = normalizedTitle;
       setRoundTitleDraft(normalizedTitle);
       setCurrentRoundTitle(normalizedTitle);
+      setTitleSaveStatus("saved");
       return normalizedTitle;
     } catch (error) {
       console.error(error);
+      setTitleSaveStatus("error");
       showActionError("Não foi possível salvar o item da rodada");
       return null;
-    } finally {
-      setIsTitleSaving(false);
     }
   }
 
@@ -451,16 +683,41 @@ export default function Page({
   }
 
   async function revealCards() {
+    if (voteCount === 0) {
+      return;
+    }
+
     setIsRoundActionLoading(true);
 
     try {
-      await roomService.showAverage(roomKey);
+      const result = await roomService.revealRound(roomKey, currentRoundId);
+
+      if (result.status === "stale") {
+        showStaleRoundWarning();
+      } else if (result.status === "no_votes") {
+        showActionError("A rodada ainda não possui votos");
+      } else {
+        setIsPartialRevealOpen(false);
+      }
     } catch (error) {
       console.error(error);
       showActionError("Não foi possível revelar as cartas");
     } finally {
       setIsRoundActionLoading(false);
     }
+  }
+
+  function prepareReveal() {
+    if (voteCount === 0 || isRoundActionLoading) {
+      return;
+    }
+
+    if (activePendingCount > 0) {
+      setIsPartialRevealOpen(true);
+      return;
+    }
+
+    void revealCards();
   }
 
   async function prepareNewRound() {
@@ -484,8 +741,14 @@ export default function Page({
           point,
         })),
         suggestedOutcome: (() => {
+          if (activePendingCount > 0) {
+            return null;
+          }
+
           const unanimousPoint = hasStrictNumericUnanimity(
-            participants.map((participant) => participant.point),
+            participants
+              .filter((participant) => participant.point !== null)
+              .map((participant) => participant.point),
           );
 
           return unanimousPoint
@@ -521,6 +784,14 @@ export default function Page({
         showActionError("Escolha um resultado válido para a rodada");
       } else {
         setConfirmation(null);
+        toast({
+          title: "Rodada confirmada",
+          description: "A próxima rodada está pronta.",
+          status: "success",
+          duration: 3500,
+          position: "top",
+          isClosable: true,
+        });
       }
     } catch (error) {
       console.error(error);
@@ -575,6 +846,20 @@ export default function Page({
     }
   }
 
+  async function leaveRoom() {
+    if (isLeavingRoom) {
+      return;
+    }
+
+    setIsLeavingRoom(true);
+
+    try {
+      await presenceConnectionRef.current?.disconnect();
+    } finally {
+      router.push(locale === "en" ? "/en" : "/");
+    }
+  }
+
   if (pageState !== "ready") {
     return (
       <AppShell display="grid" placeItems="center" py={8}>
@@ -611,7 +896,7 @@ export default function Page({
 
   return (
     <AppShell pb={{ base: 6, md: 10 }}>
-      <VisuallyHidden as="h1">Sala de Planning Poker</VisuallyHidden>
+      <VisuallyHidden as="h1">{t("header.accessibleHeading")}</VisuallyHidden>
       <Container maxW="1440px" px={{ base: 3, sm: 4, md: 6 }} pt={4}>
         <GlassPanel
           as="header"
@@ -631,7 +916,7 @@ export default function Page({
               />
               <Box minW={0}>
                 <Text color="ink.300" textStyle="caption">
-                  Você está na sala
+                  {t("header.inRoom")}
                 </Text>
                 <Text
                   color="ink.100"
@@ -657,10 +942,12 @@ export default function Page({
                 leftIcon={<ArrowBackIcon />}
                 variant="subtle"
                 size="sm"
-                onClick={() => router.push(locale === "en" ? "/en" : "/")}
+                onClick={() => void leaveRoom()}
+                isLoading={isLeavingRoom}
+                loadingText={t("header.leaving")}
                 flex={{ base: 1, sm: "initial" }}
               >
-                {locale === "en" ? "Home" : "Início"}
+                {t("header.leave")}
               </Button>
             </HStack>
           </HStack>
@@ -674,50 +961,84 @@ export default function Page({
           <GlassPanel
             as="aside"
             data-tour="room-participants"
-            p={4}
+            p={{ base: 3, lg: 4 }}
             position={{ base: "static", lg: "sticky" }}
             top={4}
           >
-            <HStack justify="space-between" mb={4}>
-              <Box>
-                <Text textStyle="eyebrow">Time</Text>
-                <Heading as="h2" textStyle="h4" mt={1}>
-                  Participantes
-                </Heading>
-              </Box>
-              <Tag colorScheme="purple" variant="subtle">
-                {participants.length}
-              </Tag>
-            </HStack>
-            <VStack spacing={2.5} align="stretch">
-              {participants.map((participant) => (
-                <ParticipantCard
-                  key={participant.key}
-                  username={participant.username}
-                  point={participant.point}
-                  postRevealVoteStatus={participant.postRevealVoteStatus}
-                  extremumStatus={
-                    participantExtremumStatuses.get(participant.key) ?? null
-                  }
-                  isCurrent={participant.key === currentUser?.key}
-                  isRevealed={isShowingAverage}
-                />
-              ))}
-            </VStack>
+            <Accordion display={{ base: "block", lg: "none" }} allowToggle>
+              <AccordionItem border="0">
+                <AccordionButton px={1} py={1} borderRadius="lg">
+                  <Box flex="1" textAlign="left">
+                    <Text textStyle="eyebrow">{t("participants.eyebrow")}</Text>
+                    <Text color="ink.100" textStyle="label" fontWeight="700">
+                      {t("participants.mobileSummary", {
+                        active: activeParticipants.length,
+                        total: participants.length,
+                      })}
+                    </Text>
+                    <Text color="ink.300" textStyle="caption">
+                      {t("participants.votesSummary", {
+                        votes: voteCount,
+                        pending: activePendingCount,
+                      })}
+                    </Text>
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel px={0} pt={3} pb={0}>
+                  <VStack
+                    spacing={2.5}
+                    align="stretch"
+                    maxH="42dvh"
+                    overflowY="auto"
+                  >
+                    {renderParticipantCards()}
+                  </VStack>
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+
+            <Box display={{ base: "none", lg: "block" }}>
+              <HStack justify="space-between" mb={4}>
+                <Box>
+                  <Text textStyle="eyebrow">{t("participants.eyebrow")}</Text>
+                  <Heading as="h2" textStyle="h4" mt={1}>
+                    {t("participants.title")}
+                  </Heading>
+                </Box>
+                <Tag colorScheme="purple" variant="subtle">
+                  {participants.length}
+                </Tag>
+              </HStack>
+              <HStack spacing={2} mb={4} flexWrap="wrap">
+                <Tag colorScheme="green" variant="subtle">
+                  {t("participants.active", {
+                    count: activeParticipants.length,
+                  })}
+                </Tag>
+                {inactiveCount > 0 ? (
+                  <Tag colorScheme="gray" variant="subtle">
+                    {t("participants.inactive", { count: inactiveCount })}
+                  </Tag>
+                ) : null}
+              </HStack>
+              <VStack spacing={2.5} align="stretch">
+                {renderParticipantCards()}
+              </VStack>
+            </Box>
           </GlassPanel>
 
           <VStack spacing={4} align="stretch" minW={0}>
             <GlassPanel p={{ base: 5, md: 7 }}>
               <VStack spacing={6} align="stretch">
                 <Box data-tour="room-round-title">
-                  <Text textStyle="eyebrow">Rodada atual</Text>
+                  <Text textStyle="eyebrow">{t("round.eyebrow")}</Text>
                   <Heading as="h2" textStyle="h3" mt={1} mb={5}>
                     {effectiveRoundTitle}
                   </Heading>
                   <RoundTitleField
                     value={roundTitleDraft}
-                    fallbackTitle={fallbackRoundTitle}
-                    isSaving={isTitleSaving}
+                    status={titleSaveStatus}
                     onChange={handleRoundTitleChange}
                     onSave={() => void saveRoundTitleDraft()}
                   />
@@ -735,7 +1056,8 @@ export default function Page({
                   <RoundStatus
                     phase={roundPhase}
                     voteCount={voteCount}
-                    participantCount={participants.length}
+                    activeCount={activeParticipants.length}
+                    pendingCount={activePendingCount}
                   />
                   {isShowingAverage ? (
                     <HStack
@@ -752,7 +1074,7 @@ export default function Page({
                         loadingText="Preparando"
                         w={{ base: "full", sm: "auto" }}
                       >
-                        Refazer rodada
+                        {t("actions.redo")}
                       </Button>
                       <Button
                         size="lg"
@@ -760,162 +1082,88 @@ export default function Page({
                         colorScheme="cyan"
                         onClick={prepareNewRound}
                         isLoading={isRoundActionLoading}
-                        loadingText="Iniciando"
+                        loadingText={t("actions.confirming")}
                         w={{ base: "full", sm: "auto" }}
                       >
-                        Iniciar nova rodada
+                        {t("actions.confirm")}
                       </Button>
                     </HStack>
                   ) : (
-                    <Button
-                      size="lg"
-                      variant="glass"
-                      colorScheme="purple"
-                      onClick={revealCards}
-                      isLoading={isRoundActionLoading}
-                      loadingText="Revelando"
+                    <VStack
+                      align={{ base: "stretch", md: "flex-end" }}
+                      spacing={1.5}
                       w={{ base: "full", md: "auto" }}
                     >
-                      Revelar cartas
-                    </Button>
+                      <Button
+                        size="lg"
+                        variant={voteCount > 0 ? "premium" : "glass"}
+                        colorScheme="purple"
+                        onClick={prepareReveal}
+                        isDisabled={voteCount === 0}
+                        isLoading={isRoundActionLoading}
+                        loadingText={t("actions.revealing")}
+                        w={{ base: "full", md: "auto" }}
+                        aria-describedby="reveal-availability"
+                      >
+                        {t("actions.reveal")}
+                      </Button>
+                      {voteCount === 0 ? (
+                        <Text
+                          id="reveal-availability"
+                          color="ink.300"
+                          textStyle="caption"
+                        >
+                          {t("actions.revealUnavailable")}
+                        </Text>
+                      ) : null}
+                    </VStack>
                   )}
                 </HStack>
-
-                <Box
-                  data-tour="room-round-results"
-                  position="relative"
-                  minH={
-                    isWaitingGameActive
-                      ? "clamp(220px, 28vw, 300px)"
-                      : undefined
-                  }
-                >
-                  {isWaitingGameAllowed ? (
-                    <VoteWaitingGame
-                      isActive={isWaitingGameActive}
-                      sessionId={currentRoundId}
-                    />
-                  ) : null}
-                  {isShowingAverage ? (
-                    <ResultsPanel participants={participants} />
-                  ) : !isWaitingGameActive ? (
-                    <Box
-                      minH={{ base: 36, md: 48 }}
-                      display="grid"
-                      placeItems="center"
-                      borderRadius="2xl"
-                      border="1px dashed"
-                      borderColor="whiteAlpha.200"
-                      bg="rgba(4, 9, 23, 0.28)"
-                      textAlign="center"
-                      px={5}
-                    >
-                      <VStack spacing={2}>
-                        <Heading as="p" textStyle="h4">
-                          {voteCount === 0
-                            ? "A mesa está aberta"
-                            : "As cartas estão na mesa"}
-                        </Heading>
-                        <Text color="ink.300" textStyle="body-sm" maxW="md">
-                          {voteCount === 0
-                            ? "Cada participante escolhe sua estimativa sem influenciar o restante do time."
-                            : "Os valores continuam secretos. Revele quando o time estiver pronto para conversar."}
-                        </Text>
-                      </VStack>
-                    </Box>
-                  ) : null}
-                </Box>
+                <Text color="ink.300" textStyle="caption">
+                  {t("actions.anyParticipant")}
+                </Text>
               </VStack>
             </GlassPanel>
 
-            <GlassPanel p={{ base: 5, md: 7 }}>
-              <VStack spacing={5} align="stretch">
-                <HStack
-                  justify="space-between"
-                  align={{ base: "flex-start", sm: "center" }}
-                  flexDir={{ base: "column", sm: "row" }}
-                  spacing={3}
-                >
-                  <Box>
-                    <Text textStyle="eyebrow">Sua estimativa</Text>
-                    <Heading as="h2" textStyle="h4" mt={1}>
-                      Escolha uma carta
-                    </Heading>
-                  </Box>
-                  {pointSelected && !isShowingAverage ? (
-                    <HStack
-                      justify="space-between"
-                      w={{ base: "full", sm: "auto" }}
-                      px={3}
-                      py={2}
-                      borderRadius="xl"
-                      bg="rgba(112, 72, 245, 0.14)"
-                      border="1px solid"
-                      borderColor="brand.500"
-                    >
-                      <Text color="ink.200" textStyle="body-sm">
-                        Voto guardado:{" "}
-                        <Text
-                          as="span"
-                          color="white"
-                          fontFamily="heading"
-                          fontWeight="800"
-                          sx={{ fontVariantNumeric: "tabular-nums" }}
-                        >
-                          {pointSelected}
-                        </Text>
-                      </Text>
-                      <Button
-                        variant="ghost"
-                        size="xs"
-                        color="brand.200"
-                        onClick={undoPoint}
-                        isLoading={isVoteLoading}
-                      >
-                        Desfazer
-                      </Button>
-                    </HStack>
-                  ) : null}
-                </HStack>
+            {!isShowingAverage ? renderVotingPanel() : null}
 
-                <Divider borderColor="whiteAlpha.100" />
+            {isWaitingGameAllowed && isWaitingGameActive ? (
+              <Box
+                data-tour="room-round-results"
+                position="relative"
+                minH={{ base: 52, md: 56 }}
+              >
+                <VoteWaitingGame
+                  isActive={isWaitingGameActive}
+                  sessionId={currentRoundId}
+                />
+              </Box>
+            ) : null}
 
-                <SimpleGrid
-                  data-tour="room-voting-cards"
-                  columns={{ base: 4, sm: 7, xl: 13 }}
-                  spacing={{ base: 2, md: 3 }}
-                  role="group"
-                  aria-label="Cartas de estimativa"
-                >
-                  {VOTING_POINTS.map((value) => (
-                    <VotingCard
-                      key={value}
-                      value={value}
-                      isSelected={pointSelected === value}
-                      isDisabled={
-                        isVoteLoading ||
-                        (isShowingAverage
-                          ? pointSelected === value
-                          : pointSelected !== null)
-                      }
-                      onSelect={handleSetPoint}
-                    />
-                  ))}
-                </SimpleGrid>
-
-                {isShowingAverage ? (
-                  <Text
-                    color="ink.300"
-                    textStyle="body-sm"
-                    textAlign="center"
-                  >
-                    {pointSelected
-                      ? "Seu voto está visível. Escolha outra carta para alterá-lo."
-                      : "Você ainda não votou. Escolha uma carta para registrar seu voto após a revelação."}
+            {isShowingAverage ? (
+              <VStack
+                data-tour="room-round-results"
+                spacing={4}
+                align="stretch"
+              >
+                <GlassPanel p={{ base: 5, md: 6 }} strength="strong">
+                  <Text textStyle="eyebrow" color="signal.cyan">
+                    {t("results.eyebrow")}
                   </Text>
-                ) : null}
+                  <Heading as="h2" textStyle="h4" mt={1}>
+                    {t("results.title")}
+                  </Heading>
+                  <Text color="ink.200" textStyle="body-sm" mt={2} maxW="3xl">
+                    {t("results.description")}
+                  </Text>
+                </GlassPanel>
+                <ResultsPanel
+                  participants={participants}
+                  activePendingCount={activePendingCount}
+                />
+                {renderVotingPanel()}
               </VStack>
-            </GlassPanel>
+            ) : null}
 
             <Box data-tour="room-history">
               <RoundHistory history={history} />
@@ -926,7 +1174,7 @@ export default function Page({
       <RoundConfirmationDialog
         isOpen={confirmation !== null}
         title={confirmation?.title ?? ""}
-        averageLabel={formatRoundAverage(confirmation?.average ?? null)}
+        averageLabel={formatRoundAverage(confirmation?.average ?? null, locale)}
         votes={confirmation?.votes ?? []}
         suggestedOutcome={confirmation?.suggestedOutcome ?? null}
         isLoading={isRoundActionLoading}
@@ -938,6 +1186,14 @@ export default function Page({
         isLoading={isRoundActionLoading}
         onCancel={() => setRedoConfirmationRoundId(null)}
         onConfirm={() => void confirmRedoRound()}
+      />
+      <PartialRevealConfirmationDialog
+        isOpen={isPartialRevealOpen}
+        pendingCount={activePendingCount}
+        voteCount={voteCount}
+        isLoading={isRoundActionLoading}
+        onCancel={() => setIsPartialRevealOpen(false)}
+        onConfirm={() => void revealCards()}
       />
       <RoomTour />
     </AppShell>

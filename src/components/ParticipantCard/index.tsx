@@ -5,7 +5,10 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import type { VoteExtremumStatus } from "@/domain/estimation";
 import { useTranslations } from "@/i18n";
-import type { PostRevealVoteStatus } from "@/services/UserService";
+import type {
+  PostRevealVoteStatus,
+  PresenceStatus,
+} from "@/services/UserService";
 
 interface ParticipantCardProps {
   username: string;
@@ -14,6 +17,7 @@ interface ParticipantCardProps {
   extremumStatus: VoteExtremumStatus | null;
   isRevealed: boolean;
   isCurrent?: boolean;
+  presenceStatus: PresenceStatus;
 }
 
 const extremumColorSchemes: Record<VoteExtremumStatus, string> = {
@@ -29,6 +33,7 @@ export function ParticipantCard({
   extremumStatus,
   isRevealed,
   isCurrent = false,
+  presenceStatus,
 }: ParticipantCardProps) {
   const t = useTranslations("participant");
   const status = isRevealed
@@ -92,6 +97,19 @@ export function ParticipantCard({
           >
             {status}
           </Text>
+          <Tag
+            size="sm"
+            variant="subtle"
+            colorScheme={
+              presenceStatus === "online"
+                ? "green"
+                : presenceStatus === "reconnecting"
+                  ? "orange"
+                  : "gray"
+            }
+          >
+            {t(`presence.${presenceStatus}`)}
+          </Tag>
           {isRevealed && extremumStatus ? (
             <Tag
               size="sm"

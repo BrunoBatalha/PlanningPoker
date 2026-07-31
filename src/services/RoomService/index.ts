@@ -51,6 +51,11 @@ export type RoundMutationResult =
   | { status: "stale" }
   | { status: "invalid_outcome" };
 
+export type RevealRoundResult =
+  | { status: "committed" }
+  | { status: "stale" }
+  | { status: "no_votes" };
+
 interface StoredRoomUser {
   username: string;
   point: string | null;
@@ -136,12 +141,15 @@ export function calculateRoundAverage(
   );
 }
 
-export function formatRoundAverage(average: number | null): string {
+export function formatRoundAverage(
+  average: number | null,
+  locale = "pt-BR",
+): string {
   if (average === null) {
     return "Sem média numérica";
   }
 
-  return new Intl.NumberFormat("pt-BR", {
+  return new Intl.NumberFormat(locale, {
     maximumFractionDigits: 2,
   }).format(average);
 }
@@ -209,10 +217,43 @@ async function initializeCurrentRound(roomKey: string) {
   });
 }
 
-async function showAverage(roomKey: string) {
-  await update(ref(database, `rooms/${roomKey}`), {
-    isShowingAverage: true,
-  });
+async function revealRound(
+  roomKey: string,
+  expectedRoundId: string,
+): Promise<RevealRoundResult> {
+  const roomRef = ref(database, `rooms/${roomKey}`);
+  let rejectedStatus: RevealRoundResult["status"] = "stale";
+  const transaction = await runTransaction(
+    roomRef,
+    (currentData: StoredRoom | null) => {
+      if (
+        !currentData ||
+        currentData.isShowingAverage ||
+        currentData.currentRoundId !== expectedRoundId
+      ) {
+        rejectedStatus = "stale";
+        return;
+      }
+
+      const hasVotes = Object.values(currentData.users ?? {}).some(
+        (user) => user.point !== null && user.point !== undefined,
+      );
+
+      if (!hasVotes) {
+        rejectedStatus = "no_votes";
+        return;
+      }
+
+      return {
+        ...currentData,
+        isShowingAverage: true,
+      };
+    },
+  );
+
+  return transaction.committed
+    ? { status: "committed" }
+    : { status: rejectedStatus };
 }
 
 async function hideAverage(roomKey: string) {
@@ -505,7 +546,7 @@ export const roomService = {
   createRoom,
   roomExists,
   initializeCurrentRound,
-  showAverage,
+  revealRound,
   hideAverage,
   saveCurrentRoundTitle,
   confirmAndStartNextRound,
@@ -513,6 +554,7 @@ export const roomService = {
   onRoomUpdate,
   onHistoryUpdate,
   // Aliases preservados para chamadas legadas.
-  showAvarage: showAverage,
+  showAverage: revealRound,
+  showAvarage: revealRound,
   hiddenAvarage: hideAverage,
 };
