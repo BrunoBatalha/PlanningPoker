@@ -1,6 +1,6 @@
 'use client'
 
-import { AddIcon, RepeatIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, RepeatIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
@@ -625,13 +625,13 @@ export default function Page({
               <ButtonShareRoom size="sm" flex={{ base: 1, sm: "initial" }} />
               <LanguageSwitcher />
               <Button
-                leftIcon={<AddIcon />}
+                leftIcon={<ArrowBackIcon />}
                 variant="subtle"
                 size="sm"
                 onClick={() => router.push(locale === "en" ? "/en" : "/")}
                 flex={{ base: 1, sm: "initial" }}
               >
-                Nova sala
+                {locale === "en" ? "Home" : "Início"}
               </Button>
             </HStack>
           </HStack>
