@@ -1,5 +1,6 @@
 import {
   PHRASE_CATEGORIES,
+  SLICE_ARM_DELAY_SECONDS,
   type PhraseCatalog,
   type PhraseDefinition,
   type PhraseFragment,
@@ -16,6 +17,10 @@ const CARD_PALETTES = [
   ["#0F766E", "#4C2AAF"],
   ["#2563EB", "#5E35D9"],
 ] as const;
+
+function clamp(value: number, minimum: number, maximum: number) {
+  return Math.min(Math.max(value, minimum), maximum);
+}
 
 export interface BladeParticle {
   x: number;
@@ -54,115 +59,21 @@ function roundedRectangle(
   context.closePath();
 }
 
-function getFont(fontSize: number) {
-  return `700 ${fontSize}px "Manrope Variable", "Inter Variable", sans-serif`;
-}
-
-function getBestLineSplit(
-  context: CanvasRenderingContext2D,
-  text: string,
-): string[] {
-  const words = text.split(/\s+/);
-  if (words.length < 2) {
-    return [text];
-  }
-
-  let bestLines = [text];
-  let bestWidth = Number.POSITIVE_INFINITY;
-
-  for (let index = 1; index < words.length; index += 1) {
-    const firstLine = words.slice(0, index).join(" ");
-    const secondLine = words.slice(index).join(" ");
-    const width = Math.max(
-      context.measureText(firstLine).width,
-      context.measureText(secondLine).width,
-    );
-
-    if (width < bestWidth) {
-      bestWidth = width;
-      bestLines = [firstLine, secondLine];
-    }
-  }
-
-  return bestLines;
-}
-
-function measurePhrase(
-  context: CanvasRenderingContext2D,
-  id: string,
-  text: string,
-  categoryIndex: number,
-  maximumCardWidth: number,
-  compact: boolean,
-): PhraseDefinition {
-  const horizontalPadding = compact ? 22 : 28;
-  let fontSize = compact ? 12 : 14;
-  let lines = [text];
-
-  while (fontSize >= 11) {
-    context.font = getFont(fontSize);
-    const singleLineWidth = context.measureText(text).width;
-    lines =
-      singleLineWidth + horizontalPadding <= maximumCardWidth
-        ? [text]
-        : getBestLineSplit(context, text);
-    const widestLine = Math.max(
-      ...lines.map((line) => context.measureText(line).width),
-    );
-
-    if (widestLine + horizontalPadding <= maximumCardWidth) {
-      break;
-    }
-
-    fontSize -= 1;
-  }
-
-  context.font = getFont(fontSize);
-  const widestLine = Math.max(
-    ...lines.map((line) => context.measureText(line).width),
-  );
-  const lineHeight = fontSize * 1.25;
-  const height = Math.max(
-    compact ? 42 : 46,
-    lines.length * lineHeight + (compact ? 18 : 22),
-  );
-
-  return {
-    id,
-    text,
-    lines: lines.slice(0, 2),
-    categoryIndex,
-    width: Math.min(
-      maximumCardWidth,
-      Math.max(compact ? 94 : 110, widestLine + horizontalPadding),
-    ),
-    height,
-    fontSize,
-  };
-}
-
 export function measurePhraseDefinitions(
-  context: CanvasRenderingContext2D,
   catalog: PhraseCatalog,
   canvasWidth: number,
 ): PhraseDefinition[][] {
   const compact = canvasWidth < 480;
-  const maximumCardWidth = Math.min(
-    compact ? 220 : 270,
-    canvasWidth * 0.7,
-  );
+  const cardSize = compact ? 66 : 76;
 
   return PHRASE_CATEGORIES.map((category, categoryIndex) =>
-    catalog[category].map((text, phraseIndex) =>
-      measurePhrase(
-        context,
-        `${category}:${phraseIndex}`,
+    catalog[category].map((text, phraseIndex) => ({
+        id: `${category}:${phraseIndex}`,
         text,
         categoryIndex,
-        maximumCardWidth,
-        compact,
-      ),
-    ),
+        width: cardSize,
+        height: cardSize,
+      })),
   );
 }
 
@@ -210,6 +121,7 @@ function drawField(context: CanvasRenderingContext2D, state: SliceGameState) {
 function drawPhraseCard(
   context: CanvasRenderingContext2D,
   phrase: PhraseDefinition,
+  isArmed = false,
 ) {
   const palette = CARD_PALETTES[phrase.categoryIndex % CARD_PALETTES.length];
   const gradient = context.createLinearGradient(
@@ -222,8 +134,10 @@ function drawPhraseCard(
   gradient.addColorStop(1, palette[1]);
 
   context.save();
-  context.shadowColor = "rgba(112, 72, 245, 0.42)";
-  context.shadowBlur = 18;
+  context.shadowColor = isArmed
+    ? "rgba(77, 227, 227, 0.68)"
+    : "rgba(112, 72, 245, 0.3)";
+  context.shadowBlur = isArmed ? 25 : 14;
   roundedRectangle(
     context,
     -phrase.width / 2,
@@ -235,7 +149,9 @@ function drawPhraseCard(
   context.fillStyle = gradient;
   context.fill();
   context.lineWidth = 1.2;
-  context.strokeStyle = "rgba(255, 255, 255, 0.5)";
+  context.strokeStyle = isArmed
+    ? "rgba(115, 245, 245, 0.9)"
+    : "rgba(255, 255, 255, 0.36)";
   context.stroke();
   context.restore();
 
@@ -251,15 +167,14 @@ function drawPhraseCard(
   context.lineWidth = 1;
   context.stroke();
 
-  context.font = getFont(phrase.fontSize);
-  context.fillStyle = "#F8FAFF";
-  context.textAlign = "center";
-  context.textBaseline = "middle";
-  const lineHeight = phrase.fontSize * 1.25;
-  const firstLineY = -((phrase.lines.length - 1) * lineHeight) / 2;
-  phrase.lines.forEach((line, index) => {
-    context.fillText(line, 0, firstLineY + index * lineHeight);
-  });
+  roundedRectangle(context, -15, -18, 24, 30, 5);
+  context.strokeStyle = "rgba(255, 255, 255, 0.34)";
+  context.stroke();
+  roundedRectangle(context, -9, -12, 24, 30, 5);
+  context.fillStyle = "rgba(255, 255, 255, 0.12)";
+  context.fill();
+  context.strokeStyle = "rgba(255, 255, 255, 0.72)";
+  context.stroke();
 }
 
 function drawTarget(
@@ -269,7 +184,94 @@ function drawTarget(
   context.save();
   context.translate(target.position.x, target.position.y);
   context.rotate(target.rotation);
-  drawPhraseCard(context, target.phrase);
+  drawPhraseCard(
+    context,
+    target.phrase,
+    target.age >= SLICE_ARM_DELAY_SECONDS,
+  );
+  context.restore();
+}
+
+function wrapRevealText(
+  context: CanvasRenderingContext2D,
+  text: string,
+  maximumWidth: number,
+) {
+  const words = text.split(/\s+/);
+  const lines: string[] = [];
+  let currentLine = "";
+
+  for (const word of words) {
+    const candidate = currentLine ? `${currentLine} ${word}` : word;
+    if (
+      currentLine &&
+      context.measureText(candidate).width > maximumWidth
+    ) {
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = candidate;
+    }
+  }
+
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+
+  return lines.slice(0, 2);
+}
+
+function drawJokeReveals(
+  context: CanvasRenderingContext2D,
+  state: SliceGameState,
+) {
+  context.save();
+  context.font = `800 16px "Manrope Variable", "Inter Variable", sans-serif`;
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+
+  for (const reveal of state.reveals) {
+    const alpha = Math.min(1, reveal.life * 3);
+    const lines = wrapRevealText(context, reveal.text, 220);
+    const textWidth = Math.max(
+      ...lines.map((line) => context.measureText(line).width),
+    );
+    const width = Math.min(250, Math.max(120, textWidth + 28));
+    const height = lines.length > 1 ? 58 : 42;
+    const x = clamp(
+      reveal.point.x,
+      width / 2 + 12,
+      state.dimensions.width - width / 2 - 12,
+    );
+    const y = clamp(
+      reveal.point.y - 54,
+      height / 2 + 58,
+      state.dimensions.height - height / 2 - 18,
+    );
+
+    context.globalAlpha = alpha;
+    roundedRectangle(
+      context,
+      x - width / 2,
+      y - height / 2,
+      width,
+      height,
+      12,
+    );
+    context.fillStyle = "rgba(5, 8, 22, 0.9)";
+    context.fill();
+    context.strokeStyle = "rgba(77, 227, 227, 0.62)";
+    context.lineWidth = 1.2;
+    context.stroke();
+
+    context.fillStyle = "#F8FAFF";
+    const lineHeight = 19;
+    const firstLineY = y - ((lines.length - 1) * lineHeight) / 2;
+    lines.forEach((line, index) => {
+      context.fillText(line, x, firstLineY + index * lineHeight);
+    });
+  }
+
   context.restore();
 }
 
@@ -478,6 +480,7 @@ export function renderSliceGame(
   state.targets.forEach((target) => drawTarget(context, target));
   drawParticles(context, state);
   drawImpacts(context, state);
+  drawJokeReveals(context, state);
   context.restore();
 
   if (!state.reducedMotion) {

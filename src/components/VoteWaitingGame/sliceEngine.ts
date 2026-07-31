@@ -1,14 +1,14 @@
 export const PHRASE_CATEGORIES = [
-  "deadlines",
-  "bugs",
-  "scope",
+  "development",
+  "qa",
+  "design",
+  "product",
+  "business",
+  "operations",
   "meetings",
-  "deploy",
-  "legacy",
-  "testing",
+  "delivery",
   "git",
-  "ai",
-  "devLife",
+  "teamLife",
 ] as const;
 
 export type PhraseCategory = (typeof PHRASE_CATEGORIES)[number];
@@ -27,11 +27,9 @@ export interface SliceDimensions {
 export interface PhraseDefinition {
   id: string;
   text: string;
-  lines: string[];
   categoryIndex: number;
   width: number;
   height: number;
-  fontSize: number;
 }
 
 export interface SwipePoint extends Vector {
@@ -51,6 +49,7 @@ export interface PhraseTarget {
   rotation: number;
   angularVelocity: number;
   hasEntered: boolean;
+  age: number;
 }
 
 export interface PhraseFragment {
@@ -76,6 +75,17 @@ export interface SliceImpact {
   life: number;
 }
 
+export interface SliceJokeReveal {
+  point: Vector;
+  text: string;
+  life: number;
+}
+
+export interface RevealedJoke {
+  id: string;
+  text: string;
+}
+
 export interface SliceParticle extends Vector {
   velocity: Vector;
   life: number;
@@ -92,9 +102,12 @@ export interface SliceGameState {
   fragments: PhraseFragment[];
   particles: SliceParticle[];
   impacts: SliceImpact[];
+  reveals: SliceJokeReveal[];
   score: number;
   combo: number;
-  successfulCuts: number;
+  lives: number;
+  successfulCards: number;
+  recentPhraseIds: string[];
   spawnCooldown: number;
   hitStopRemaining: number;
   reducedMotion: boolean;
@@ -104,7 +117,12 @@ export interface SliceStepResult {
   state: SliceGameState;
   scoreChanged: boolean;
   comboChanged: boolean;
-  slicedCount: number;
+  livesChanged: boolean;
+  originalCutCount: number;
+  fragmentCutCount: number;
+  armedCount: number;
+  revealedJokes: RevealedJoke[];
+  spawnedPhraseId: string | null;
   missedCount: number;
 }
 
@@ -112,12 +130,17 @@ type RandomSource = () => number;
 
 const MAX_DELTA_SECONDS = 0.032;
 const MAX_SUBSTEP_SECONDS = 1 / 120;
-const BASE_SPAWN_INTERVAL = 1.05;
-const MIN_SPAWN_INTERVAL = 0.5;
+export const SLICE_ARM_DELAY_SECONDS = 0.5;
+export const RECENT_PHRASE_LIMIT = 50;
+const INITIAL_LIVES = 3;
+const FRAGMENT_SCORE = 2;
+const BASE_SPAWN_INTERVAL = 1.15;
+const MIN_SPAWN_INTERVAL = 0.7;
 const SPAWN_REDUCTION_PER_CUT = 0.025;
 const HIT_STOP_SECONDS = 0.045;
 const IMPACT_LIFETIME_SECONDS = 0.12;
 const CUT_GLOW_LIFETIME_SECONDS = 0.28;
+const JOKE_REVEAL_LIFETIME_SECONDS = 0.9;
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
@@ -167,6 +190,21 @@ export function buildBalancedPhraseDeck(
   return deck;
 }
 
+function moveRecentPhrasesToDeckEnd(
+  deck: PhraseDefinition[],
+  recentPhraseIds: string[],
+) {
+  if (recentPhraseIds.length === 0) {
+    return deck;
+  }
+
+  const recentIds = new Set(recentPhraseIds);
+  return [
+    ...deck.filter((phrase) => !recentIds.has(phrase.id)),
+    ...deck.filter((phrase) => recentIds.has(phrase.id)),
+  ];
+}
+
 export function getComboMultiplier(combo: number) {
   if (combo <= 0) {
     return 1;
@@ -179,7 +217,7 @@ function getSpawnInterval(state: SliceGameState, random: RandomSource) {
   const baseInterval = Math.max(
     MIN_SPAWN_INTERVAL,
     BASE_SPAWN_INTERVAL -
-      state.successfulCuts * SPAWN_REDUCTION_PER_CUT,
+      state.successfulCards * SPAWN_REDUCTION_PER_CUT,
   );
   const reducedMotionFactor = state.reducedMotion ? 1.28 : 1;
   const variation = 0.92 + random() * 0.16;
@@ -198,7 +236,10 @@ function nextPhrase(
   let deckIndex = state.deckIndex;
 
   if (deck.length === 0 || deckIndex >= deck.length) {
-    deck = buildBalancedPhraseDeck(state.definitions, random);
+    deck = moveRecentPhrasesToDeckEnd(
+      buildBalancedPhraseDeck(state.definitions, random),
+      state.recentPhraseIds,
+    );
     deckIndex = 0;
   }
 
@@ -220,18 +261,39 @@ function spawnTarget(
 
   const { width, height } = state.dimensions;
   const halfWidth = next.phrase.width / 2;
-  const difficulty = Math.min(state.successfulCuts / 22, 1);
+  const halfHeight = next.phrase.height / 2;
+  const difficulty = Math.min(state.successfulCards / 22, 1);
   const horizontalRange = width * (0.12 + difficulty * 0.08);
   const verticalFactor = 2.05 + difficulty * 0.25;
   const motionFactor = state.reducedMotion ? 0.78 : 1;
   const margin = Math.min(20, width * 0.04);
   const minimumX = halfWidth + margin;
   const maximumX = Math.max(minimumX, width - halfWidth - margin);
+  const launchY = height + halfHeight + 4;
+  const gravity = height * 3.5 * motionFactor;
+  const currentVerticalSpeed = height * verticalFactor * motionFactor;
+  const currentApexRise =
+    (currentVerticalSpeed * currentVerticalSpeed) / (2 * gravity);
+  const highestVisibleCenterY = halfHeight + 16;
+  const maximumApexRise = Math.max(
+    currentApexRise,
+    launchY - highestVisibleCenterY,
+  );
+  const randomizedApexRise =
+    currentApexRise +
+    random() * (maximumApexRise - currentApexRise);
+  const randomizedVerticalSpeed = Math.sqrt(
+    2 * gravity * randomizedApexRise,
+  );
 
   return {
     ...state,
     deck: next.deck,
     deckIndex: next.deckIndex,
+    recentPhraseIds: [
+      ...state.recentPhraseIds.filter((id) => id !== next.phrase?.id),
+      next.phrase.id,
+    ].slice(-RECENT_PHRASE_LIMIT),
     spawnCooldown: getSpawnInterval(state, random),
     targets: [
       ...state.targets,
@@ -239,17 +301,18 @@ function spawnTarget(
         phrase: next.phrase,
         position: {
           x: minimumX + random() * (maximumX - minimumX),
-          y: height + next.phrase.height / 2 + 4,
+          y: launchY,
         },
         velocity: {
           x: (random() * 2 - 1) * horizontalRange * motionFactor,
-          y: -height * verticalFactor * motionFactor,
+          y: -randomizedVerticalSpeed,
         },
-        rotation: state.reducedMotion ? 0 : (random() * 2 - 1) * 0.16,
+        rotation: 0,
         angularVelocity: state.reducedMotion
           ? 0
-          : (random() * 2 - 1) * 0.75,
+          : (random() * 2 - 1) * 0.4,
         hasEntered: false,
+        age: 0,
       },
     ],
   };
@@ -260,19 +323,33 @@ export function createSliceGameState(
   definitions: PhraseDefinition[][],
   reducedMotion: boolean,
   random: RandomSource = Math.random,
+  initialRecentPhraseIds: string[] = [],
 ): SliceGameState {
+  const knownPhraseIds = new Set(
+    definitions.flat().map((definition) => definition.id),
+  );
+  const recentPhraseIds = initialRecentPhraseIds
+    .filter((id) => knownPhraseIds.has(id))
+    .slice(-RECENT_PHRASE_LIMIT);
+
   return {
     dimensions,
     definitions,
-    deck: buildBalancedPhraseDeck(definitions, random),
+    deck: moveRecentPhrasesToDeckEnd(
+      buildBalancedPhraseDeck(definitions, random),
+      recentPhraseIds,
+    ),
     deckIndex: 0,
     targets: [],
     fragments: [],
     particles: [],
     impacts: [],
+    reveals: [],
     score: 0,
     combo: 0,
-    successfulCuts: 0,
+    lives: INITIAL_LIVES,
+    successfulCards: 0,
+    recentPhraseIds,
     spawnCooldown: 0.25,
     hitStopRemaining: 0,
     reducedMotion,
@@ -347,6 +424,92 @@ function clipSegmentToRectangle(
     return null;
   }
 
+  return {
+    point: {
+      x: from.x + deltaX * middle,
+      y: from.y + deltaY * middle,
+    },
+    from: {
+      x: from.x + deltaX * start,
+      y: from.y + deltaY * start,
+    },
+    to: {
+      x: from.x + deltaX * end,
+      y: from.y + deltaY * end,
+    },
+    direction: {
+      x: deltaX / length,
+      y: deltaY / length,
+    },
+  };
+}
+
+function getPolygonSignedArea(polygon: Vector[]) {
+  let area = 0;
+
+  for (let index = 0; index < polygon.length; index += 1) {
+    const current = polygon[index];
+    const next = polygon[(index + 1) % polygon.length];
+    area += current.x * next.y - next.x * current.y;
+  }
+
+  return area / 2;
+}
+
+function clipSegmentToConvexPolygon(
+  from: Vector,
+  to: Vector,
+  polygon: Vector[],
+): {
+  point: Vector;
+  from: Vector;
+  to: Vector;
+  direction: Vector;
+} | null {
+  const deltaX = to.x - from.x;
+  const deltaY = to.y - from.y;
+  const length = Math.hypot(deltaX, deltaY);
+
+  if (length < 0.000001 || polygon.length < 3) {
+    return null;
+  }
+
+  const orientation = getPolygonSignedArea(polygon) >= 0 ? 1 : -1;
+  let start = 0;
+  let end = 1;
+
+  for (let index = 0; index < polygon.length; index += 1) {
+    const edgeFrom = polygon[index];
+    const edgeTo = polygon[(index + 1) % polygon.length];
+    const edgeX = edgeTo.x - edgeFrom.x;
+    const edgeY = edgeTo.y - edgeFrom.y;
+    const startDistance =
+      orientation *
+      (edgeX * (from.y - edgeFrom.y) -
+        edgeY * (from.x - edgeFrom.x));
+    const distanceDelta =
+      orientation * (edgeX * deltaY - edgeY * deltaX);
+
+    if (Math.abs(distanceDelta) < 0.000001) {
+      if (startDistance < -0.0001) {
+        return null;
+      }
+      continue;
+    }
+
+    const ratio = -startDistance / distanceDelta;
+    if (distanceDelta > 0) {
+      start = Math.max(start, ratio);
+    } else {
+      end = Math.min(end, ratio);
+    }
+
+    if (start > end) {
+      return null;
+    }
+  }
+
+  const middle = (start + end) / 2;
   return {
     point: {
       x: from.x + deltaX * middle,
@@ -564,6 +727,118 @@ function sliceTarget(
   };
 }
 
+function sliceFragment(
+  fragment: PhraseFragment,
+  segment: SwipeSegment,
+  reducedMotion: boolean,
+): {
+  fragments: PhraseFragment[];
+  particles: SliceParticle[];
+  impact: SliceImpact;
+} | null {
+  const localFrom = rotatePoint(
+    {
+      x: segment.from.x - fragment.position.x,
+      y: segment.from.y - fragment.position.y,
+    },
+    -fragment.rotation,
+  );
+  const localTo = rotatePoint(
+    {
+      x: segment.to.x - fragment.position.x,
+      y: segment.to.y - fragment.position.y,
+    },
+    -fragment.rotation,
+  );
+  const intersection = clipSegmentToConvexPolygon(
+    localFrom,
+    localTo,
+    fragment.polygon,
+  );
+
+  if (!intersection) {
+    return null;
+  }
+
+  const normal = {
+    x: -intersection.direction.y,
+    y: intersection.direction.x,
+  };
+  const firstPolygon = clipPolygonToHalfPlane(
+    fragment.polygon,
+    intersection.point,
+    normal,
+    1,
+  );
+  const secondPolygon = clipPolygonToHalfPlane(
+    fragment.polygon,
+    intersection.point,
+    normal,
+    -1,
+  );
+
+  if (firstPolygon.length < 3 || secondPolygon.length < 3) {
+    return null;
+  }
+
+  const impactIntensity = reducedMotion
+    ? 0.45
+    : clamp(segment.speed / 1100, 0.45, 1);
+  const worldNormal = rotatePoint(normal, fragment.rotation);
+  const separationSpeed = reducedMotion ? 32 : 72 + impactIntensity * 55;
+  const angularSpeed = reducedMotion ? 0 : 1.5;
+  const createFragment = (
+    polygon: Vector[],
+    side: -1 | 1,
+  ): PhraseFragment => ({
+    ...fragment,
+    polygon,
+    cutEdge: { from: intersection.from, to: intersection.to },
+    cutGlow: 1,
+    velocity: {
+      x:
+        fragment.velocity.x +
+        worldNormal.x * separationSpeed * side,
+      y:
+        fragment.velocity.y +
+        worldNormal.y * separationSpeed * side,
+    },
+    angularVelocity:
+      fragment.angularVelocity + angularSpeed * side,
+  });
+  const toWorldPoint = (point: Vector) => {
+    const rotatedPoint = rotatePoint(point, fragment.rotation);
+    return {
+      x: fragment.position.x + rotatedPoint.x,
+      y: fragment.position.y + rotatedPoint.y,
+    };
+  };
+  const worldCutFrom = toWorldPoint(intersection.from);
+  const worldCutTo = toWorldPoint(intersection.to);
+
+  return {
+    fragments: [
+      createFragment(firstPolygon, 1),
+      createFragment(secondPolygon, -1),
+    ],
+    particles: createSliceParticles(
+      worldCutFrom,
+      worldCutTo,
+      worldNormal,
+      fragment.phrase.categoryIndex,
+      reducedMotion,
+      impactIntensity,
+    ),
+    impact: {
+      from: worldCutFrom,
+      to: worldCutTo,
+      point: toWorldPoint(intersection.point),
+      intensity: impactIntensity,
+      life: 1,
+    },
+  };
+}
+
 function updateMovingObjects(
   state: SliceGameState,
   deltaSeconds: number,
@@ -580,6 +855,7 @@ function updateMovingObjects(
   const targets = state.targets
     .map<PhraseTarget>((target) => {
       const velocityY = target.velocity.y + gravity * deltaSeconds;
+      const age = target.age + deltaSeconds;
       const position = {
         x: target.position.x + target.velocity.x * deltaSeconds,
         y: target.position.y + velocityY * deltaSeconds,
@@ -594,8 +870,11 @@ function updateMovingObjects(
         velocity: { x: target.velocity.x, y: velocityY },
         rotation: state.reducedMotion
           ? 0
-          : target.rotation + target.angularVelocity * deltaSeconds,
+          : age >= SLICE_ARM_DELAY_SECONDS
+            ? target.rotation + target.angularVelocity * deltaSeconds
+            : 0,
         hasEntered,
+        age,
       };
     })
     .filter((target) => {
@@ -683,11 +962,29 @@ export function advanceSliceGame(
           totalDelta / IMPACT_LIFETIME_SECONDS,
       }))
       .filter((impact) => impact.life > 0),
+    reveals: currentState.reveals
+      .map((reveal) => ({
+        ...reveal,
+        life:
+          reveal.life -
+          totalDelta / JOKE_REVEAL_LIFETIME_SECONDS,
+      }))
+      .filter((reveal) => reveal.life > 0),
     hitStopRemaining: Math.max(
       0,
       currentState.hitStopRemaining - totalDelta,
     ),
   };
+  const sliceablePhraseIds = new Set(
+    currentState.targets
+      .filter((target) => target.age >= SLICE_ARM_DELAY_SECONDS)
+      .map((target) => target.phrase.id),
+  );
+  const previouslyUnarmedPhraseIds = new Set(
+    currentState.targets
+      .filter((target) => target.age < SLICE_ARM_DELAY_SECONDS)
+      .map((target) => target.phrase.id),
+  );
   let missedCount = 0;
 
   if (activeDelta > 0) {
@@ -703,42 +1000,87 @@ export function advanceSliceGame(
       };
     }
   }
+  const armedCount = state.targets.filter(
+    (target) =>
+      previouslyUnarmedPhraseIds.has(target.phrase.id) &&
+      target.age >= SLICE_ARM_DELAY_SECONDS,
+  ).length;
 
-  let slicedCount = 0;
+  let originalCutCount = 0;
+  let fragmentCutCount = 0;
   const remainingTargets: PhraseTarget[] = [];
-  const newFragments = [...state.fragments];
+  const newFragments: PhraseFragment[] = [];
   const newParticles = [...state.particles];
   const newImpacts = [...state.impacts];
+  const newReveals = [...state.reveals];
+  const revealedJokes: RevealedJoke[] = [];
 
   for (const target of state.targets) {
     let sliceResult: ReturnType<typeof sliceTarget> = null;
 
+    if (sliceablePhraseIds.has(target.phrase.id)) {
+      for (const segment of segments) {
+        sliceResult = sliceTarget(target, segment, state.reducedMotion);
+        if (sliceResult) {
+          break;
+        }
+      }
+    }
+
+    if (sliceResult) {
+      originalCutCount += 1;
+      newFragments.push(...sliceResult.fragments);
+      newParticles.push(...sliceResult.particles);
+      newImpacts.push(sliceResult.impact);
+      newReveals.push({
+        point: sliceResult.impact.point,
+        text: target.phrase.text,
+        life: 1,
+      });
+      revealedJokes.push({
+        id: target.phrase.id,
+        text: target.phrase.text,
+      });
+    } else {
+      remainingTargets.push(target);
+    }
+  }
+
+  for (const fragment of state.fragments) {
+    let sliceResult: ReturnType<typeof sliceFragment> = null;
+
     for (const segment of segments) {
-      sliceResult = sliceTarget(target, segment, state.reducedMotion);
+      sliceResult = sliceFragment(
+        fragment,
+        segment,
+        state.reducedMotion,
+      );
       if (sliceResult) {
         break;
       }
     }
 
     if (sliceResult) {
-      slicedCount += 1;
+      fragmentCutCount += 1;
       newFragments.push(...sliceResult.fragments);
       newParticles.push(...sliceResult.particles);
       newImpacts.push(sliceResult.impact);
     } else {
-      remainingTargets.push(target);
+      newFragments.push(fragment);
     }
   }
 
   let score = state.score;
   let combo = missedCount > 0 ? 0 : state.combo;
-  let successfulCuts = state.successfulCuts;
+  let successfulCards = state.successfulCards;
+  const lives = Math.max(0, state.lives - missedCount);
 
-  for (let index = 0; index < slicedCount; index += 1) {
+  for (let index = 0; index < originalCutCount; index += 1) {
     combo += 1;
     score += 10 * getComboMultiplier(combo);
-    successfulCuts += 1;
+    successfulCards += 1;
   }
+  score += fragmentCutCount * FRAGMENT_SCORE;
 
   state = {
     ...state,
@@ -746,28 +1088,41 @@ export function advanceSliceGame(
     fragments: newFragments,
     particles: newParticles,
     impacts: newImpacts,
+    reveals: newReveals,
     score,
     combo,
-    successfulCuts,
+    lives,
+    successfulCards,
     hitStopRemaining:
-      slicedCount > 0 && !state.reducedMotion
+      originalCutCount + fragmentCutCount > 0 && !state.reducedMotion
         ? HIT_STOP_SECONDS
         : state.hitStopRemaining,
   };
 
-  const maximumTargets = state.dimensions.width < 480 ? 2 : 3;
+  const maximumTargets = state.dimensions.width < 768 ? 1 : 2;
+  let spawnedPhraseId: string | null = null;
   if (
     state.spawnCooldown <= 0 &&
     state.targets.length < maximumTargets
   ) {
+    const previousTargetCount = state.targets.length;
     state = spawnTarget(state, random);
+    spawnedPhraseId =
+      state.targets.length > previousTargetCount
+        ? state.targets[state.targets.length - 1]?.phrase.id ?? null
+        : null;
   }
 
   return {
     state,
     scoreChanged: score !== currentState.score,
     comboChanged: combo !== currentState.combo,
-    slicedCount,
+    livesChanged: lives !== currentState.lives,
+    originalCutCount,
+    fragmentCutCount,
+    armedCount,
+    revealedJokes,
+    spawnedPhraseId,
     missedCount,
   };
 }
@@ -808,6 +1163,7 @@ export function resizeSliceGameState(
     fragments: [],
     particles: [],
     impacts: [],
+    reveals: [],
     hitStopRemaining: 0,
   };
 }

@@ -169,7 +169,13 @@ export function VoteWaitingGame({
         <ModalOverlay />
         <ModalContent
           aria-label={t("modal.ariaLabel", { game: selectedGameLabel })}
-          w={{ base: "100vw", md: "min(900px, calc(100vw - 48px))" }}
+          w={{
+            base: "100vw",
+            md:
+              selectedKind === "slice"
+                ? "min(1120px, calc(100vw - 48px))"
+                : "min(900px, calc(100vw - 48px))",
+          }}
           h={{ base: "100dvh", md: "min(650px, calc(100dvh - 48px))" }}
           maxW="none"
           maxH="none"
@@ -199,7 +205,14 @@ export function VoteWaitingGame({
               <ButtonGroup
                 position="absolute"
                 top={{ base: 3, md: 4 }}
-                left={{ base: 3, md: "50%" }}
+                left={{
+                  base: 3,
+                  md: "50%",
+                  lg:
+                    selectedKind === "slice"
+                      ? "calc((100% - 260px) / 2)"
+                      : "50%",
+                }}
                 transform={{ base: "none", md: "translateX(-50%)" }}
                 size="xs"
                 isAttached
