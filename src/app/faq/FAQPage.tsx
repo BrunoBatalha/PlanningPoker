@@ -1,6 +1,7 @@
 'use client'
 
 import { AppShell, GlassPanel, Header } from '@/components'
+import { useLocale, useTranslations } from '@/i18n'
 import { CheckCircleIcon, ChevronRightIcon, QuestionIcon } from '@chakra-ui/icons'
 import {
     Accordion,
@@ -23,7 +24,6 @@ import {
     Text,
     VStack
 } from '@chakra-ui/react'
-import Head from 'next/head'
 import NextLink from 'next/link'
 import { FaChartLine, FaClock, FaLightbulb, FaUsers } from 'react-icons/fa'
 
@@ -187,18 +187,39 @@ const faqData: FAQItem[] = [
   }
 ]
 
+const englishFaqData: FAQItem[] = [
+  ['o-que-e-planning-poker', 'What is Planning Poker?', 'Planning Poker is a consensus-based agile estimation technique in which team members privately choose numbered cards to estimate effort, complexity and uncertainty.', 'basico'],
+  ['como-funciona-planning-poker', 'How does Planning Poker work?', 'The Product Owner presents a story, the team discusses it, everyone chooses a card privately, and all cards are revealed together. Differences are discussed before another round.', 'basico'],
+  ['sequencia-fibonacci-planning-poker', 'Why use the Fibonacci sequence?', 'The growing gaps in the Fibonacci sequence reflect the increasing uncertainty involved in estimating larger work items.', 'metodologia'],
+  ['beneficios-planning-poker', 'What are the main benefits?', 'It reduces anchoring bias, includes every team member, exposes risks early and builds a shared understanding of the work.', 'basico'],
+  ['diferenca-story-points-horas', 'What is the difference between story points and hours?', 'Story points express relative effort, complexity and uncertainty. Hours are absolute time estimates and vary more between people and contexts.', 'metodologia'],
+  ['quantas-pessoas-planning-poker', 'How many people should participate?', 'Three to nine estimators usually provides enough perspectives without making the discussion difficult to manage.', 'pratico'],
+  ['quanto-tempo-planning-poker', 'How long should a session last?', 'Keep sessions focused, take regular breaks and avoid extending a single session beyond two or three hours.', 'pratico'],
+  ['cartas-planning-poker-valores', 'Which card values should we use?', 'Most teams use a modified Fibonacci deck together with special cards such as question mark, break and infinity.', 'tecnico'],
+  ['planning-poker-remoto', 'How do we run Planning Poker remotely?', 'Use a shared real-time room, establish clear facilitation rules and make sure every participant can discuss and vote independently.', 'tecnico'],
+  ['planning-poker-sem-consenso', 'What should we do when there is no consensus?', 'Ask the highest and lowest estimators to explain their reasoning, discuss overlooked risks, and vote again. Split the story if uncertainty remains high.', 'pratico'],
+  ['planning-poker-historias-grandes', 'How should we handle very large stories?', 'Break large stories into smaller, independently valuable slices before trying to commit to an estimate.', 'metodologia'],
+  ['papel-product-owner-planning-poker', 'What is the Product Owner’s role?', 'The Product Owner explains the story, answers requirement questions and defines acceptance criteria without steering the technical estimate.', 'metodologia'],
+  ['scrum-master-planning-poker', 'How should the Scrum Master facilitate?', 'Keep the discussion focused, manage time, include every voice and remain neutral about the estimate itself.', 'pratico'],
+  ['planning-poker-criterios-aceitacao', 'How do acceptance criteria affect estimation?', 'Clear acceptance criteria reduce ambiguity and help everyone estimate the same expected outcome.', 'metodologia'],
+  ['planning-poker-dependencias', 'How do we identify dependencies?', 'Discuss external APIs, other teams, infrastructure and prerequisite work, then include their uncertainty in the conversation.', 'tecnico'],
+  ['velocidade-equipe-planning-poker', 'How is team velocity calculated?', 'Add the story points completed in each sprint and use the average of several sprints for planning, never as an individual performance target.', 'metodologia'],
+  ['planning-poker-novos-membros', 'How do we include new team members?', 'Explain the scale and process, let them ask questions, and value their fresh perspective even while they learn the domain.', 'pratico'],
+  ['planning-poker-refinamento-backlog', 'Is Planning Poker the same as backlog refinement?', 'No. Refinement prepares and clarifies backlog items; Planning Poker is one estimation technique that can be used during refinement.', 'metodologia'],
+  ['planning-poker-estimativas-individuais', 'Is group estimation better than individual estimation?', 'Group estimation combines perspectives and uncovers assumptions that an individual estimate is likely to miss.', 'basico'],
+  ['planning-poker-arquitetura-tecnica', 'How should architecture be considered?', 'Discuss code complexity, technical debt, refactoring, non-functional requirements and architectural impact before voting.', 'tecnico'],
+  ['planning-poker-retrospectiva-estimativas', 'How can retrospectives improve estimates?', 'Review where estimates diverged from reality, identify missing assumptions and use those lessons in future refinement sessions.', 'metodologia'],
+  ['planning-poker-ferramentas-digitais', 'What should we look for in an online tool?', 'Prioritize ease of use, real-time synchronization, remote-team support, useful history and a workflow that does not distract the conversation.', 'tecnico'],
+  ['planning-poker-metricas-sucesso', 'How can we measure success?', 'Look for better shared understanding, lower uncertainty, more predictable delivery and team satisfaction—not perfect numeric accuracy.', 'metodologia'],
+  ['planning-poker-cultura-organizacional', 'How does Planning Poker affect team culture?', 'It promotes transparency, shared responsibility and open technical discussion while reducing blame around uncertain estimates.', 'basico'],
+  ['planning-poker-escalabilidade', 'Does it work for large projects and multiple teams?', 'Yes. Estimate within each team and align scales and assumptions across teams without forcing every team to share identical velocity.', 'tecnico']
+].map(([id, question, answer, category]) => ({ id, question, answer, category } as FAQItem))
+
 const categoryColors = {
   basico: 'blue',
   tecnico: 'purple',
   metodologia: 'green',
   pratico: 'orange'
-}
-
-const categoryLabels = {
-  basico: 'Básico',
-  tecnico: 'Técnico',
-  metodologia: 'Metodologia',
-  pratico: 'Prático'
 }
 
 const categoryIcons = {
@@ -209,6 +230,16 @@ const categoryIcons = {
 }
 
 export default function FAQPage() {
+  const locale = useLocale()
+  const t = useTranslations('faqPage')
+  const prefix = locale === 'en' ? '/en' : ''
+  const categoryLabels = {
+    basico: t('basic'),
+    tecnico: t('technical'),
+    metodologia: t('methodology'),
+    pratico: t('practical')
+  }
+  const localizedFaqData = locale === 'en' ? englishFaqData : faqData
   const borderColor = 'whiteAlpha.200'
   const hoverBg = 'whiteAlpha.100'
   const categoryBg = 'whiteAlpha.50'
@@ -217,7 +248,8 @@ export default function FAQPage() {
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: faqData.map(faq => ({
+    inLanguage: locale === 'en' ? 'en' : 'pt-BR',
+    mainEntity: localizedFaqData.map(faq => ({
       '@type': 'Question',
       name: faq.question,
       acceptedAnswer: {
@@ -235,34 +267,28 @@ export default function FAQPage() {
       {
         '@type': 'ListItem',
         position: 1,
-        name: 'Home',
-        item: 'https://battlepoker.devnabatalha.com'
+        name: t('home'),
+        item: `https://battlepoker.devnabatalha.com${prefix}`
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'FAQ',
-        item: 'https://battlepoker.devnabatalha.com/faq'
+        item: `https://battlepoker.devnabatalha.com${prefix}/faq`
       }
     ]
   }
 
   return (
     <AppShell>
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(faqSchema)
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(breadcrumbSchema)
-          }}
-        />
-      </Head>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
 
       <Header />
       
@@ -276,8 +302,8 @@ export default function FAQPage() {
             textStyle="body-sm"
           >
             <BreadcrumbItem>
-              <BreadcrumbLink as={NextLink} href="/">
-                Home
+              <BreadcrumbLink as={NextLink} href={prefix || '/'}>
+                {t('home')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem isCurrentPage>
@@ -295,11 +321,10 @@ export default function FAQPage() {
               bgGradient="linear(to-r, brand.200, signal.cyan)"
               bgClip="text"
             >
-              Perguntas Frequentes
+              {t('title')}
             </Heading>
             <Text textStyle="body-lg" color="ink.300" maxW="3xl">
-              Encontre respostas para as principais dúvidas sobre Planning Poker, 
-              metodologia ágil e como usar o Battle Poker para melhorar suas estimativas.
+              {t('description')}
             </Text>
             
             {/* Stats Cards */}
@@ -307,22 +332,22 @@ export default function FAQPage() {
               <GlassPanel p={4} textAlign="center">
                 <Icon as={QuestionIcon} color="signal.blue" mb={2} />
                 <Text textStyle="h3">25+</Text>
-                <Text textStyle="body-sm" color="ink.300">Perguntas</Text>
+                <Text textStyle="body-sm" color="ink.300">{t('questions')}</Text>
               </GlassPanel>
               <GlassPanel p={4} textAlign="center">
                 <Icon as={FaUsers} color="signal.green" mb={2} />
                 <Text textStyle="h3">4</Text>
-                <Text textStyle="body-sm" color="ink.300">Categorias</Text>
+                <Text textStyle="body-sm" color="ink.300">{t('categories')}</Text>
               </GlassPanel>
               <GlassPanel p={4} textAlign="center">
                 <Icon as={FaClock} color="signal.amber" mb={2} />
                 <Text textStyle="h3">5min</Text>
-                <Text textStyle="body-sm" color="ink.300">Leitura Média</Text>
+                <Text textStyle="body-sm" color="ink.300">{t('averageReading')}</Text>
               </GlassPanel>
               <GlassPanel p={4} textAlign="center">
                 <Icon as={CheckCircleIcon} color="brand.300" mb={2} />
                 <Text textStyle="h3">100%</Text>
-                <Text textStyle="body-sm" color="ink.300">Úteis</Text>
+                <Text textStyle="body-sm" color="ink.300">{t('useful')}</Text>
               </GlassPanel>
             </SimpleGrid>
           </VStack>
@@ -332,11 +357,11 @@ export default function FAQPage() {
             <VStack spacing={8} align="stretch">
               {/* Category Filters */}
               <Box>
-                <Heading as="h2" textStyle="h4" mb={4}>Categorias</Heading>
+                <Heading as="h2" textStyle="h4" mb={4}>{t('categories')}</Heading>
                 <SimpleGrid columns={{ base: 2, md: 4 }} spacing={4}>
                   {Object.entries(categoryLabels).map(([key, label]) => {
                     const IconComponent = categoryIcons[key as keyof typeof categoryIcons]
-                    const count = faqData.filter(faq => faq.category === key).length
+                    const count = localizedFaqData.filter(faq => faq.category === key).length
                     return (
                       <Flex
                         key={key}
@@ -350,7 +375,7 @@ export default function FAQPage() {
                         <Icon as={IconComponent} color={`${categoryColors[key as keyof typeof categoryColors]}.500`} mr={2} />
                         <Box>
                           <Text textStyle="label">{label}</Text>
-                          <Text textStyle="body-sm" color="ink.300">{count} perguntas</Text>
+                          <Text textStyle="body-sm" color="ink.300">{t('questionCount', { count })}</Text>
                         </Box>
                       </Flex>
                     )
@@ -362,9 +387,9 @@ export default function FAQPage() {
 
               {/* FAQ Accordion */}
               <Box>
-                <Heading as="h2" textStyle="h4" mb={6}>Todas as Perguntas</Heading>
+                <Heading as="h2" textStyle="h4" mb={6}>{t('allQuestions')}</Heading>
                 <Accordion allowMultiple>
-                  {faqData.map((faq, index) => (
+                  {localizedFaqData.map((faq) => (
                     <AccordionItem key={faq.id} border="1px" borderColor={borderColor} borderRadius="lg" mb={4}>
                       <h3>
                         <AccordionButton p={{ base: 4, md: 6 }} _hover={{ bg: hoverBg }}>
@@ -402,35 +427,34 @@ export default function FAQPage() {
 
               {/* CTA Section */}
               <VStack spacing={6} textAlign="center">
-                <Heading as="h2" textStyle="h2">Ainda tem dúvidas?</Heading>
+                <Heading as="h2" textStyle="h2">{t('stillQuestions')}</Heading>
                 <Text color="ink.300" maxW="2xl" textStyle="body">
-                  Não encontrou a resposta que procurava? Experimente o Battle Poker 
-                  e descubra como o Planning Poker pode transformar suas estimativas ágeis.
+                  {t('ctaDescription')}
                 </Text>
                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} w="full" maxW="lg">
                   <Button
                     as={NextLink}
-                    href="/"
+                    href={prefix || '/'}
                     variant="premium"
                     size="lg"
                     leftIcon={<Icon as={FaUsers} />}
                   >
-                    Criar Sala
+                    {t('createRoom')}
                   </Button>
                   <Button
                     as={NextLink}
-                    href="/o-que-e-planning-poker"
+                    href={locale === 'en' ? '/en/what-is-planning-poker' : '/o-que-e-planning-poker'}
                     variant="glass"
                     size="lg"
                     leftIcon={<Icon as={FaLightbulb} />}
                   >
-                    Guia Completo
+                    {t('completeGuide')}
                   </Button>
                 </SimpleGrid>
                 
                 <Box mt={8} p={6} bg="whiteAlpha.50" borderRadius="2xl" border="1px solid" borderColor="whiteAlpha.100">
                   <Text textStyle="body-sm" color="ink.300" textAlign="center">
-                    💡 <strong>Dica:</strong> Marque esta página nos favoritos para consultar sempre que precisar!
+                    {t('tip')}
                   </Text>
                 </Box>
               </VStack>

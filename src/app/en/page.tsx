@@ -1,46 +1,42 @@
 import type { Metadata } from "next";
 
-import HomePage from "./HomePage";
+import HomePage from "../HomePage";
 import { createLocalizedMetadata, SITE_URL } from "@/lib/seo";
 
-const title = "Battle Poker | Planning Poker Online Gratuito";
+const title = "Battle Poker | Free Online Planning Poker";
 const description =
-  "Planning Poker online e gratuito para equipes ágeis. Crie uma sala, compartilhe o link e revele estimativas simultaneamente, sem cadastro.";
+  "Free online Planning Poker for agile teams. Create a room, share the link and reveal estimates simultaneously, with no sign-up.";
 
 export const metadata: Metadata = createLocalizedMetadata({
   title,
   description,
-  canonicalPath: "",
+  canonicalPath: "/en",
   portuguesePath: "",
   englishPath: "/en",
-  locale: "pt_BR",
+  locale: "en_US",
 });
 
 const schema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: "Battle Poker",
-  url: SITE_URL,
+  url: `${SITE_URL}/en`,
   description,
-  inLanguage: "pt-BR",
+  inLanguage: "en",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web Browser",
   isAccessibleForFree: true,
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "BRL",
-  },
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   featureList: [
-    "Salas compartilháveis por link",
-    "Votação em tempo real",
-    "Revelação simultânea das cartas",
-    "Média e distribuição dos votos",
-    "Sem cadastro",
+    "Shareable rooms",
+    "Real-time voting",
+    "Simultaneous card reveal",
+    "Vote average and distribution",
+    "No sign-up",
   ],
 };
 
-export default function Page() {
+export default function EnglishHome() {
   return (
     <>
       <script

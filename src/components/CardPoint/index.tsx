@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardBody, CardProps, Heading } from "@chakra-ui/react";
 import { HTMLMotionProps, motion } from "framer-motion";
 

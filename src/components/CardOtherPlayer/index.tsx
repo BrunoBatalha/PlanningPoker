@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Tag, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { CardPoint } from "../CardPoint";

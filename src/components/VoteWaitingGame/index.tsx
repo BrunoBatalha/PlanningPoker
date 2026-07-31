@@ -3,313 +3,71 @@
 import {
   Box,
   Button,
-  HStack,
+  ButtonGroup,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  SimpleGrid,
   Text,
   usePrefersReducedMotion,
-  VisuallyHidden,
   VStack,
 } from "@chakra-ui/react";
-import { AnimatePresence, motion } from "framer-motion";
-import {
-  type FocusEvent,
-  type KeyboardEvent,
-  type PointerEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { motion } from "framer-motion";
+import { useTranslations } from "@/i18n";
+import { useState } from "react";
 
-import {
-  advanceGame,
-  createInitialGameState,
-  type GameDimensions,
-  type GameState,
-  resizeGameState,
-} from "./engine";
-import { renderGame } from "./renderer";
+import { PongGame } from "./PongGame";
+import { PhraseSliceGame } from "./PhraseSliceGame";
 
 interface VoteWaitingGameProps {
   isActive: boolean;
   sessionId: string;
 }
 
-type PressedKeys = {
-  left: boolean;
-  right: boolean;
-};
+type WaitingGameKind = "pong" | "slice";
 
-function isInteractiveTarget(target: EventTarget | null) {
-  if (!(target instanceof HTMLElement)) {
-    return false;
-  }
-
-  return Boolean(
-    target.closest(
-      'button, input, textarea, select, a, [contenteditable="true"]',
-    ),
-  );
-}
-
-function isLeftKey(key: string) {
-  return key === "ArrowLeft" || key.toLowerCase() === "a";
-}
-
-function isRightKey(key: string) {
-  return key === "ArrowRight" || key.toLowerCase() === "d";
+interface GameSelection {
+  kind: WaitingGameKind;
+  sessionId: string;
+  version: number;
 }
 
 export function VoteWaitingGame({
   isActive,
   sessionId,
 }: VoteWaitingGameProps) {
+  const t = useTranslations("waitingGame");
   const prefersReducedMotion = Boolean(usePrefersReducedMotion());
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const frameRef = useRef<number | null>(null);
-  const gameRef = useRef<GameState | null>(null);
-  const pointerXRef = useRef<number | null>(null);
-  const pressedKeysRef = useRef<PressedKeys>({ left: false, right: false });
-  const activeRef = useRef(isActive);
-  const [score, setScore] = useState(0);
-  const [phase, setPhase] = useState<"playing" | "game-over">("playing");
-  const [restartVersion, setRestartVersion] = useState(0);
+  const [selection, setSelection] = useState<GameSelection | null>(null);
+  const selectedKind =
+    isActive && selection?.sessionId === sessionId ? selection.kind : null;
 
-  activeRef.current = isActive;
-
-  useEffect(() => {
-    if (!isActive) {
-      if (frameRef.current !== null) {
-        window.cancelAnimationFrame(frameRef.current);
-        frameRef.current = null;
-      }
-      pressedKeysRef.current = { left: false, right: false };
-      pointerXRef.current = null;
-      gameRef.current = null;
-      setScore(0);
-      setPhase("playing");
+  function selectGame(kind: WaitingGameKind) {
+    if (selectedKind === kind) {
       return;
     }
 
-    const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
-
-    if (!canvas || !context) {
-      return;
-    }
-
-    let isDisposed = false;
-    let lastTimestamp: number | null = null;
-
-    const stopLoop = () => {
-      if (frameRef.current !== null) {
-        window.cancelAnimationFrame(frameRef.current);
-        frameRef.current = null;
-      }
-      lastTimestamp = null;
-    };
-
-    const measureCanvas = (): GameDimensions | null => {
-      const bounds = canvas.getBoundingClientRect();
-      const width = Math.max(1, Math.round(bounds.width));
-      const height = Math.max(1, Math.round(bounds.height));
-
-      if (width <= 1 || height <= 1) {
-        return null;
-      }
-
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.round(width * pixelRatio);
-      canvas.height = Math.round(height * pixelRatio);
-      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-
-      return { width, height };
-    };
-
-    const initializeGame = (dimensions: GameDimensions) => {
-      const direction: -1 | 1 = Math.random() < 0.5 ? -1 : 1;
-      gameRef.current = createInitialGameState(
-        dimensions,
-        prefersReducedMotion,
-        direction,
-      );
-      setScore(0);
-      setPhase("playing");
-      renderGame(context, gameRef.current);
-    };
-
-    const animate = (timestamp: number) => {
-      frameRef.current = null;
-
-      if (
-        isDisposed ||
-        !activeRef.current ||
-        document.visibilityState === "hidden"
-      ) {
-        lastTimestamp = null;
-        return;
-      }
-
-      const game = gameRef.current;
-      if (!game || game.phase === "game-over") {
-        return;
-      }
-
-      const deltaSeconds =
-        lastTimestamp === null ? 0 : (timestamp - lastTimestamp) / 1000;
-      lastTimestamp = timestamp;
-
-      const direction: -1 | 0 | 1 = pressedKeysRef.current.left
-        ? -1
-        : pressedKeysRef.current.right
-          ? 1
-          : 0;
-      const result = advanceGame(
-        game,
-        { direction, pointerX: pointerXRef.current },
-        deltaSeconds,
-      );
-
-      gameRef.current = result.state;
-      renderGame(context, result.state);
-
-      if (result.scored) {
-        setScore(result.state.score);
-      }
-
-      if (result.missed) {
-        setPhase("game-over");
-        return;
-      }
-
-      frameRef.current = window.requestAnimationFrame(animate);
-    };
-
-    const startLoop = () => {
-      if (
-        isDisposed ||
-        !activeRef.current ||
-        document.visibilityState === "hidden" ||
-        gameRef.current?.phase === "game-over" ||
-        frameRef.current !== null
-      ) {
-        return;
-      }
-
-      lastTimestamp = null;
-      frameRef.current = window.requestAnimationFrame(animate);
-    };
-
-    const initialDimensions = measureCanvas();
-    if (initialDimensions) {
-      initializeGame(initialDimensions);
-      startLoop();
-    }
-
-    const resizeObserver = new ResizeObserver(() => {
-      const dimensions = measureCanvas();
-      if (!dimensions) {
-        return;
-      }
-
-      if (gameRef.current) {
-        gameRef.current = resizeGameState(gameRef.current, dimensions);
-        renderGame(context, gameRef.current);
-      } else {
-        initializeGame(dimensions);
-        startLoop();
-      }
-    });
-    resizeObserver.observe(canvas);
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
-        stopLoop();
-        return;
-      }
-
-      startLoop();
-    };
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      isDisposed = true;
-      stopLoop();
-      resizeObserver.disconnect();
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      pressedKeysRef.current = { left: false, right: false };
-      pointerXRef.current = null;
-    };
-  }, [isActive, prefersReducedMotion, restartVersion, sessionId]);
-
-  function restartGame() {
-    if (!isActive) {
-      return;
-    }
-
-    setRestartVersion((version) => version + 1);
+    setSelection((currentSelection) => ({
+      kind,
+      sessionId,
+      version: (currentSelection?.version ?? 0) + 1,
+    }));
   }
 
-  function handlePointerMove(event: PointerEvent<HTMLDivElement>) {
-    if (!isActive || phase === "game-over") {
-      return;
-    }
-
-    const bounds = event.currentTarget.getBoundingClientRect();
-    pointerXRef.current = event.clientX - bounds.left;
+  function closeGame() {
+    setSelection(null);
   }
 
-  function handlePointerDown(event: PointerEvent<HTMLDivElement>) {
-    if (!isInteractiveTarget(event.target)) {
-      event.currentTarget.focus();
-    }
-  }
-
-  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    if (!isActive || isInteractiveTarget(event.target)) {
-      return;
-    }
-
-    if (
-      phase === "game-over" &&
-      (event.key === "Enter" || event.key === " ")
-    ) {
-      event.preventDefault();
-      restartGame();
-      return;
-    }
-
-    if (isLeftKey(event.key)) {
-      event.preventDefault();
-      pressedKeysRef.current.left = true;
-    } else if (isRightKey(event.key)) {
-      event.preventDefault();
-      pressedKeysRef.current.right = true;
-    }
-  }
-
-  function handleKeyUp(event: KeyboardEvent<HTMLDivElement>) {
-    if (isInteractiveTarget(event.target)) {
-      return;
-    }
-
-    if (isLeftKey(event.key)) {
-      event.preventDefault();
-      pressedKeysRef.current.left = false;
-    } else if (isRightKey(event.key)) {
-      event.preventDefault();
-      pressedKeysRef.current.right = false;
-    }
-  }
-
-  function handleBlur(event: FocusEvent<HTMLDivElement>) {
-    if (event.currentTarget.contains(event.relatedTarget)) {
-      return;
-    }
-
-    pressedKeysRef.current = { left: false, right: false };
-  }
+  const instanceKey = `${sessionId}:${selectedKind}:${selection?.version ?? 0}`;
+  const selectedGameLabel = selectedKind
+    ? t(`games.${selectedKind}`)
+    : "";
 
   return (
-    <AnimatePresence initial={false}>
+    <>
       {isActive ? (
         <Box
           key={sessionId}
@@ -323,10 +81,6 @@ export function VoteWaitingGame({
             scale: 1,
             transition: { duration: prefersReducedMotion ? 0 : 0.22 },
           }}
-          exit={{
-            opacity: 0,
-            transition: { duration: prefersReducedMotion ? 0 : 0.14 },
-          }}
           position="absolute"
           inset={0}
           overflow="hidden"
@@ -335,134 +89,145 @@ export function VoteWaitingGame({
           borderColor="rgba(163, 141, 255, 0.3)"
           bg="canvas.900"
           boxShadow="inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 0 34px rgba(112, 72, 245, 0.13)"
-          tabIndex={0}
-          role="region"
-          aria-label="Microjogo da espera"
-          _focusVisible={{
-            outline: "2px solid",
-            outlineColor: "brand.300",
-            outlineOffset: "3px",
-          }}
-          onPointerMove={handlePointerMove}
-          onPointerDown={handlePointerDown}
-          onKeyDown={handleKeyDown}
-          onKeyUp={handleKeyUp}
-          onBlur={handleBlur}
         >
-          <canvas
-            ref={canvasRef}
-            aria-hidden="true"
-            style={{ display: "block", width: "100%", height: "100%" }}
-          />
-
-          <HStack
+          <VStack
             position="absolute"
-            top={0}
-            left={0}
-            right={0}
-            justify="space-between"
-            align="flex-start"
-            p={{ base: 3, md: 4 }}
-            pointerEvents="none"
+            inset={0}
+            justify="center"
+            spacing={{ base: 3, md: 4 }}
+            px={{ base: 4, md: 8 }}
+            bg="linear-gradient(145deg, rgba(8, 13, 29, 0.98), rgba(17, 26, 53, 0.96))"
           >
-            <Box>
-              <Text textStyle="eyebrow" color="brand.200">
-                Enquanto o time vota
-              </Text>
+            <Box textAlign="center">
+              <Text textStyle="eyebrow">{t("selector.eyebrow")}</Text>
+              <Heading as="h3" textStyle="h4" mt={1}>
+                {t("selector.title")}
+              </Heading>
               <Text
-                mt={0.5}
                 color="ink.300"
-                textStyle="caption"
+                textStyle="body-sm"
+                mt={1}
+                maxW="lg"
                 display={{ base: "none", sm: "block" }}
               >
-                Mova o mouse ou use ← → / A D
+                {t("selector.description")}
               </Text>
             </Box>
-            <Box
-              px={3}
-              py={1.5}
-              borderRadius="full"
-              bg="rgba(5, 8, 22, 0.68)"
-              border="1px solid"
-              borderColor="whiteAlpha.200"
-              textAlign="center"
+            <SimpleGrid
+              columns={{ base: 1, sm: 2 }}
+              spacing={{ base: 2, md: 3 }}
+              w="full"
+              maxW="lg"
             >
-              <Text textStyle="caption" color="ink.300">
-                Pontos
-              </Text>
-              <Text
-                color="white"
-                fontFamily="heading"
-                fontWeight="800"
-                lineHeight="1"
-                sx={{ fontVariantNumeric: "tabular-nums" }}
+              <Button
+                type="button"
+                h="auto"
+                minH={{ base: 12, md: 16 }}
+                py={{ base: 2, md: 3 }}
+                variant="glass"
+                onClick={() => selectGame("pong")}
+                aria-label={t("modal.open", { game: t("games.pong") })}
+                whiteSpace="normal"
               >
-                {score}
-              </Text>
-            </Box>
-          </HStack>
-
-          <VisuallyHidden>
-            Pontuação atual: {score}. O jogo é individual, temporário e não
-            altera sua votação.
-          </VisuallyHidden>
-
-          <AnimatePresence>
-            {phase === "game-over" ? (
-              <Box
-                as={motion.div}
-                initial={
-                  prefersReducedMotion ? false : { opacity: 0, scale: 0.96 }
-                }
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                  transition: {
-                    duration: prefersReducedMotion ? 0 : 0.18,
-                  },
-                }}
-                position="absolute"
-                inset={0}
-                display="grid"
-                placeItems="center"
-                bg="rgba(5, 8, 22, 0.72)"
-                backdropFilter="blur(5px)"
-              >
-                <VStack
-                  spacing={3}
-                  px={6}
-                  py={5}
-                  borderRadius="2xl"
-                  bg="rgba(16, 26, 53, 0.9)"
-                  border="1px solid"
-                  borderColor="whiteAlpha.200"
-                  boxShadow="glass"
-                >
-                  <Box textAlign="center">
-                    <Text color="white" textStyle="h4">
-                      A carta caiu
-                    </Text>
-                    <Text mt={1} color="ink.300" textStyle="body-sm">
-                      Você fez {score} {score === 1 ? "ponto" : "pontos"}.
-                    </Text>
-                  </Box>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="premium"
-                    onClick={restartGame}
-                  >
-                    Jogar de novo
-                  </Button>
-                  <Text color="ink.400" textStyle="caption">
-                    Enter ou Espaço também reinicia
+                <VStack spacing={0.5}>
+                  <Text fontWeight="800">{t("games.pong")}</Text>
+                  <Text textStyle="caption" color="ink.300">
+                    {t("selector.pongDescription")}
                   </Text>
                 </VStack>
-              </Box>
-            ) : null}
-          </AnimatePresence>
+              </Button>
+              <Button
+                type="button"
+                h="auto"
+                minH={{ base: 12, md: 16 }}
+                py={{ base: 2, md: 3 }}
+                variant="premium"
+                onClick={() => selectGame("slice")}
+                aria-label={t("modal.open", { game: t("games.slice") })}
+                whiteSpace="normal"
+              >
+                <VStack spacing={0.5}>
+                  <Text fontWeight="800">{t("games.slice")}</Text>
+                  <Text textStyle="caption" color="whiteAlpha.800">
+                    {t("selector.sliceDescription")}
+                  </Text>
+                </VStack>
+              </Button>
+            </SimpleGrid>
+          </VStack>
         </Box>
       ) : null}
-    </AnimatePresence>
+
+      <Modal
+        isOpen={selectedKind !== null}
+        onClose={closeGame}
+        closeOnOverlayClick={false}
+        motionPreset={prefersReducedMotion ? "none" : "scale"}
+        isCentered
+        returnFocusOnClose
+      >
+        <ModalOverlay />
+        <ModalContent
+          aria-label={t("modal.ariaLabel", { game: selectedGameLabel })}
+          w={{ base: "100vw", md: "min(900px, calc(100vw - 48px))" }}
+          h={{ base: "100dvh", md: "min(650px, calc(100dvh - 48px))" }}
+          maxW="none"
+          maxH="none"
+          m={{ base: 0, md: 6 }}
+          borderRadius={{ base: 0, md: "3xl" }}
+          overflow="hidden"
+        >
+          <ModalCloseButton
+            aria-label={t("modal.close")}
+            top={{ base: 3, md: 4 }}
+            right={{ base: 3, md: 4 }}
+            zIndex={40}
+            bg="rgba(5, 8, 22, 0.72)"
+            border="1px solid"
+            borderColor="whiteAlpha.200"
+            _hover={{ bg: "whiteAlpha.200" }}
+          />
+          <ModalBody p={0} position="relative" minH={0} overflow="hidden">
+            {selectedKind === "pong" ? (
+              <PongGame key={instanceKey} instanceKey={instanceKey} />
+            ) : null}
+            {selectedKind === "slice" ? (
+              <PhraseSliceGame key={instanceKey} instanceKey={instanceKey} />
+            ) : null}
+
+            {selectedKind ? (
+              <ButtonGroup
+                position="absolute"
+                top={{ base: 3, md: 4 }}
+                left={{ base: 3, md: "50%" }}
+                transform={{ base: "none", md: "translateX(-50%)" }}
+                size="xs"
+                isAttached
+                zIndex={30}
+                aria-label={t("selector.ariaLabel")}
+                boxShadow="0 8px 24px rgba(2, 6, 23, 0.36)"
+              >
+                <Button
+                  type="button"
+                  variant={selectedKind === "pong" ? "premium" : "glass"}
+                  onClick={() => selectGame("pong")}
+                  aria-pressed={selectedKind === "pong"}
+                >
+                  {t("games.pong")}
+                </Button>
+                <Button
+                  type="button"
+                  variant={selectedKind === "slice" ? "premium" : "glass"}
+                  onClick={() => selectGame("slice")}
+                  aria-pressed={selectedKind === "slice"}
+                >
+                  {t("games.slice")}
+                </Button>
+              </ButtonGroup>
+            ) : null}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }

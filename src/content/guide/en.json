@@ -1,0 +1,122 @@
+{
+  "definition": [
+    "Planning Poker, also known as Scrum Poker, is a collaborative consensus-based agile estimation technique. The team uses numbered cards to compare the effort, complexity and uncertainty of user stories.",
+    "Secret voting prevents the first opinion from influencing everyone else. After the simultaneous reveal, differences become a focused conversation about risks, requirements and technical approaches."
+  ],
+  "howCards": [
+    {
+      "title": "Main goal",
+      "text": "Create a shared estimate with input from the whole team without favoring the most influential opinion."
+    },
+    {
+      "title": "Collaborative process",
+      "text": "Combine individual reflection, simultaneous reveal and discussion to build understanding before reaching consensus."
+    }
+  ],
+  "process": [
+    "The Product Owner presents the story and its acceptance criteria.",
+    "The team clarifies questions, dependencies, risks and scope boundaries.",
+    "Each participant chooses a card without showing anyone else.",
+    "Everyone reveals their cards at the same time.",
+    "People with the most distant estimates explain their reasoning.",
+    "The team votes again until it reaches a useful consensus."
+  ],
+  "fibonacci": [
+    {
+      "title": "Growing uncertainty",
+      "text": "The larger the story, the less precise an estimate can be. Wider intervals represent that uncertainty."
+    },
+    {
+      "title": "No false precision",
+      "text": "The team avoids spending time debating tiny differences between nearby values."
+    },
+    {
+      "title": "A signal to split",
+      "text": "Very high estimates suggest that the story may need to be split or clarified."
+    }
+  ],
+  "benefits": [
+    "Reduces anchoring bias and the influence of dominant opinions.",
+    "Reveals risks, dependencies and different interpretations of a requirement.",
+    "Shares technical knowledge among participants.",
+    "Improves engagement and collective ownership.",
+    "Helps the team plan with a consistent relative reference.",
+    "Turns differences in votes into objective conversations."
+  ],
+  "steps": [
+    {
+      "title": "Prepare the session",
+      "text": "Select refined stories, bring together the people who will do the work and choose the card scale."
+    },
+    {
+      "title": "Present the story",
+      "text": "Explain the goal, expected value and acceptance criteria without suggesting an estimate."
+    },
+    {
+      "title": "Discuss the scope",
+      "text": "Clarify questions and identify integrations, testing, risks and relevant technical work."
+    },
+    {
+      "title": "Vote privately",
+      "text": "Each participant chooses the card that best represents effort, complexity and uncertainty."
+    },
+    {
+      "title": "Reveal simultaneously",
+      "text": "Show all votes together so that assessments remain independent."
+    },
+    {
+      "title": "Discuss the differences",
+      "text": "Start with the extremes and look for information that part of the team may not have considered."
+    },
+    {
+      "title": "Vote again",
+      "text": "Repeat after the discussion. If disagreement remains, clarify or split the story."
+    }
+  ],
+  "cardsIntro": "A common scale uses 0, 1, 2, 3, 5, 8, 13 and 21. The wider intervals reflect growing uncertainty.",
+  "specialCards": [
+    "? — there is not enough information to estimate",
+    "☕ — the participant suggests a break",
+    "21+ — the story probably needs to be split"
+  ],
+  "tips": [
+    "Define acceptance criteria before voting.",
+    "Include the people who will implement and test the work.",
+    "Keep the conversation focused on the story scope.",
+    "Do not use story points to compare people or teams.",
+    "Record important assumptions discovered during the discussion.",
+    "Refine the scale based on the team's own context."
+  ],
+  "tools": [
+    {
+      "title": "Real time",
+      "text": "Everyone follows the room and reveals cards together, even while working remotely."
+    },
+    {
+      "title": "No sign-up",
+      "text": "Create a room, share the link and start estimating in a few seconds."
+    },
+    {
+      "title": "Free",
+      "text": "Use the core estimation flow without payment or mandatory registration."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Does Planning Poker estimate hours?",
+      "answer": "Teams usually use story points to compare effort, complexity and uncertainty. Hours can be used, but they may imply precision that does not exist yet."
+    },
+    {
+      "question": "How many people should participate?",
+      "answer": "Include the people needed to perform and understand the work. Smaller groups make discussion easier; large teams can split the session."
+    },
+    {
+      "question": "What if the team cannot agree?",
+      "answer": "Explore the extremes, clarify assumptions and vote again. If the difference remains, gather more information or split the story."
+    },
+    {
+      "question": "Does it work for remote teams?",
+      "answer": "Yes. An online room preserves private choices, simultaneous reveal and equal participation across locations."
+    }
+  ]
+}

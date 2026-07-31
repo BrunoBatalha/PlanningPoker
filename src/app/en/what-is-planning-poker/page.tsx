@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 
-import WhatIsPlanningPokerPage from "./WhatIsPlanningPokerPage";
+import WhatIsPlanningPokerPage from "../../o-que-e-planning-poker/WhatIsPlanningPokerPage";
 import { createLocalizedMetadata, SITE_URL } from "@/lib/seo";
 
-const title = "O que é Planning Poker? Guia Completo | Battle Poker";
+const title = "What Is Planning Poker? Complete Guide | Battle Poker";
 const description =
-  "Aprenda o que é Planning Poker, como funciona, seus benefícios, regras e como estimar histórias de usuário com equipes Scrum.";
+  "Learn what Planning Poker is, how it works, its benefits and how Scrum teams estimate user stories and reach consensus.";
 export const metadata: Metadata = createLocalizedMetadata({
   title,
   description,
-  canonicalPath: "/o-que-e-planning-poker",
+  canonicalPath: "/en/what-is-planning-poker",
   portuguesePath: "/o-que-e-planning-poker",
   englishPath: "/en/what-is-planning-poker",
-  locale: "pt_BR",
+  locale: "en_US",
   type: "article",
 });
 
@@ -22,8 +22,8 @@ const schemas = [
     "@type": "Article",
     headline: title,
     description,
-    inLanguage: "pt-BR",
-    mainEntityOfPage: `${SITE_URL}/o-que-e-planning-poker`,
+    inLanguage: "en",
+    mainEntityOfPage: `${SITE_URL}/en/what-is-planning-poker`,
     author: { "@type": "Organization", name: "Battle Poker" },
     publisher: {
       "@type": "Organization",
@@ -36,13 +36,13 @@ const schemas = [
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Início", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "O que é Planning Poker", item: `${SITE_URL}/o-que-e-planning-poker` },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/en` },
+      { "@type": "ListItem", position: 2, name: "What is Planning Poker", item: `${SITE_URL}/en/what-is-planning-poker` },
     ],
   },
 ];
 
-export default function Page() {
+export default function EnglishGuide() {
   return (
     <>
       {schemas.map((schema, index) => (

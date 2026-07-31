@@ -55,6 +55,7 @@ import {
   type RoomUser,
   userService,
 } from "@/services/UserService";
+import { LanguageSwitcher, useLocale } from "@/i18n";
 
 interface ParamsUrl {
   key: string;
@@ -76,6 +77,7 @@ export default function Page({
 }: {
   params: ParamsUrl;
 }) {
+  const locale = useLocale();
   const router = useRouter();
   const toast = useToast();
   const [pageState, setPageState] = useState<RoomPageState>("loading");
@@ -128,7 +130,7 @@ export default function Page({
         const storedUser = userService.getCurrentUser();
 
         if (!storedUser) {
-          router.replace(`/room/join/${roomKey}`);
+          router.replace(`${locale === "en" ? "/en" : ""}/room/join/${roomKey}`);
           return;
         }
 
@@ -147,7 +149,7 @@ export default function Page({
     return () => {
       isMounted = false;
     };
-  }, [roomKey, router]);
+  }, [roomKey, router, locale]);
 
   useEffect(() => {
     if (!currentUser || pageState !== "ready") {
@@ -162,7 +164,7 @@ export default function Page({
         );
 
         if (!roomCurrentUser) {
-          router.replace(`/room/join/${roomKey}`);
+          router.replace(`${locale === "en" ? "/en" : ""}/room/join/${roomKey}`);
           return;
         }
 
@@ -245,7 +247,7 @@ export default function Page({
       unsubscribeRoom();
       unsubscribeHistory();
     };
-  }, [currentUser, pageState, roomKey, router]);
+  }, [currentUser, pageState, roomKey, router, locale]);
 
   const voteCount = useMemo(
     () => participants.filter((participant) => participant.point !== null).length,
@@ -621,11 +623,12 @@ export default function Page({
             </HStack>
             <HStack spacing={2} w={{ base: "full", sm: "auto" }}>
               <ButtonShareRoom size="sm" flex={{ base: 1, sm: "initial" }} />
+              <LanguageSwitcher />
               <Button
                 leftIcon={<AddIcon />}
                 variant="subtle"
                 size="sm"
-                onClick={() => router.push("/")}
+                onClick={() => router.push(locale === "en" ? "/en" : "/")}
                 flex={{ base: 1, sm: "initial" }}
               >
                 Nova sala

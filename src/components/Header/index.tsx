@@ -12,12 +12,16 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { FiLayers } from "react-icons/fi";
+import { LanguageSwitcher, useLocale, useTranslations } from "@/i18n";
 
 interface HeaderProps {
   showFullLogo?: boolean;
 }
 
 export default function Header({ showFullLogo = false }: HeaderProps) {
+  const locale = useLocale();
+  const t = useTranslations("header");
+  const prefix = locale === "en" ? "/en" : "";
   return (
     <Box
       as="header"
@@ -38,7 +42,7 @@ export default function Header({ showFullLogo = false }: HeaderProps) {
         <HStack spacing={4}>
           <ChakraLink
             as={Link}
-            href="/"
+            href={prefix || "/"}
             display="flex"
             alignItems="center"
             gap={3}
@@ -90,18 +94,19 @@ export default function Header({ showFullLogo = false }: HeaderProps) {
           >
             <Button
               as={Link}
-              href="/o-que-e-planning-poker"
+              href={locale === "en" ? "/en/what-is-planning-poker" : "/o-que-e-planning-poker"}
               variant="subtle"
               size="sm"
             >
-              Guia
+              {t("guide")}
             </Button>
-            <Button as={Link} href="/faq" variant="subtle" size="sm">
-              FAQ
+            <Button as={Link} href={prefix ? "/en/faq" : "/faq"} variant="subtle" size="sm">
+              {t("faq")}
             </Button>
           </HStack>
-          <Button as={Link} href="/" variant="glass" size="sm">
-            Criar sala
+          <LanguageSwitcher />
+          <Button as={Link} href={prefix || "/"} variant="glass" size="sm">
+            {t("createRoom")}
           </Button>
         </HStack>
       </Container>

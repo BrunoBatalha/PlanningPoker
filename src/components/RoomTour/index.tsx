@@ -56,7 +56,7 @@ const ROOM_TOUR_STEPS: Step[] = [
     placement: "top",
     title: "Resultado da estimativa",
     content:
-      "Depois de votar, você pode jogar enquanto espera pelo time. A distração e a pontuação são individuais; na revelação, este espaço apresenta o resultado.",
+      "Depois de votar, escolha Pong ou Corta Essa! enquanto espera pelo time. O jogo e a pontuação são individuais; na revelação, este espaço apresenta o resultado.",
   },
   {
     target: '[data-tour="room-voting-cards"]',

@@ -24,6 +24,7 @@ import {
 } from "@/components";
 import { roomService } from "@/services/RoomService";
 import { userService } from "@/services/UserService";
+import { useLocale } from "@/i18n";
 
 interface ParamsUrl {
   key: string;
@@ -32,6 +33,7 @@ interface ParamsUrl {
 type JoinPageState = "loading" | "ready" | "not-found" | "error";
 
 export default function Page({ params }: { params: ParamsUrl }) {
+  const locale = useLocale();
   const router = useRouter();
   const toast = useToast();
   const [pageState, setPageState] = useState<JoinPageState>("loading");
@@ -76,7 +78,7 @@ export default function Page({ params }: { params: ParamsUrl }) {
 
       const userKey = await userService.addUserToRoom(params.key, username);
       userService.setCurrentUser({ key: userKey, username });
-      router.replace(`/room/${params.key}`);
+      router.replace(`${locale === "en" ? "/en" : ""}/room/${params.key}`);
     } catch (error) {
       console.error(error);
       toast({
