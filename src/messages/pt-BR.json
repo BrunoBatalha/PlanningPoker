@@ -1,7 +1,7 @@
 {
   "language": { "ariaLabel": "Alterar idioma", "portuguese": "Português (Brasil)", "english": "English" },
   "header": { "subtitle": "Planning Poker para times ágeis", "guide": "Guia", "faq": "FAQ", "createRoom": "Criar sala" },
-  "createRoom": { "defaultLabel": "Criar sala grátis", "title": "Criar nova sala", "submit": "Criar sala", "error": "Não foi possível criar a sala", "retry": "Verifique sua conexão e tente novamente." },
+  "createRoom": { "defaultLabel": "Criar sala grátis", "title": "Criar nova sala", "submit": "Criar sala", "close": "Fechar", "allowWaitingGame": "Permitir minijogo durante a espera pelos votos", "error": "Não foi possível criar a sala", "retry": "Verifique sua conexão e tente novamente." },
   "username": { "label": "Como seu time chama você?", "placeholder": "Ex.: Pedro", "invalid": "Digite seu nome para continuar.", "help": "Sem cadastro. O nome será usado apenas nesta sala.", "submit": "Continuar", "loading": "Entrando" },
   "share": { "unavailable": "Link indisponível", "wait": "Aguarde a sala terminar de carregar e tente novamente.", "copied": "Link copiado", "send": "Agora é só enviar para o seu time.", "copy": "Compartilhar", "done": "Copiado" },
   "participant": { "revealed": "Revelado", "absent": "Não votou", "voted": "Votou", "thinking": "Pensando", "you": "Você", "added": "Votou após revelação", "changed": "Voto alterado" },

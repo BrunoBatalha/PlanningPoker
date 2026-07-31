@@ -21,9 +21,14 @@ import {
 
 export interface RoomSnapshot {
   isShowingAverage: boolean;
+  isWaitingGameAllowed: boolean;
   currentRoundId: string;
   currentRoundTitle: string;
   currentRoundFallbackId: string;
+}
+
+export interface CreateRoomOptions {
+  isWaitingGameAllowed: boolean;
 }
 
 export interface RoundHistoryVote {
@@ -63,6 +68,7 @@ interface StoredHistoryItem {
 
 interface StoredRoom {
   isShowingAverage?: boolean;
+  isWaitingGameAllowed?: boolean;
   currentRoundId?: string;
   currentRoundTitle?: string;
   currentRoundFallbackId?: string;
@@ -140,7 +146,11 @@ export function formatRoundAverage(average: number | null): string {
   }).format(average);
 }
 
-async function createRoom() {
+async function createRoom(
+  { isWaitingGameAllowed }: CreateRoomOptions = {
+    isWaitingGameAllowed: true,
+  },
+) {
   const roomRef = push(ref(database, "rooms"));
 
   if (!roomRef.key) {
@@ -149,6 +159,7 @@ async function createRoom() {
 
   await set(roomRef, {
     isShowingAverage: false,
+    isWaitingGameAllowed,
     currentRoundId: generateRoundId(roomRef.key),
     currentRoundTitle: "",
     currentRoundFallbackId: generateFallbackId(),
@@ -436,6 +447,7 @@ function onRoomUpdate(
       const data = snapshot.val() as StoredRoom;
       callback({
         isShowingAverage: Boolean(data.isShowingAverage),
+        isWaitingGameAllowed: data.isWaitingGameAllowed !== false,
         currentRoundId: data.currentRoundId ?? "",
         currentRoundTitle: data.currentRoundTitle ?? "",
         currentRoundFallbackId: data.currentRoundFallbackId ?? "",

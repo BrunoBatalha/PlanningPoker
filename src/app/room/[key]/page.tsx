@@ -86,6 +86,7 @@ export default function Page({
   const [pointSelected, setPointSelected] = useState<string | null>(null);
   const [gameRoundId, setGameRoundId] = useState<string | null>(null);
   const [isShowingAverage, setIsShowingAverage] = useState(false);
+  const [isWaitingGameAllowed, setIsWaitingGameAllowed] = useState(true);
   const [currentRoundId, setCurrentRoundId] = useState("");
   const [currentRoundTitle, setCurrentRoundTitle] = useState("");
   const [currentRoundFallbackId, setCurrentRoundFallbackId] = useState("");
@@ -200,6 +201,7 @@ export default function Page({
         const isInitialRound = previousRoundId === "";
         isShowingAverageRef.current = room.isShowingAverage;
         setIsShowingAverage(room.isShowingAverage);
+        setIsWaitingGameAllowed(room.isWaitingGameAllowed);
         setCurrentRoundId(room.currentRoundId);
         setCurrentRoundTitle(room.currentRoundTitle);
         setCurrentRoundFallbackId(room.currentRoundFallbackId);
@@ -223,7 +225,7 @@ export default function Page({
           setRoundTitleDraft(room.currentRoundTitle);
         }
 
-        if (room.isShowingAverage) {
+        if (room.isShowingAverage || !room.isWaitingGameAllowed) {
           setGameRoundId(null);
         }
       },
@@ -266,6 +268,7 @@ export default function Page({
   );
   const fallbackRoundTitle = `Story #${currentRoundFallbackId}`;
   const isWaitingGameActive =
+    isWaitingGameAllowed &&
     gameRoundId === currentRoundId &&
     currentRoundId !== "" &&
     !isShowingAverage;
@@ -758,10 +761,12 @@ export default function Page({
                       : undefined
                   }
                 >
-                  <VoteWaitingGame
-                    isActive={isWaitingGameActive}
-                    sessionId={currentRoundId}
-                  />
+                  {isWaitingGameAllowed ? (
+                    <VoteWaitingGame
+                      isActive={isWaitingGameActive}
+                      sessionId={currentRoundId}
+                    />
+                  ) : null}
                   {isShowingAverage ? (
                     <ResultsPanel
                       points={participants.map(

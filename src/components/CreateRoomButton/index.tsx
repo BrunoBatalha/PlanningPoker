@@ -5,14 +5,21 @@ import { Button, type ButtonProps, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import ModalCreateUsername from "@/components/ModalCreateUsername";
+import ModalCreateRoom, {
+  type CreateRoomFormValues,
+} from "@/components/ModalCreateRoom";
 import { useLocale, useTranslations } from "@/i18n";
 import { roomService } from "@/services/RoomService";
 import { userService } from "@/services/UserService";
 
-interface CreateRoomButtonProps extends Omit<ButtonProps, "onSubmit"> { label?: string; }
+interface CreateRoomButtonProps extends Omit<ButtonProps, "onSubmit"> {
+  label?: string;
+}
 
-export default function CreateRoomButton({ label, ...buttonProps }: CreateRoomButtonProps) {
+export default function CreateRoomButton({
+  label,
+  ...buttonProps
+}: CreateRoomButtonProps) {
   const locale = useLocale();
   const t = useTranslations("createRoom");
   const router = useRouter();
@@ -20,10 +27,13 @@ export default function CreateRoomButton({ label, ...buttonProps }: CreateRoomBu
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  async function handleSubmit({ username }: { username: string }) {
+  async function handleSubmit({
+    username,
+    isWaitingGameAllowed,
+  }: CreateRoomFormValues) {
     setIsLoading(true);
     try {
-      const roomKey = await roomService.createRoom();
+      const roomKey = await roomService.createRoom({ isWaitingGameAllowed });
       const userKey = await userService.addUserToRoom(roomKey, username);
       userService.setCurrentUser({ key: userKey, username });
       router.push(`${locale === "en" ? "/en" : ""}/room/${roomKey}`);
@@ -34,5 +44,25 @@ export default function CreateRoomButton({ label, ...buttonProps }: CreateRoomBu
     }
   }
 
-  return <><Button size="lg" variant="premium" rightIcon={<ArrowForwardIcon />} onClick={() => setIsModalOpen(true)} {...buttonProps}>{label ?? t("defaultLabel")}</Button><ModalCreateUsername isOpen={isModalOpen} onSubmit={handleSubmit} isLoading={isLoading} onClose={() => setIsModalOpen(false)} title={t("title")} submitLabel={t("submit")} /></>;
+  return (
+    <>
+      <Button
+        size="lg"
+        variant="premium"
+        rightIcon={<ArrowForwardIcon />}
+        onClick={() => setIsModalOpen(true)}
+        {...buttonProps}
+      >
+        {label ?? t("defaultLabel")}
+      </Button>
+      <ModalCreateRoom
+        isOpen={isModalOpen}
+        onSubmit={handleSubmit}
+        isLoading={isLoading}
+        onClose={() => setIsModalOpen(false)}
+        title={t("title")}
+        submitLabel={t("submit")}
+      />
+    </>
+  );
 }
