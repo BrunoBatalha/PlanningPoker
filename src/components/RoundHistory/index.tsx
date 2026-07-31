@@ -30,6 +30,19 @@ const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
   timeStyle: "short",
 });
 
+function getOutcomeLabel(round: RoundHistoryItem): string {
+  switch (round.outcome.kind) {
+    case "estimated":
+      return `Estimativa final: ${round.outcome.agreedEstimate}`;
+    case "no_consensus":
+      return "Sem consenso";
+    case "postponed":
+      return "História adiada";
+    default:
+      return "Estimativa final não registrada";
+  }
+}
+
 export function RoundHistory({ history }: RoundHistoryProps) {
   return (
     <GlassPanel as="section" p={{ base: 5, md: 7 }}>
@@ -89,12 +102,8 @@ export function RoundHistory({ history }: RoundHistoryProps) {
                     >
                       {round.title}
                     </Text>
-                    <Tag
-                      flexShrink={0}
-                      colorScheme={round.average === null ? "orange" : "cyan"}
-                      variant="subtle"
-                    >
-                      {formatRoundAverage(round.average)}
+                    <Tag flexShrink={0} colorScheme="cyan" variant="subtle">
+                      {getOutcomeLabel(round)}
                     </Tag>
                   </HStack>
                   <AccordionIcon ml={2} />
@@ -106,6 +115,9 @@ export function RoundHistory({ history }: RoundHistoryProps) {
                       {round.confirmedAt > 0
                         ? dateFormatter.format(round.confirmedAt)
                         : "data indisponível"}
+                    </Text>
+                    <Text color="ink.300" textStyle="body-sm">
+                      Média dos votos: {formatRoundAverage(round.average)}
                     </Text>
                     <Divider borderColor="whiteAlpha.100" />
                     {round.votes.length === 0 ? (

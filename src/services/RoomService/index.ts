@@ -11,6 +11,13 @@ import {
 } from "firebase/database";
 
 import { database } from "../../../firebase";
+import {
+  isNumericEstimationPoint,
+  type RoundOutcome,
+  type RoundVoteSnapshot,
+  type StoredRoundOutcome,
+  votesMatchSnapshot,
+} from "@/domain/estimation";
 
 export interface RoomSnapshot {
   isShowingAverage: boolean;
@@ -29,13 +36,15 @@ export interface RoundHistoryItem {
   id: string;
   title: string;
   average: number | null;
+  outcome: StoredRoundOutcome;
   confirmedAt: number;
   votes: RoundHistoryVote[];
 }
 
 export type RoundMutationResult =
   | { status: "committed" }
-  | { status: "stale" };
+  | { status: "stale" }
+  | { status: "invalid_outcome" };
 
 interface StoredRoomUser {
   username: string;
@@ -46,6 +55,8 @@ interface StoredRoomUser {
 interface StoredHistoryItem {
   title: string;
   average: number | null;
+  outcome?: unknown;
+  agreedEstimate?: unknown;
   confirmedAt: number;
   votes?: Record<string, StoredRoomUser>;
 }
@@ -64,6 +75,8 @@ interface ConfirmRoundInput {
   title: string;
   average: number | null;
   fallbackId: string;
+  votes: RoundVoteSnapshot[];
+  outcome: RoundOutcome;
 }
 
 const FALLBACK_CHARACTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -234,10 +247,41 @@ function averagesMatch(
   return Math.abs(currentAverage - expectedAverage) < Number.EPSILON * 10;
 }
 
+function isValidRoundOutcome(outcome: unknown): outcome is RoundOutcome {
+  if (!outcome || typeof outcome !== "object" || !("kind" in outcome)) {
+    return false;
+  }
+
+  if (outcome.kind === "estimated") {
+    return (
+      "agreedEstimate" in outcome &&
+      isNumericEstimationPoint(outcome.agreedEstimate)
+    );
+  }
+
+  return outcome.kind === "no_consensus" || outcome.kind === "postponed";
+}
+
+function readStoredRoundOutcome(item: StoredHistoryItem): StoredRoundOutcome {
+  if (item.outcome === "estimated" && isNumericEstimationPoint(item.agreedEstimate)) {
+    return { kind: "estimated", agreedEstimate: item.agreedEstimate };
+  }
+
+  if (item.outcome === "no_consensus" || item.outcome === "postponed") {
+    return { kind: item.outcome };
+  }
+
+  return { kind: "legacy" };
+}
+
 async function confirmAndStartNextRound(
   roomKey: string,
   expected: ConfirmRoundInput,
 ): Promise<RoundMutationResult> {
+  if (!isValidRoundOutcome(expected.outcome)) {
+    return { status: "invalid_outcome" };
+  }
+
   const roomRef = ref(database, `rooms/${roomKey}`);
   const nextRoundId = generateRoundId(roomKey);
   const nextFallbackId = generateFallbackId(expected.fallbackId);
@@ -246,6 +290,7 @@ async function confirmAndStartNextRound(
     (currentData: StoredRoom | null) => {
       if (
         !currentData ||
+        !currentData.isShowingAverage ||
         currentData.currentRoundId !== expected.roundId ||
         currentData.history?.[expected.roundId]
       ) {
@@ -260,10 +305,18 @@ async function confirmAndStartNextRound(
       const currentAverage = calculateRoundAverage(
         Object.values(users).map((user) => user.point ?? null),
       );
+      const currentVotes = Object.entries(users).map<RoundVoteSnapshot>(
+        ([key, user]) => ({
+          key,
+          username: user.username,
+          point: user.point ?? null,
+        }),
+      );
 
       if (
         currentTitle !== expected.title ||
-        !averagesMatch(currentAverage, expected.average)
+        !averagesMatch(currentAverage, expected.average) ||
+        !votesMatchSnapshot(currentVotes, expected.votes)
       ) {
         return;
       }
@@ -303,6 +356,10 @@ async function confirmAndStartNextRound(
           [expected.roundId]: {
             title: currentTitle,
             average: currentAverage,
+            outcome: expected.outcome.kind,
+            ...(expected.outcome.kind === "estimated"
+              ? { agreedEstimate: expected.outcome.agreedEstimate }
+              : {}),
             confirmedAt: serverTimestamp(),
             votes,
           },
@@ -409,6 +466,7 @@ function onHistoryUpdate(
           id,
           title: item.title,
           average: item.average ?? null,
+          outcome: readStoredRoundOutcome(item),
           confirmedAt:
             typeof item.confirmedAt === "number" ? item.confirmedAt : 0,
           votes: Object.entries(item.votes ?? {})

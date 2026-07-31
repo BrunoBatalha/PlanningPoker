@@ -38,6 +38,12 @@ import {
   VotingCard,
 } from "@/components";
 import {
+  hasStrictNumericUnanimity,
+  VOTING_POINTS,
+  type RoundOutcome,
+  type RoundVoteSnapshot,
+} from "@/domain/estimation";
+import {
   calculateRoundAverage,
   formatRoundAverage,
   getEffectiveRoundTitle,
@@ -61,23 +67,9 @@ interface RoundConfirmationSnapshot {
   title: string;
   average: number | null;
   fallbackId: string;
+  votes: RoundVoteSnapshot[];
+  suggestedOutcome: RoundOutcome | null;
 }
-
-const POINTS = [
-  "0",
-  "1",
-  "2",
-  "3",
-  "5",
-  "8",
-  "13",
-  "21",
-  "34",
-  "55",
-  "89",
-  "?",
-  "☕",
-];
 
 export default function Page({
   params: { key: roomKey },
@@ -455,6 +447,20 @@ export default function Page({
         title: getEffectiveRoundTitle(savedTitle, currentRoundFallbackId),
         average: currentAverage,
         fallbackId: currentRoundFallbackId,
+        votes: participants.map(({ key, username, point }) => ({
+          key,
+          username,
+          point,
+        })),
+        suggestedOutcome: (() => {
+          const unanimousPoint = hasStrictNumericUnanimity(
+            participants.map((participant) => participant.point),
+          );
+
+          return unanimousPoint
+            ? { kind: "estimated", agreedEstimate: unanimousPoint }
+            : null;
+        })(),
       });
     } catch (error) {
       console.error(error);
@@ -464,7 +470,7 @@ export default function Page({
     }
   }
 
-  async function confirmNewRound() {
+  async function confirmNewRound(outcome: RoundOutcome) {
     if (!confirmation) {
       return;
     }
@@ -474,13 +480,16 @@ export default function Page({
     try {
       const result = await roomService.confirmAndStartNextRound(
         roomKey,
-        confirmation,
+        { ...confirmation, outcome },
       );
 
-      setConfirmation(null);
-
       if (result.status === "stale") {
+        setConfirmation(null);
         showStaleRoundWarning();
+      } else if (result.status === "invalid_outcome") {
+        showActionError("Escolha um resultado válido para a rodada");
+      } else {
+        setConfirmation(null);
       }
     } catch (error) {
       console.error(error);
@@ -845,7 +854,7 @@ export default function Page({
                   role="group"
                   aria-label="Cartas de estimativa"
                 >
-                  {POINTS.map((value) => (
+                  {VOTING_POINTS.map((value) => (
                     <VotingCard
                       key={value}
                       value={value}
@@ -885,9 +894,11 @@ export default function Page({
         isOpen={confirmation !== null}
         title={confirmation?.title ?? ""}
         averageLabel={formatRoundAverage(confirmation?.average ?? null)}
+        votes={confirmation?.votes ?? []}
+        suggestedOutcome={confirmation?.suggestedOutcome ?? null}
         isLoading={isRoundActionLoading}
         onCancel={() => setConfirmation(null)}
-        onConfirm={() => void confirmNewRound()}
+        onConfirm={(outcome) => void confirmNewRound(outcome)}
       />
       <RedoRoundConfirmationDialog
         isOpen={redoConfirmationRoundId !== null}

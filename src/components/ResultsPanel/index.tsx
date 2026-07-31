@@ -14,6 +14,7 @@ import {
 import { motion } from "framer-motion";
 
 import { GlassPanel } from "@/components/GlassPanel";
+import { getVoteDistribution } from "@/domain/estimation";
 import {
   calculateRoundAverage,
   formatRoundAverage,
@@ -21,45 +22,6 @@ import {
 
 interface ResultsPanelProps {
   points: Array<string | null>;
-}
-
-const POINT_ORDER = [
-  "0",
-  "1",
-  "2",
-  "3",
-  "5",
-  "8",
-  "13",
-  "21",
-  "34",
-  "55",
-  "89",
-  "?",
-  "☕",
-  "Não votou",
-];
-
-function getDistribution(points: Array<string | null>) {
-  return points
-    .reduce<Array<{ value: string; count: number }>>((items, point) => {
-      const value = point ?? "Não votou";
-      const existing = items.find((item) => item.value === value);
-
-      if (existing) {
-        existing.count += 1;
-      } else {
-        items.push({ value, count: 1 });
-      }
-
-      return items;
-    }, [])
-    .sort((a, b) => {
-      const aIndex = POINT_ORDER.indexOf(a.value);
-      const bIndex = POINT_ORDER.indexOf(b.value);
-      return (aIndex === -1 ? POINT_ORDER.length : aIndex) -
-        (bIndex === -1 ? POINT_ORDER.length : bIndex);
-    });
 }
 
 export function ResultsPanel({ points }: ResultsPanelProps) {
@@ -70,7 +32,7 @@ export function ResultsPanel({ points }: ResultsPanelProps) {
     .filter(Number.isFinite);
   const average = calculateRoundAverage(points);
   const averageLabel = formatRoundAverage(average);
-  const distribution = getDistribution(points);
+  const distribution = getVoteDistribution(points);
   const total = Math.max(points.length, 1);
 
   return (
