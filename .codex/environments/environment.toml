@@ -12,3 +12,9 @@ script = "npm i"
 name = "Start"
 icon = "run"
 command = "npm run dev"
+
+[[actions]]
+name = "Merge to main"
+icon = "tool"
+command = "$orig = (git branch --show-current); git checkout main; git merge $orig"
+platform = "win32"

@@ -185,8 +185,8 @@ export function RoomTour() {
           position="fixed"
           right={{ base: 4, md: 6 }}
           bottom={{
-            base: "calc(env(safe-area-inset-bottom, 0px) + 16px)",
-            md: 6,
+            base: "calc(env(safe-area-inset-bottom, 0px) + 76px)",
+            md: "84px",
           }}
           boxSize={12}
           minW={12}
