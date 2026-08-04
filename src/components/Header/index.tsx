@@ -6,19 +6,26 @@ import {
   Container,
   HStack,
   Icon,
+  IconButton,
   Link as ChakraLink,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Portal,
   Spacer,
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { FiLayers } from "react-icons/fi";
-import { LanguageSwitcher, useLocale, useTranslations } from "@/i18n";
+import { FiLayers, FiMenu } from "react-icons/fi";
+import { LanguageSwitcher, type Locale, useLocale, useTranslations } from "@/i18n";
 
 interface HeaderProps {
   showFullLogo?: boolean;
+  localeHrefs?: Partial<Record<Locale, string>>;
 }
 
-export default function Header({ showFullLogo = false }: HeaderProps) {
+export default function Header({ showFullLogo = false, localeHrefs }: HeaderProps) {
   const locale = useLocale();
   const t = useTranslations("header");
   const prefix = locale === "en" ? "/en" : "";
@@ -47,7 +54,7 @@ export default function Header({ showFullLogo = false }: HeaderProps) {
             alignItems="center"
             gap={3}
             _hover={{ textDecoration: "none" }}
-            aria-label="Battle Poker — página inicial"
+            aria-label={t("homeAria")}
           >
             <Box
               display="grid"
@@ -100,11 +107,37 @@ export default function Header({ showFullLogo = false }: HeaderProps) {
             >
               {t("guide")}
             </Button>
+            <Button as={Link} href={prefix ? "/en/articles" : "/artigos"} variant="subtle" size="sm">
+              {t("articles")}
+            </Button>
             <Button as={Link} href={prefix ? "/en/faq" : "/faq"} variant="subtle" size="sm">
               {t("faq")}
             </Button>
           </HStack>
-          <LanguageSwitcher />
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              display={{ base: "inline-flex", md: "none" }}
+              icon={<FiMenu />}
+              aria-label={t("menu")}
+              variant="subtle"
+              size="sm"
+            />
+            <Portal>
+              <MenuList zIndex="dropdown" bg="canvas.800" borderColor="whiteAlpha.200">
+                <MenuItem as={Link} href={locale === "en" ? "/en/what-is-planning-poker" : "/o-que-e-planning-poker"} bg="transparent">
+                  {t("guide")}
+                </MenuItem>
+                <MenuItem as={Link} href={prefix ? "/en/articles" : "/artigos"} bg="transparent">
+                  {t("articles")}
+                </MenuItem>
+                <MenuItem as={Link} href={prefix ? "/en/faq" : "/faq"} bg="transparent">
+                  {t("faq")}
+                </MenuItem>
+              </MenuList>
+            </Portal>
+          </Menu>
+          <LanguageSwitcher localeHrefs={localeHrefs} />
           <Button as={Link} href={prefix || "/"} variant="glass" size="sm">
             {t("createRoom")}
           </Button>

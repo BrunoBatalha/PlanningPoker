@@ -33,6 +33,7 @@ import { useLocale, useTranslations } from "@/i18n";
 export default function HomePage() {
   const locale = useLocale();
   const t = useTranslations("landing");
+  const headerT = useTranslations("header");
   const prefix = locale === "en" ? "/en" : "";
   const benefits = [
     { icon: FiZap, title: t("benefit1Title"), description: t("benefit1Description"), color: "signal.cyan" },
@@ -216,6 +217,7 @@ export default function HomePage() {
             <Text>{t("footer")}</Text>
             <HStack spacing={4}>
               <Link href={locale === "en" ? "/en/what-is-planning-poker" : "/o-que-e-planning-poker"}>{t("guide")}</Link>
+              <Link href={locale === "en" ? "/en/articles" : "/artigos"}>{headerT("articles")}</Link>
               <Link href={`${prefix}/faq`}>FAQ</Link>
             </HStack>
           </Stack>

@@ -45,7 +45,13 @@ export function useTranslations(namespace: keyof Messages) {
     );
   return translate;
 }
-export function LanguageSwitcher({ size = "sm" }: { size?: "sm" | "md" }) {
+export function LanguageSwitcher({
+  size = "sm",
+  localeHrefs,
+}: {
+  size?: "sm" | "md";
+  localeHrefs?: Partial<Record<Locale, string>>;
+}) {
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
@@ -56,7 +62,8 @@ export function LanguageSwitcher({ size = "sm" }: { size?: "sm" | "md" }) {
     if (nextLocale === locale) return;
     document.cookie = `NEXT_LOCALE=${nextLocale}; path=/; max-age=31536000; samesite=lax`;
     startTransition(() => {
-      router.push(nextLocale === "en" ? (pathname === "/" ? "/en" : `/en${pathname}`) : (pathname === "/en" ? "/" : pathname.slice(3) || "/"));
+      const mappedHref = localeHrefs?.[nextLocale];
+      router.push(mappedHref ?? (nextLocale === "en" ? (pathname === "/" ? "/en" : `/en${pathname}`) : (pathname === "/en" ? "/" : pathname.slice(3) || "/")));
     });
   }
 
