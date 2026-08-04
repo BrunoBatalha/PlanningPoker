@@ -14,7 +14,7 @@ export default function robots(): MetadataRoute.Robots {
         "/en/faq",
         "/en/what-is-planning-poker",
       ],
-      disallow: ["/room/", "/en/room/", "/api/", "/admin/", "/_next/", "/_vercel/"],
+      disallow: ["/room/", "/en/room/", "/api/", "/admin/", "/_vercel/"],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
     host: SITE_URL,
