@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  distDir: process.env.PLANNING_POKER_DIST_DIR || '.next',
+
   // Performance optimizations
   compress: true,
   poweredByHeader: false,

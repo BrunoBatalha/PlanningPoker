@@ -1,1 +1,25 @@
-[]
+[
+  {
+    "id": "divergencia-votos-planning-poker",
+    "locale": "pt-BR",
+    "slug": "divergencia-votos-planning-poker",
+    "title": "Divergência de votos no Planning Poker: como resolver",
+    "primaryKeyword": "planning poker divergência de votos",
+    "secondaryKeywords": [
+      "divergência no planning poker",
+      "consenso no planning poker",
+      "como resolver votos diferentes",
+      "facilitação de estimativa ágil"
+    ],
+    "searchIntent": "Resolver, passo a passo, o que fazer depois que uma rodada de Planning Poker revela estimativas muito diferentes.",
+    "summary": "Um roteiro prático para transformar cartas distantes em perguntas úteis, esclarecer a história e encerrar a rodada sem forçar consenso.",
+    "publishedAt": "2026-08-04",
+    "updatedAt": "2026-08-04",
+    "author": "Equipe Battle Poker",
+    "relatedContent": [
+      "/o-que-e-planning-poker",
+      "/faq",
+      "/"
+    ]
+  }
+]

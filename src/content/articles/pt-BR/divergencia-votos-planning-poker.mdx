@@ -1,0 +1,186 @@
+---
+status: "published"
+slug: "divergencia-votos-planning-poker"
+title: "Divergência de votos no Planning Poker: como resolver"
+description: "Aprenda a facilitar votos divergentes no Planning Poker, revelar riscos, evitar médias apressadas e decidir quando votar de novo ou adiar."
+summary: "Um roteiro prático para transformar cartas distantes em perguntas úteis, esclarecer a história e encerrar a rodada sem forçar consenso."
+author: "Equipe Battle Poker"
+primaryKeyword: "planning poker divergência de votos"
+secondaryKeywords:
+  - "divergência no planning poker"
+  - "consenso no planning poker"
+  - "como resolver votos diferentes"
+  - "facilitação de estimativa ágil"
+searchIntent: "Resolver, passo a passo, o que fazer depois que uma rodada de Planning Poker revela estimativas muito diferentes."
+relatedContent:
+  - "/o-que-e-planning-poker"
+  - "/faq"
+  - "/"
+publishedAt: "2026-08-04"
+updatedAt: "2026-08-04"
+coverImage: "/blog/divergencia-votos-planning-poker/divergencia-votos-planning-poker-capa.webp"
+coverAlt: "Cartas 3, 5, 8 e 13 convergindo para um símbolo de conversa"
+socialImage: "/blog/divergencia-votos-planning-poker/divergencia-votos-linkedin.webp"
+ctaTitle: "Teste o roteiro na próxima história"
+ctaDescription: "Crie uma sala, compartilhe o link e revele os votos ao mesmo tempo. Se aparecer um 3 contra um 13, use as perguntas deste guia antes da nova rodada."
+ctaButton: "Criar sala para estimar"
+---
+
+Quando o Planning Poker revela votos muito diferentes, **não calcule uma média imediatamente e não peça que alguém “acompanhe a maioria”**. Primeiro, convide as pessoas que escolheram os extremos a explicar quais premissas, riscos e partes do trabalho influenciaram suas cartas. Esclareça a história, registre o que foi descoberto e só então faça uma nova votação.
+
+Essa divergência não significa que a dinâmica falhou. Muitas vezes ela é o sinal mais útil da rodada: alguém pode ter percebido uma integração escondida, entendido outro critério de aceite ou assumido uma solução técnica diferente.
+
+## O que a divergência está dizendo
+
+No Planning Poker, as cartas são escolhidas em segredo e reveladas simultaneamente. A [Agile Alliance descreve a prática](https://agilealliance.org/glossary/planning-poker/) como uma conversa em que as estimativas mais alta e mais baixa são justificadas antes de novas rodadas. A mesma referência alerta que transformar a convergência em obrigação pode apagar uma informação importante: o grau de incerteza expresso pela distância entre os votos.
+
+Na prática, uma diferença entre 5 e 8 pode ser apenas variação normal de percepção. Uma diferença entre 3 e 13 merece investigação. Não existe um limite matemático universal; o facilitador deve observar se as cartas representam entendimentos diferentes sobre o item.
+
+Pergunte qual destas situações está acontecendo:
+
+- **Escopo entendido de formas diferentes:** uma pessoa incluiu migração de dados e outra não.
+- **Risco conhecido por poucos:** alguém já trabalhou naquela integração e espera uma limitação.
+- **Critério de aceite incompleto:** a história não diz o que ocorre em um cenário de falha.
+- **Soluções técnicas diferentes:** uma estimativa pressupõe reuso; outra, desenvolvimento novo.
+- **Referências inconsistentes:** as pessoas compararam a história com itens-base diferentes.
+- **Incerteza legítima:** ainda não há informação suficiente para uma estimativa responsável.
+
+<ArticleImage
+  src="/blog/divergencia-votos-planning-poker/fluxo-resolver-divergencia.webp"
+  alt="Fluxo em quatro passos: revelar, ouvir os extremos, esclarecer a história e votar de novo"
+  width={1400}
+  height={788}
+  caption="A nova votação vem depois do esclarecimento — não antes."
+/>
+
+## Roteiro de facilitação em quatro passos
+
+### 1. Torne a diferença observável, sem julgar
+
+Comece descrevendo o resultado: “Temos votos entre 3 e 13; vamos entender as premissas antes de votar novamente.” Evite dizer que um dos votos está errado ou chamar o maior valor de pessimista.
+
+Se alguém usou `?`, trate a carta como um pedido de informação. Se escolheu `☕`, confirme se a pessoa precisa de uma pausa; esses valores não devem ser usados em média numérica.
+
+### 2. Ouça primeiro quem votou nos extremos
+
+Peça explicações curtas e concretas. Uma ordem útil é ouvir primeiro a menor estimativa e depois a maior, sem abrir um debate durante cada fala.
+
+Perguntas que ajudam:
+
+1. “O que você considerou dentro do escopo?”
+2. “Qual premissa faz essa história parecer pequena ou grande?”
+3. “Que risco ou dependência pode estar invisível para o restante do time?”
+4. “Com qual história já concluída você comparou este item?”
+
+O objetivo não é defender uma carta. É tornar o raciocínio disponível para todos.
+
+### 3. Corrija a história, não apenas a votação
+
+Transforme a conversa em uma mudança verificável: acrescente um critério de aceite, divida o item, registre uma dependência ou crie uma investigação técnica curta. Se nenhuma informação foi alterada, uma segunda votação tende a repetir o mesmo conflito ou produzir conformidade sem aprendizado.
+
+O [Scrum Guide](https://scrumguides.org/scrum-guide.html) atribui o dimensionamento aos Developers que realizarão o trabalho; o Product Owner pode ajudar esclarecendo o item e os trade-offs. Portanto, quem facilita deve proteger a autonomia de quem executará o trabalho e evitar impor uma estimativa.
+
+### 4. Vote novamente — ou escolha uma saída melhor
+
+Faça uma nova rodada somente quando todos tiverem ouvido a mesma explicação. Revele as cartas ao mesmo tempo outra vez e use este critério:
+
+| Resultado da segunda rodada | Próxima ação |
+| --- | --- |
+| Cartas convergiram e o time consegue explicar a estimativa | Registre a estimativa acordada |
+| A diferença diminuiu, mas ainda há uma dúvida objetiva | Responda à dúvida e faça uma última rodada |
+| A história contém partes independentes | Divida a história e estime cada parte |
+| Falta evidência técnica | Crie uma investigação curta e adie a estimativa |
+| O desacordo é sobre prioridade ou solução, não tamanho | Retire o item da votação e resolva a decisão correta |
+
+Consenso não precisa significar que todas as pessoas escolheram a mesma carta. Significa que o time entende a decisão registrada, consegue trabalhar com ela e sabe quais incertezas permanecem.
+
+## Exemplo: uma história de recuperação de senha
+
+Uma equipe estima a história: “Como cliente, quero recuperar minha senha por e-mail para voltar a acessar minha conta.” Os votos são `3`, `5`, `5`, `13`.
+
+A pessoa que votou 3 considerou uma tela e o envio de um link usando o serviço de e-mail já existente. A pessoa que votou 13 lembrou que o produto ainda não invalida sessões ativas depois da troca de senha e que o link precisa expirar.
+
+Em vez de calcular a média 6,5 e escolher 8, o time pergunta:
+
+- o link pode ser usado mais de uma vez?
+- qual é o prazo de expiração?
+- todas as sessões devem ser encerradas?
+- existe limite de solicitações por conta?
+
+O Product Owner esclarece os três primeiros pontos e transforma o limite de solicitações em um item separado de segurança. Na segunda rodada, os votos ficam entre 5 e 8. O time registra 8 e anota a dependência do serviço de autenticação.
+
+O valor da dinâmica não foi “descobrir o número correto”. Foi descobrir trabalho que não estava visível.
+
+## Três cenários e como agir
+
+### Cenário feliz: a conversa revela uma premissa
+
+Depois de ouvir os extremos, o time percebe que metade das pessoas incluiu testes de compatibilidade e metade não. O critério é adicionado, todos votam novamente e chegam a uma faixa próxima. Registre a estimativa acordada e avance.
+
+### Cenário de falha: a maioria pressiona o voto isolado
+
+Frases como “todo mundo deu 5, muda para 5” destroem o principal benefício da revelação simultânea. O facilitador deve interromper a pressão e perguntar o que a pessoa viu de diferente. Se o ambiente não permite discordância, o problema não será corrigido por mais rodadas.
+
+### Cenário alternativo: ainda não é possível estimar
+
+Se a conversa termina com “depende da API do fornecedor” e ninguém conhece o contrato, não invente precisão. Adie a história, defina quem obterá a informação e registre a pergunta que precisa ser respondida. No Battle Poker, uma rodada também pode ser encerrada **sem consenso** ou como **história adiada**, em vez de transformar a média em decisão final.
+
+## Erros comuns ao tentar chegar a consenso
+
+### Usar a média como resposta automática
+
+A média resume a distribuição, mas não resolve premissas incompatíveis. Um 3 e um 13 podem produzir 8 matematicamente sem que ninguém acredite que 8 represente o trabalho.
+
+### Debater solução antes de entender o escopo
+
+Uma conversa técnica detalhada pode consumir a sessão inteira. Primeiro descubra se a divergência vem do “o quê” ou do “como”. Se o item exige desenho técnico, registre essa necessidade e retire-o da fila de estimativa.
+
+### Fazer rodadas ilimitadas
+
+Depois de duas ou três rodadas sem nova informação, repetir votos vira ritual. Escolha uma saída: dividir, investigar, adiar ou aceitar explicitamente uma faixa de incerteza.
+
+### Deixar liderança ou senioridade encerrar a discussão
+
+A revelação simultânea existe para que o primeiro número ou a pessoa mais influente não determine as demais respostas. Peça evidências e premissas, não autoridade.
+
+## Checklist para a próxima divergência
+
+- [ ] Descrevi a distância entre os votos sem rotular pessoas.
+- [ ] Ouvi as justificativas da menor e da maior carta.
+- [ ] Dei espaço para quem usou `?` explicar qual informação falta.
+- [ ] Identifiquei se a diferença vem de escopo, risco, solução ou referência.
+- [ ] Atualizei a história ou registrei a descoberta antes da nova votação.
+- [ ] Evitei usar a média como estimativa final automática.
+- [ ] Limitei as rodadas e defini uma saída caso a incerteza permaneça.
+- [ ] Registrei uma estimativa acordada, “sem consenso” ou “adiada” de forma explícita.
+
+Se você ainda está estruturando a dinâmica, consulte o guia [O que é Planning Poker](/o-que-e-planning-poker). Para dúvidas sobre cartas, média e participação, veja a [FAQ do Battle Poker](/faq).
+
+## Perguntas frequentes
+
+### Quem deve explicar primeiro: o maior ou o menor voto?
+
+Não existe uma ordem obrigatória. Começar pelo menor e depois ouvir o maior funciona bem porque expõe duas premissas contrastantes. O importante é permitir falas curtas sem interrupção antes da discussão coletiva.
+
+### Quantas vezes o time deve votar novamente?
+
+Enquanto houver informação nova e a conversa estiver reduzindo a incerteza. Se duas ou três rodadas repetem os mesmos argumentos, pare e escolha outra ação: dividir, investigar ou adiar.
+
+### A maioria pode decidir a estimativa?
+
+Pode existir uma regra de decisão acordada pelo time, mas votação por maioria não substitui o esclarecimento. Antes de encerrar, confirme que a minoria foi ouvida e que o risco levantado não foi descartado sem resposta.
+
+### É errado escolher uma estimativa diferente da média?
+
+Não. Pontos de história não são uma pesquisa estatística. A estimativa acordada pode coincidir com uma das cartas, com uma referência da escala ou resultar em adiamento. A média é um sinal de apoio à conversa, não uma obrigação.
+
+## Conclusão: divergência é informação
+
+Uma boa facilitação não elimina diferenças rapidamente; ela transforma diferenças em entendimento compartilhado. Revele, ouça os extremos, esclareça a história e vote de novo apenas quando algo tiver sido aprendido.
+
+No [Battle Poker](/), você pode criar uma sala sem cadastro, compartilhar o link, manter os votos ocultos até a revelação e revisar a distribuição antes de registrar a estimativa acordada ou refazer a rodada.
+
+## Referências
+
+- [Scrum Guide — Product Backlog e responsabilidade pelo dimensionamento](https://scrumguides.org/scrum-guide.html)
+- [Agile Alliance — definição, benefícios e riscos do Planning Poker](https://agilealliance.org/glossary/planning-poker/)
