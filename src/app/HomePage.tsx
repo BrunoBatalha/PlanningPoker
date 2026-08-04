@@ -29,12 +29,12 @@ import {
 import CreateRoomButton from "@/components/CreateRoomButton";
 import { AppShell, GlassPanel, Header } from "@/components";
 import { useLocale, useTranslations } from "@/i18n";
+import { getLocalizedHref, getPageAlternates } from "@/lib/locale-routing";
 
 export default function HomePage() {
   const locale = useLocale();
   const t = useTranslations("landing");
   const headerT = useTranslations("header");
-  const prefix = locale === "en" ? "/en" : "";
   const benefits = [
     { icon: FiZap, title: t("benefit1Title"), description: t("benefit1Description"), color: "signal.cyan" },
     { icon: FiShield, title: t("benefit2Title"), description: t("benefit2Description"), color: "signal.indigo" },
@@ -47,7 +47,7 @@ export default function HomePage() {
   }));
   return (
     <AppShell>
-      <Header showFullLogo />
+      <Header showFullLogo localeHrefs={getPageAlternates("home")} />
 
       <Box as="main">
         <Container maxW="7xl" px={{ base: 4, md: 6 }}>
@@ -79,7 +79,7 @@ export default function HomePage() {
               </Box>
               <Stack direction={{ base: "column", sm: "row" }} spacing={3} w={{ base: "full", sm: "auto" }}>
                 <CreateRoomButton w={{ base: "full", sm: "auto" }} />
-                <Button as={Link} href={locale === "en" ? "/en/what-is-planning-poker" : "/o-que-e-planning-poker"} size="lg" variant="glass" w={{ base: "full", sm: "auto" }}>
+                <Button as={Link} href={getLocalizedHref(locale, "guide")} size="lg" variant="glass" w={{ base: "full", sm: "auto" }}>
                   {t("learnHow")}
                 </Button>
               </Stack>
@@ -204,8 +204,8 @@ export default function HomePage() {
               </Text>
             </Box>
             <Stack direction={{ base: "column", sm: "row" }} spacing={3}>
-              <Button as={Link} href={locale === "en" ? "/en/what-is-planning-poker" : "/o-que-e-planning-poker"} variant="glass" size="lg">{t("completeGuide")}</Button>
-              <Button as={Link} href={`${prefix}/faq`} variant="subtle" size="lg">{t("faq")}</Button>
+              <Button as={Link} href={getLocalizedHref(locale, "guide")} variant="glass" size="lg">{t("completeGuide")}</Button>
+              <Button as={Link} href={getLocalizedHref(locale, "faq")} variant="subtle" size="lg">{t("faq")}</Button>
             </Stack>
           </VStack>
         </Container>
@@ -216,9 +216,9 @@ export default function HomePage() {
           <Stack direction={{ base: "column", sm: "row" }} justify="space-between" spacing={3} color="ink.300" textStyle="body-sm">
             <Text>{t("footer")}</Text>
             <HStack spacing={4}>
-              <Link href={locale === "en" ? "/en/what-is-planning-poker" : "/o-que-e-planning-poker"}>{t("guide")}</Link>
-              <Link href={locale === "en" ? "/en/articles" : "/artigos"}>{headerT("articles")}</Link>
-              <Link href={`${prefix}/faq`}>FAQ</Link>
+              <Link href={getLocalizedHref(locale, "guide")}>{t("guide")}</Link>
+              <Link href={getLocalizedHref(locale, "articles")}>{headerT("articles")}</Link>
+              <Link href={getLocalizedHref(locale, "faq")}>{headerT("faq")}</Link>
             </HStack>
           </Stack>
         </Container>

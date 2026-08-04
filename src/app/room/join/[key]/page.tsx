@@ -24,7 +24,8 @@ import {
 } from "@/components";
 import { roomService } from "@/services/RoomService";
 import { userService } from "@/services/UserService";
-import { useLocale } from "@/i18n";
+import { useLocale, useTranslations } from "@/i18n";
+import { getLocalizedHref } from "@/lib/locale-routing";
 
 interface ParamsUrl {
   key: string;
@@ -33,9 +34,11 @@ interface ParamsUrl {
 type JoinPageState = "loading" | "ready" | "not-found" | "error";
 
 export default function Page({ params }: { params: ParamsUrl }) {
-  const locale = useLocale();
   const router = useRouter();
   const toast = useToast();
+  const locale = useLocale();
+  const t = useTranslations("joinRoom");
+  const homeHref = getLocalizedHref(locale, "home");
   const [pageState, setPageState] = useState<JoinPageState>("loading");
   const [isJoining, setIsJoining] = useState(false);
 
@@ -78,12 +81,12 @@ export default function Page({ params }: { params: ParamsUrl }) {
 
       const userKey = await userService.addUserToRoom(params.key, username);
       userService.setCurrentUser({ key: userKey, username });
-      router.replace(`${locale === "en" ? "/en" : ""}/room/${params.key}`);
+      router.replace(`/room/${params.key}`);
     } catch (error) {
       console.error(error);
       toast({
-        title: "Não foi possível entrar na sala",
-        description: "Verifique sua conexão e tente novamente.",
+        title: t("joinErrorTitle"),
+        description: t("joinErrorDescription"),
         status: "error",
         duration: 4000,
         position: "top",
@@ -99,28 +102,28 @@ export default function Page({ params }: { params: ParamsUrl }) {
         {pageState === "loading" ? (
           <FeedbackState
             status="loading"
-            title="Abrindo a sala"
-            description="Estamos verificando o convite do seu time."
+            title={t("loadingTitle")}
+            description={t("loadingDescription")}
           />
         ) : null}
 
         {pageState === "not-found" ? (
           <FeedbackState
             status="error"
-            title="Sala não encontrada"
-            description="Este convite pode ter expirado ou a sala não existe mais."
-            actionHref="/"
-            actionLabel="Criar uma nova sala"
+            title={t("notFoundTitle")}
+            description={t("notFoundDescription")}
+            actionHref={homeHref}
+            actionLabel={t("notFoundAction")}
           />
         ) : null}
 
         {pageState === "error" ? (
           <FeedbackState
             status="error"
-            title="Não foi possível abrir a sala"
-            description="Verifique sua conexão e recarregue a página."
-            actionHref="/"
-            actionLabel="Voltar ao início"
+            title={t("errorTitle")}
+            description={t("errorDescription")}
+            actionHref={homeHref}
+            actionLabel={t("errorAction")}
           />
         ) : null}
 
@@ -130,7 +133,7 @@ export default function Page({ params }: { params: ParamsUrl }) {
               <Box>
                 <Button
                   as={Link}
-                  href="/"
+                  href={homeHref}
                   leftIcon={<ArrowBackIcon />}
                   variant="ghost"
                   size="sm"
@@ -138,7 +141,7 @@ export default function Page({ params }: { params: ParamsUrl }) {
                   px={0}
                   mb={7}
                 >
-                  Voltar ao início
+                  {t("back")}
                 </Button>
                 <Box
                   display="grid"
@@ -151,19 +154,18 @@ export default function Page({ params }: { params: ParamsUrl }) {
                 >
                   <Icon as={FiLayers} boxSize={7} color="white" />
                 </Box>
-                <Text textStyle="eyebrow">Convite para o time</Text>
+                <Text textStyle="eyebrow">{t("eyebrow")}</Text>
                 <Heading as="h1" textStyle="h1" mt={2}>
-                  Entre na sala
+                  {t("title")}
                 </Heading>
                 <Text color="ink.300" mt={3} textStyle="body">
-                  Digite seu nome e participe da próxima estimativa em tempo
-                  real.
+                  {t("description")}
                 </Text>
               </Box>
               <UsernameForm
                 onSubmit={handleSubmit}
                 isLoading={isJoining}
-                submitLabel="Entrar na sala"
+                submitLabel={t("submit")}
               />
             </VStack>
           </GlassPanel>

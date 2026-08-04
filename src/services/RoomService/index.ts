@@ -11,6 +11,8 @@ import {
 } from "firebase/database";
 
 import { database } from "../../../firebase";
+import type { Locale } from "@/generated/locale-catalogs";
+import { getLocaleDefinition } from "@/lib/locale-routing";
 import {
   isNumericEstimationPoint,
   type RoundOutcome,
@@ -143,13 +145,13 @@ export function calculateRoundAverage(
 
 export function formatRoundAverage(
   average: number | null,
-  locale = "pt-BR",
+  locale: Locale = "pt-BR",
 ): string {
   if (average === null) {
     return "Sem média numérica";
   }
 
-  return new Intl.NumberFormat(locale, {
+  return new Intl.NumberFormat(getLocaleDefinition(locale).languageTag, {
     maximumFractionDigits: 2,
   }).format(average);
 }

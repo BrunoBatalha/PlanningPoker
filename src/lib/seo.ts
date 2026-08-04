@@ -1,5 +1,16 @@
 import type { Metadata } from "next";
+
 import type { ArticleRecord } from "@/lib/articles";
+import type { Locale } from "@/generated/locale-catalogs";
+import { getLocaleCatalog } from "@/i18n/server";
+import {
+  defaultLocale,
+  getLocaleDefinition,
+  getLocalizedPath,
+  getPageAlternates,
+  localeDefinitions,
+} from "@/lib/locale-routing";
+import type { PublicPageKey } from "@/lib/locale-types";
 
 export const SITE_URL = "https://planningpoker.devnabatalha.com";
 
@@ -10,54 +21,55 @@ const SOCIAL_IMAGE = {
   alt: "Battle Poker",
 };
 
-type LocalizedMetadataInput = {
-  title: string;
-  description: string;
-  canonicalPath: string;
-  portuguesePath: string;
-  englishPath: string;
-  locale: "pt_BR" | "en_US";
-  type?: "website" | "article";
-};
+function absoluteUrl(path: string) {
+  return `${SITE_URL}${path}`;
+}
+
+function metadataLanguages(paths: Partial<Record<Locale, string>>) {
+  return {
+    ...Object.fromEntries(Object.entries(paths).map(([locale, path]) => [locale, absoluteUrl(path)])),
+    ...(paths[defaultLocale] !== undefined ? { "x-default": absoluteUrl(paths[defaultLocale]!) } : {}),
+  };
+}
 
 export function createLocalizedMetadata({
-  title,
-  description,
-  canonicalPath,
-  portuguesePath,
-  englishPath,
   locale,
+  page,
   type = "website",
-}: LocalizedMetadataInput): Metadata {
-  const canonical = `${SITE_URL}${canonicalPath}`;
-  const portugueseUrl = `${SITE_URL}${portuguesePath}`;
-  const englishUrl = `${SITE_URL}${englishPath}`;
+}: {
+  locale: Locale;
+  page: PublicPageKey;
+  type?: "website" | "article";
+}): Metadata {
+  const catalog = getLocaleCatalog(locale);
+  const seo = catalog.seo[page];
+  const canonicalPath = getLocalizedPath(locale, page);
+  const canonical = absoluteUrl(canonicalPath);
+  const definition = getLocaleDefinition(locale);
 
   return {
-    title,
-    description,
+    title: seo.title,
+    description: seo.description,
     alternates: {
       canonical,
-      languages: {
-        "pt-BR": portugueseUrl,
-        en: englishUrl,
-        "x-default": portugueseUrl,
-      },
+      languages: metadataLanguages(getPageAlternates(page)),
     },
     openGraph: {
       type,
-      title,
-      description,
+      title: seo.title,
+      description: seo.description,
       url: canonical,
       siteName: "Battle Poker",
-      locale,
-      alternateLocale: locale === "pt_BR" ? ["en_US"] : ["pt_BR"],
+      locale: definition.openGraphLocale,
+      alternateLocale: localeDefinitions
+        .filter((candidate) => candidate.id !== locale)
+        .map((candidate) => candidate.openGraphLocale),
       images: [SOCIAL_IMAGE],
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
+      title: seo.title,
+      description: seo.description,
       images: [SOCIAL_IMAGE.url],
     },
     robots: {
@@ -74,47 +86,99 @@ export function createLocalizedMetadata({
   };
 }
 
-type ArticleMetadataInput = {
-  article: ArticleRecord;
-  canonicalPath: string;
-  portuguesePath?: string;
-  englishPath?: string;
-};
+export function createPublicPageSchemas(locale: Locale, page: Exclude<PublicPageKey, "articles">) {
+  const catalog = getLocaleCatalog(locale);
+  const definition = getLocaleDefinition(locale);
+  const canonicalPath = getLocalizedPath(locale, page);
+  const canonical = absoluteUrl(canonicalPath);
+  const homeUrl = absoluteUrl(getLocalizedPath(locale, "home"));
+
+  if (page === "home") {
+    return [{
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "Battle Poker",
+      url: canonical,
+      description: catalog.seo.home.description,
+      inLanguage: definition.languageTag,
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web Browser",
+      isAccessibleForFree: true,
+      offers: { "@type": "Offer", price: "0", priceCurrency: catalog.seo.home.priceCurrency },
+      featureList: catalog.seo.home.featureList,
+    }];
+  }
+
+  const pageSeo = catalog.seo[page];
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: catalog.messages.header && (catalog.messages.header as Record<string, string>).homeAria, item: homeUrl },
+      { "@type": "ListItem", position: 2, name: pageSeo.breadcrumbLabel, item: canonical },
+    ],
+  };
+
+  if (page === "faq") {
+    return [{
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      inLanguage: definition.languageTag,
+      mainEntity: catalog.faq.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      })),
+    }, breadcrumb];
+  }
+
+  return [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: pageSeo.title,
+    description: pageSeo.description,
+    inLanguage: definition.languageTag,
+    mainEntityOfPage: canonical,
+    author: { "@type": "Organization", name: "Battle Poker", url: SITE_URL },
+    publisher: {
+      "@type": "Organization",
+      name: "Battle Poker",
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png`, width: 1024, height: 1024 },
+    },
+    image: `${SITE_URL}/logo.png`,
+  }, breadcrumb];
+}
 
 export function createArticleMetadata({
   article,
   canonicalPath,
-  portuguesePath,
-  englishPath,
-}: ArticleMetadataInput): Metadata {
-  const canonical = `${SITE_URL}${canonicalPath}`;
-  const image = `${SITE_URL}${article.socialImage}`;
-  const languages = {
-    ...(portuguesePath ? { "pt-BR": `${SITE_URL}${portuguesePath}` } : {}),
-    ...(englishPath ? { en: `${SITE_URL}${englishPath}` } : {}),
-    ...(portuguesePath ? { "x-default": `${SITE_URL}${portuguesePath}` } : {}),
-  };
+  alternates,
+}: {
+  article: ArticleRecord;
+  canonicalPath: string;
+  alternates: Partial<Record<Locale, string>>;
+}): Metadata {
+  const canonical = absoluteUrl(canonicalPath);
+  const image = absoluteUrl(article.socialImage);
+  const definition = getLocaleDefinition(article.locale);
+  const alternateLocale = localeDefinitions
+    .filter((candidate) => candidate.id !== article.locale && alternates[candidate.id])
+    .map((candidate) => candidate.openGraphLocale);
 
   return {
     title: `${article.title} | Battle Poker`,
     description: article.description,
     authors: [{ name: article.author, url: SITE_URL }],
-    alternates: {
-      canonical,
-      languages,
-    },
+    alternates: { canonical, languages: metadataLanguages(alternates) },
     openGraph: {
       type: "article",
       title: article.title,
       description: article.description,
       url: canonical,
       siteName: "Battle Poker",
-      locale: article.locale === "en" ? "en_US" : "pt_BR",
-      ...(article.locale === "en" && portuguesePath
-        ? { alternateLocale: ["pt_BR"] }
-        : article.locale === "pt-BR" && englishPath
-          ? { alternateLocale: ["en_US"] }
-          : {}),
+      locale: definition.openGraphLocale,
+      ...(alternateLocale.length ? { alternateLocale } : {}),
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt ?? article.publishedAt,
       authors: [article.author],
@@ -143,48 +207,40 @@ export function createArticleMetadata({
 export function createArticleSchemas({
   article,
   canonicalPath,
-  indexPath,
 }: {
   article: ArticleRecord;
   canonicalPath: string;
-  indexPath: string;
 }) {
-  const canonical = `${SITE_URL}${canonicalPath}`;
-  const indexUrl = `${SITE_URL}${indexPath}`;
-  const homeUrl = article.locale === "en" ? `${SITE_URL}/en` : SITE_URL;
-  const homeLabel = article.locale === "en" ? "Home" : "Inicio";
-  const indexLabel = article.locale === "en" ? "Articles" : "Artigos";
-
+  const canonical = absoluteUrl(canonicalPath);
+  const catalog = getLocaleCatalog(article.locale);
+  const definition = getLocaleDefinition(article.locale);
+  const indexUrl = absoluteUrl(getLocalizedPath(article.locale, "articles"));
+  const homeUrl = absoluteUrl(getLocalizedPath(article.locale, "home"));
   return [
     {
       "@context": "https://schema.org",
       "@type": "Article",
       headline: article.title,
       description: article.description,
-      image: `${SITE_URL}${article.coverImage}`,
+      image: absoluteUrl(article.coverImage),
       datePublished: article.publishedAt,
       dateModified: article.updatedAt ?? article.publishedAt,
-      inLanguage: article.locale,
+      inLanguage: definition.languageTag,
       mainEntityOfPage: canonical,
       author: { "@type": "Organization", name: article.author, url: SITE_URL },
       publisher: {
         "@type": "Organization",
         name: "Battle Poker",
         url: SITE_URL,
-        logo: {
-          "@type": "ImageObject",
-          url: `${SITE_URL}/logo.png`,
-          width: 1024,
-          height: 1024,
-        },
+        logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png`, width: 1024, height: 1024 },
       },
     },
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: homeLabel, item: homeUrl },
-        { "@type": "ListItem", position: 2, name: indexLabel, item: indexUrl },
+        { "@type": "ListItem", position: 1, name: (catalog.messages.articles as Record<string, string>).home, item: homeUrl },
+        { "@type": "ListItem", position: 2, name: catalog.seo.articles.breadcrumbLabel, item: indexUrl },
         { "@type": "ListItem", position: 3, name: article.title, item: canonical },
       ],
     },

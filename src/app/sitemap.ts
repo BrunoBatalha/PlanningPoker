@@ -1,79 +1,69 @@
 import type { MetadataRoute } from "next";
 
-import { SITE_URL } from "@/lib/seo";
 import {
   getArticleAlternates,
   getPublishedArticleBySlug,
   getPublishedArticles,
 } from "@/lib/articles";
+import {
+  defaultLocale,
+  getLocalizedPath,
+  getPageAlternates,
+  locales,
+} from "@/lib/locale-routing";
+import type { PublicPageKey } from "@/lib/locale-types";
+import { SITE_URL } from "@/lib/seo";
 
-type PagePair = {
-  portuguese: string;
-  english: string;
+const pageSettings: Record<PublicPageKey, {
   changeFrequency: "weekly" | "monthly";
   priority: number;
+}> = {
+  home: { changeFrequency: "weekly", priority: 1 },
+  guide: { changeFrequency: "monthly", priority: 0.9 },
+  faq: { changeFrequency: "monthly", priority: 0.8 },
+  articles: { changeFrequency: "weekly", priority: 0.8 },
 };
 
-const pagePairs: PagePair[] = [
-  { portuguese: "", english: "/en", changeFrequency: "weekly", priority: 1 },
-  {
-    portuguese: "/o-que-e-planning-poker",
-    english: "/en/what-is-planning-poker",
-    changeFrequency: "monthly",
-    priority: 0.9,
-  },
-  { portuguese: "/faq", english: "/en/faq", changeFrequency: "monthly", priority: 0.8 },
-  { portuguese: "/artigos", english: "/en/articles", changeFrequency: "weekly", priority: 0.8 },
-];
+function absolute(path: string) {
+  return `${SITE_URL}${path}`;
+}
+
+function languageUrls(paths: Record<string, string>) {
+  return {
+    ...Object.fromEntries(Object.entries(paths).map(([locale, path]) => [locale, absolute(path)])),
+    ...(paths[defaultLocale] !== undefined ? { "x-default": absolute(paths[defaultLocale]) } : {}),
+  };
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPages = pagePairs.flatMap(({ portuguese, english, changeFrequency, priority }) => {
-    const languages = {
-      "pt-BR": `${SITE_URL}${portuguese}`,
-      en: `${SITE_URL}${english}`,
-      "x-default": `${SITE_URL}${portuguese}`,
-    };
-
-    return [
-      {
-        url: `${SITE_URL}${portuguese}`,
-        changeFrequency,
-        priority,
-        alternates: { languages },
-      },
-      {
-        url: `${SITE_URL}${english}`,
-        changeFrequency,
-        priority,
-        alternates: { languages },
-      },
-    ];
+  const staticPages = (Object.keys(pageSettings) as PublicPageKey[]).flatMap((page) => {
+    const settings = pageSettings[page];
+    const alternates = getPageAlternates(page);
+    const languages = languageUrls(alternates);
+    return locales.map((locale) => ({
+      url: absolute(getLocalizedPath(locale, page)),
+      ...settings,
+      alternates: { languages },
+    }));
   });
 
-  const articles = (["pt-BR", "en"] as const).flatMap((locale) =>
+  const articles = locales.flatMap((locale) =>
     getPublishedArticles(locale).flatMap((summary) => {
       const article = getPublishedArticleBySlug(locale, summary.slug);
       if (!article) return [];
       const alternates = getArticleAlternates(article);
       if (!alternates) return [];
-      const path = locale === "en" ? alternates.en : alternates["pt-BR"];
+      const path = alternates[locale];
       if (!path) return [];
-      const languages = {
-        ...(alternates["pt-BR"]
-          ? { "pt-BR": `${SITE_URL}${alternates["pt-BR"]}` }
-          : {}),
-        ...(alternates.en ? { en: `${SITE_URL}${alternates.en}` } : {}),
-        ...(alternates["pt-BR"]
-          ? { "x-default": `${SITE_URL}${alternates["pt-BR"]}` }
-          : {}),
-      };
-
+      const languagePaths = Object.fromEntries(
+        Object.entries(alternates).filter((entry): entry is [string, string] => Boolean(entry[1])),
+      );
       return [{
-        url: `${SITE_URL}${path}`,
+        url: absolute(path),
         lastModified: article.updatedAt ?? article.publishedAt,
         changeFrequency: "monthly" as const,
         priority: 0.7,
-        alternates: { languages },
+        alternates: { languages: languageUrls(languagePaths) },
       }];
     }),
   );

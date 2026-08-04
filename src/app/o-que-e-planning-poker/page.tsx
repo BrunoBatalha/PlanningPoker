@@ -1,57 +1,15 @@
 import type { Metadata } from "next";
 
 import WhatIsPlanningPokerPage from "./WhatIsPlanningPokerPage";
-import { createLocalizedMetadata, SITE_URL } from "@/lib/seo";
+import { createLocalizedMetadata, createPublicPageSchemas } from "@/lib/seo";
+import { StructuredData } from "@/components/StructuredData";
 
-const title = "O que é Planning Poker? Guia Completo | Battle Poker";
-const description =
-  "Aprenda o que é Planning Poker, como funciona, seus benefícios, regras e como estimar histórias de usuário com equipes Scrum.";
-export const metadata: Metadata = createLocalizedMetadata({
-  title,
-  description,
-  canonicalPath: "/o-que-e-planning-poker",
-  portuguesePath: "/o-que-e-planning-poker",
-  englishPath: "/en/what-is-planning-poker",
-  locale: "pt_BR",
-  type: "article",
-});
-
-const schemas = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: title,
-    description,
-    inLanguage: "pt-BR",
-    mainEntityOfPage: `${SITE_URL}/o-que-e-planning-poker`,
-    author: { "@type": "Organization", name: "Battle Poker" },
-    publisher: {
-      "@type": "Organization",
-      name: "Battle Poker",
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png`, width: 1024, height: 1024 },
-    },
-    image: `${SITE_URL}/logo.png`,
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Início", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "O que é Planning Poker", item: `${SITE_URL}/o-que-e-planning-poker` },
-    ],
-  },
-];
+export const metadata: Metadata = createLocalizedMetadata({ locale: "pt-BR", page: "guide", type: "article" });
 
 export default function Page() {
   return (
     <>
-      {schemas.map((schema, index) => (
-        <script
-          key={index}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
+      <StructuredData schemas={createPublicPageSchemas("pt-BR", "guide")} />
       <WhatIsPlanningPokerPage />
     </>
   );

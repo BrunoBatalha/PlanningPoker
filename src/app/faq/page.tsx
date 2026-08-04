@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
 
 import FAQPage from "./FAQPage";
-import { createLocalizedMetadata } from "@/lib/seo";
+import { createLocalizedMetadata, createPublicPageSchemas } from "@/lib/seo";
+import { StructuredData } from "@/components/StructuredData";
 
-export const metadata: Metadata = createLocalizedMetadata({
-  title: "Perguntas Frequentes sobre Planning Poker | Battle Poker",
-  description:
-    "Respostas para as principais dúvidas sobre Planning Poker, estimativas Scrum, story points e uso da ferramenta online.",
-  canonicalPath: "/faq",
-  portuguesePath: "/faq",
-  englishPath: "/en/faq",
-  locale: "pt_BR",
-});
+export const metadata: Metadata = createLocalizedMetadata({ locale: "pt-BR", page: "faq" });
 
 export default function FAQ() {
-  return <FAQPage />;
+  return <><StructuredData schemas={createPublicPageSchemas("pt-BR", "faq")} /><FAQPage /></>;
 }

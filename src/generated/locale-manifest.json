@@ -1,0 +1,35 @@
+{
+  "defaultLocale": "pt-BR",
+  "locales": [
+    {
+      "id": "en",
+      "languageTag": "en",
+      "openGraphLocale": "en_US",
+      "urlPrefix": "en",
+      "nativeName": "English",
+      "shortName": "EN",
+      "default": false
+    },
+    {
+      "id": "pt-BR",
+      "languageTag": "pt-BR",
+      "openGraphLocale": "pt_BR",
+      "urlPrefix": "",
+      "nativeName": "Português",
+      "shortName": "PT",
+      "default": true
+    }
+  ],
+  "routes": {
+    "en": {
+      "guide": "what-is-planning-poker",
+      "faq": "faq",
+      "articles": "articles"
+    },
+    "pt-BR": {
+      "guide": "o-que-e-planning-poker",
+      "faq": "faq",
+      "articles": "artigos"
+    }
+  }
+}

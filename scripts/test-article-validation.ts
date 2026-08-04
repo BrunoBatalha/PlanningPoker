@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-import { loadArticleLibrary } from "../src/lib/articles";
+import { isArticlePublic, loadArticleLibrary } from "../src/lib/articles";
 
 const root = fs.mkdtempSync(path.join(os.tmpdir(), "battle-poker-articles-"));
 const articleRoot = path.join(root, "articles");
@@ -84,7 +84,17 @@ try {
   write("pt-BR", "h1", article({ status: "draft" }, "# Titulo duplicado"));
   expectFailure(/nao pode conter h1/);
 
-  console.log("Validacao editorial: 7 cenarios aprovados.");
+  reset();
+  write("pt-BR", "body-image", article({ status: "draft" }, '<ArticleImage src="/blog/missing-body.webp" alt="Teste" width={10} height={10} />'));
+  expectFailure(/imagem do corpo 1 nao encontrada/);
+
+  reset();
+  write("pt-BR", "future", article({ publishedAt: "2026-03-01" }));
+  const future = validate().records[0];
+  assert.equal(isArticlePublic(future, "2026-02-01"), false);
+  assert.equal(isArticlePublic({ ...future, status: "draft", publishedAt: "2026-01-01" }, "2026-02-01"), false);
+
+  console.log("Validacao editorial: 9 cenarios aprovados.");
 } finally {
   fs.rmSync(root, { recursive: true, force: true });
 }

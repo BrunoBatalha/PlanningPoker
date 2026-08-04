@@ -1,52 +1,15 @@
 import type { Metadata } from "next";
 
 import HomePage from "./HomePage";
-import { createLocalizedMetadata, SITE_URL } from "@/lib/seo";
+import { createLocalizedMetadata, createPublicPageSchemas } from "@/lib/seo";
+import { StructuredData } from "@/components/StructuredData";
 
-const title = "Battle Poker | Planning Poker Online Gratuito";
-const description =
-  "Planning Poker online e gratuito para equipes ágeis. Crie uma sala, compartilhe o link e revele estimativas simultaneamente, sem cadastro.";
-
-export const metadata: Metadata = createLocalizedMetadata({
-  title,
-  description,
-  canonicalPath: "",
-  portuguesePath: "",
-  englishPath: "/en",
-  locale: "pt_BR",
-});
-
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  name: "Battle Poker",
-  url: SITE_URL,
-  description,
-  inLanguage: "pt-BR",
-  applicationCategory: "BusinessApplication",
-  operatingSystem: "Web Browser",
-  isAccessibleForFree: true,
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "BRL",
-  },
-  featureList: [
-    "Salas compartilháveis por link",
-    "Votação em tempo real",
-    "Revelação simultânea das cartas",
-    "Média e distribuição dos votos",
-    "Sem cadastro",
-  ],
-};
+export const metadata: Metadata = createLocalizedMetadata({ locale: "pt-BR", page: "home" });
 
 export default function Page() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
+      <StructuredData schemas={createPublicPageSchemas("pt-BR", "home")} />
       <HomePage />
     </>
   );

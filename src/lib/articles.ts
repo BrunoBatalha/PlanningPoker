@@ -3,10 +3,11 @@ import path from "node:path";
 
 import matter from "gray-matter";
 import { z } from "zod";
+import type { Locale } from "@/generated/locale-catalogs";
+import { getArticlePath, locales } from "@/lib/locale-routing";
 
-export const ARTICLE_LOCALES = ["pt-BR", "en"] as const;
-
-export type ArticleLocale = (typeof ARTICLE_LOCALES)[number];
+export const ARTICLE_LOCALES = locales;
+export type ArticleLocale = Locale;
 export type ArticleStatus = "draft" | "published";
 
 const dateSchema = z
@@ -124,10 +125,18 @@ function readLocaleArticles(
         errors.push(`${locale}/${entry.name}: o corpo nao pode conter h1; o titulo da pagina ja e o h1`);
       }
 
+      const bodyImages = [...parsed.content.matchAll(/<ArticleImage\s+[\s\S]*?src=["']([^"']+)["'][\s\S]*?\/>/g)]
+        .map((match) => match[1]);
+
       for (const [label, imagePath] of [
         ["capa", frontmatter.coverImage],
         ["imagem social", frontmatter.socialImage],
+        ...bodyImages.map((imagePath, index) => [`imagem do corpo ${index + 1}`, imagePath] as const),
       ] as const) {
+        if (!imagePath.startsWith("/")) {
+          errors.push(`${locale}/${entry.name}: ${label} deve usar caminho absoluto em public`);
+          continue;
+        }
         const resolvedImagePath = path.resolve(publicRoot, imagePath.slice(1));
         if (
           !isPathInside(path.resolve(publicRoot), resolvedImagePath) ||
@@ -181,7 +190,7 @@ function getDefaultLibrary() {
   return loadArticleLibrary();
 }
 
-function isPublicArticle(article: ArticleRecord, records: ArticleRecord[], today: string) {
+export function isArticlePublic(article: ArticleRecord, today: string) {
   return article.status === "published" && article.publishedAt <= today;
 }
 
@@ -189,7 +198,7 @@ export function getPublishedArticles(locale: ArticleLocale): ArticleSummary[] {
   const { records, today } = getDefaultLibrary();
   return records
     .filter(
-      (article) => article.locale === locale && isPublicArticle(article, records, today),
+      (article) => article.locale === locale && isArticlePublic(article, today),
     )
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
     .map(({ content: _content, ...article }) => article);
@@ -203,26 +212,20 @@ export function getPublishedArticleBySlug(
   const article = records.find(
     (record) => record.locale === locale && record.slug === slug,
   );
-  return article && isPublicArticle(article, records, today) ? article : undefined;
+  return article && isArticlePublic(article, today) ? article : undefined;
 }
 
 export function getArticleAlternates(article: ArticleRecord) {
   const { records, today } = getDefaultLibrary();
-  if (!isPublicArticle(article, records, today)) return undefined;
-  const portuguese = records.find(
-    (record) => record.id === article.id && record.locale === "pt-BR",
-  );
-  const english = records.find(
-    (record) => record.id === article.id && record.locale === "en",
-  );
-  return {
-    ...(portuguese && isPublicArticle(portuguese, records, today)
-      ? { "pt-BR": `/artigos/${portuguese.slug}` }
-      : {}),
-    ...(english && isPublicArticle(english, records, today)
-      ? { en: `/en/articles/${english.slug}` }
-      : {}),
-  } as const;
+  if (!isArticlePublic(article, today)) return undefined;
+  return Object.fromEntries(
+    ARTICLE_LOCALES.flatMap((locale) => {
+      const translation = records.find((record) => record.id === article.id && record.locale === locale);
+      return translation && isArticlePublic(translation, today)
+        ? [[locale, getArticlePath(locale, translation.slug)]]
+        : [];
+    }),
+  ) as Partial<Record<ArticleLocale, string>>;
 }
 
 export function getRelatedArticles(article: ArticleRecord, limit = 3) {
@@ -232,8 +235,8 @@ export function getRelatedArticles(article: ArticleRecord, limit = 3) {
 }
 
 export function getPublishedArticlePairs() {
-  const portugueseArticles = getPublishedArticles("pt-BR");
-  const englishArticles = getPublishedArticles("en");
+  const portugueseArticles = getPublishedArticles("pt-BR" as ArticleLocale);
+  const englishArticles = getPublishedArticles("en" as ArticleLocale);
   return portugueseArticles.flatMap((portuguese) => {
     const english = englishArticles.find((article) => article.id === portuguese.id);
     return english ? [{ portuguese, english }] : [];

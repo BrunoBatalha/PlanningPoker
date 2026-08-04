@@ -1,39 +1,67 @@
 import { NextResponse, type NextRequest } from "next/server";
-import articleSlugs from "@/generated/article-slugs.json";
 
-const publishedArticleSlugs = articleSlugs as Record<"pt-BR" | "en", string[]>;
+import type { Locale } from "@/generated/locale-catalogs";
+import {
+  defaultLocale,
+  getLocaleByPrefix,
+  getLocalizedPath,
+  isLocale,
+  localeDefinitions,
+  resolvePreferredLocale,
+} from "@/lib/locale-routing";
+
+function requestHeaders(request: NextRequest, locale: Locale) {
+  const headers = new Headers(request.headers);
+  headers.set("x-battle-poker-locale", locale);
+  return headers;
+}
+
+function legacyRoomRequest(pathname: string) {
+  for (const definition of localeDefinitions) {
+    if (!definition.urlPrefix) continue;
+    const prefix = `/${definition.urlPrefix}`;
+    if (pathname === `${prefix}/room` || pathname.startsWith(`${prefix}/room/`)) {
+      return { locale: definition.id, target: pathname.slice(prefix.length) || "/room" };
+    }
+  }
+  return undefined;
+}
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set(
-    "x-battle-poker-locale",
-    pathname === "/en" || pathname.startsWith("/en/") ? "en" : "pt-BR",
-  );
+  const cookieLocale = request.cookies.get("NEXT_LOCALE")?.value;
+  const acceptLanguage = request.headers.get("accept-language");
+  const legacyRoom = legacyRoomRequest(pathname);
 
-  const portugueseArticle = pathname.match(/^\/artigos\/([^/]+)\/?$/);
-  const englishArticle = pathname.match(/^\/en\/articles\/([^/]+)\/?$/);
-  const unknownArticle =
-    (portugueseArticle && !publishedArticleSlugs["pt-BR"].includes(portugueseArticle[1])) ||
-    (englishArticle && !publishedArticleSlugs.en.includes(englishArticle[1]));
-
-  if (unknownArticle) {
-    return NextResponse.rewrite(new URL("/404", request.url), {
-      status: 404,
-      request: { headers: requestHeaders },
+  if (legacyRoom) {
+    const response = NextResponse.redirect(new URL(legacyRoom.target, request.url));
+    response.cookies.set("NEXT_LOCALE", legacyRoom.locale, {
+      path: "/",
+      maxAge: 31_536_000,
+      sameSite: "lax",
     });
+    return response;
   }
 
   if (pathname === "/") {
-    const preference = request.cookies.get("NEXT_LOCALE")?.value;
-    const browserLanguage = request.headers.get("accept-language")?.toLowerCase() ?? "";
-
-    if (preference === "en" || (!preference && browserLanguage.startsWith("en"))) {
-      return NextResponse.redirect(new URL("/en", request.url));
+    const preferredLocale = resolvePreferredLocale(cookieLocale, acceptLanguage);
+    if (preferredLocale !== defaultLocale) {
+      return NextResponse.redirect(new URL(getLocalizedPath(preferredLocale, "home"), request.url));
     }
   }
 
-  return NextResponse.next({ request: { headers: requestHeaders } });
+  const firstSegment = pathname.split("/").filter(Boolean)[0] ?? "";
+  const prefixedLocale = getLocaleByPrefix(firstSegment);
+  const isRoom = pathname === "/room" || pathname.startsWith("/room/");
+  const locale = isRoom
+    ? resolvePreferredLocale(cookieLocale, acceptLanguage)
+    : prefixedLocale ?? defaultLocale;
+
+  const response = NextResponse.next({ request: { headers: requestHeaders(request, locale) } });
+  if (!isRoom && pathname !== "/" && isLocale(locale) && cookieLocale !== locale) {
+    response.cookies.set("NEXT_LOCALE", locale, { path: "/", maxAge: 31_536_000, sameSite: "lax" });
+  }
+  return response;
 }
 
 export const config = {

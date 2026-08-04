@@ -8,7 +8,7 @@ import { useState } from "react";
 import ModalCreateRoom, {
   type CreateRoomFormValues,
 } from "@/components/ModalCreateRoom";
-import { useLocale, useTranslations } from "@/i18n";
+import { useTranslations } from "@/i18n";
 import { roomService } from "@/services/RoomService";
 import { userService } from "@/services/UserService";
 
@@ -20,7 +20,6 @@ export default function CreateRoomButton({
   label,
   ...buttonProps
 }: CreateRoomButtonProps) {
-  const locale = useLocale();
   const t = useTranslations("createRoom");
   const router = useRouter();
   const toast = useToast();
@@ -36,7 +35,7 @@ export default function CreateRoomButton({
       const roomKey = await roomService.createRoom({ isWaitingGameAllowed });
       const userKey = await userService.addUserToRoom(roomKey, username);
       userService.setCurrentUser({ key: userKey, username });
-      router.push(`${locale === "en" ? "/en" : ""}/room/${roomKey}`);
+      router.push(`/room/${roomKey}`);
     } catch (error) {
       console.error(error);
       toast({ title: t("error"), description: t("retry"), status: "error", duration: 4000, position: "top", isClosable: true });

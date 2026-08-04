@@ -5,11 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 import type { ArticleSummary } from "@/lib/articles";
+import { getLocaleDefinition } from "@/lib/locale-routing";
 import { useTranslations } from "@/i18n";
 
 export function ArticleCard({ article, href }: { article: ArticleSummary; href: string }) {
   const t = useTranslations("articles");
-  const formattedDate = new Intl.DateTimeFormat(article.locale, {
+  const formattedDate = new Intl.DateTimeFormat(getLocaleDefinition(article.locale).languageTag, {
     dateStyle: "long",
     timeZone: "UTC",
   }).format(new Date(`${article.publishedAt}T00:00:00.000Z`));

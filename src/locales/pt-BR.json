@@ -1,0 +1,1021 @@
+{
+  "$locale": {
+    "id": "pt-BR",
+    "languageTag": "pt-BR",
+    "openGraphLocale": "pt_BR",
+    "urlPrefix": "",
+    "nativeName": "Português",
+    "shortName": "PT",
+    "default": true
+  },
+  "routes": {
+    "guide": "o-que-e-planning-poker",
+    "faq": "faq",
+    "articles": "artigos"
+  },
+  "seo": {
+    "home": {
+      "title": "Battle Poker | Planning Poker Online Gratuito",
+      "description": "Planning Poker online e gratuito para equipes ágeis. Crie uma sala, compartilhe o link e revele estimativas simultaneamente, sem cadastro.",
+      "priceCurrency": "BRL",
+      "featureList": [
+        "Salas compartilháveis por link",
+        "Votação em tempo real",
+        "Revelação simultânea das cartas",
+        "Média e distribuição dos votos",
+        "Sem cadastro"
+      ]
+    },
+    "faq": {
+      "title": "Perguntas Frequentes sobre Planning Poker | Battle Poker",
+      "description": "Respostas para as principais dúvidas sobre Planning Poker, estimativas Scrum, story points e uso da ferramenta online.",
+      "breadcrumbLabel": "FAQ"
+    },
+    "guide": {
+      "title": "O que é Planning Poker? Guia Completo | Battle Poker",
+      "description": "Aprenda o que é Planning Poker, como funciona, seus benefícios, regras e como estimar histórias de usuário com equipes Scrum.",
+      "breadcrumbLabel": "O que é Planning Poker"
+    },
+    "articles": {
+      "title": "Artigos sobre Planning Poker | Battle Poker",
+      "description": "Guias práticos para melhorar refinamentos, estimativas ágeis e conversas de produto com Planning Poker.",
+      "breadcrumbLabel": "Artigos"
+    },
+    "room": {
+      "title": "Sala de Planning Poker - Battle Poker",
+      "description": "Sala colaborativa de Planning Poker para estimativa ágil em tempo real. Participe com sua equipe para estimar histórias de usuário.",
+      "openGraphDescription": "Sala colaborativa de Planning Poker para estimativa ágil em tempo real"
+    }
+  },
+  "messages": {
+    "language": {
+      "ariaLabel": "Alterar idioma",
+      "portuguese": "Português (Brasil)",
+      "english": "English"
+    },
+    "header": {
+      "subtitle": "Planning Poker para times ágeis",
+      "homeAria": "Battle Poker — página inicial",
+      "guide": "Guia",
+      "articles": "Artigos",
+      "faq": "FAQ",
+      "menu": "Abrir navegação",
+      "navAria": "Navegação principal",
+      "createRoom": "Criar sala"
+    },
+    "articles": {
+      "eyebrow": "CONTEÚDO PARA TIMES ÁGEIS",
+      "indexTitle": "Artigos sobre Planning Poker",
+      "indexDescription": "Guias práticos para melhorar refinamentos, estimativas e conversas de produto com seu time.",
+      "emptyTitle": "Novos artigos em preparação",
+      "emptyDescription": "Estamos preparando conteúdo útil sobre estimativas ágeis. Enquanto isso, consulte nosso guia completo.",
+      "readGuide": "Ler guia completo",
+      "home": "Início",
+      "breadcrumb": "Artigos",
+      "authorBy": "Por {author}",
+      "publishedOn": "Publicado em {date}",
+      "updatedOn": "Atualizado em {date}",
+      "readingTime": "{minutes} min de leitura",
+      "readArticle": "Ler artigo",
+      "relatedEyebrow": "Continue aprendendo",
+      "relatedTitle": "Artigos relacionados",
+      "ctaTitle": "Leve a conversa para a prática",
+      "ctaDescription": "Crie uma sala gratuita e faça uma estimativa colaborativa com seu time.",
+      "ctaButton": "Criar sala grátis",
+      "footer": "Battle Poker — Planning Poker online e gratuito."
+    },
+    "createRoom": {
+      "defaultLabel": "Criar sala grátis",
+      "title": "Criar nova sala",
+      "submit": "Criar sala",
+      "close": "Fechar",
+      "allowWaitingGame": "Permitir minijogo durante a espera pelos votos",
+      "error": "Não foi possível criar a sala",
+      "retry": "Verifique sua conexão e tente novamente."
+    },
+    "joinRoom": {
+      "loadingTitle": "Abrindo a sala",
+      "loadingDescription": "Estamos verificando o convite do seu time.",
+      "notFoundTitle": "Sala não encontrada",
+      "notFoundDescription": "Este convite pode ter expirado ou a sala não existe mais.",
+      "notFoundAction": "Criar uma nova sala",
+      "errorTitle": "Não foi possível abrir a sala",
+      "errorDescription": "Verifique sua conexão e recarregue a página.",
+      "errorAction": "Voltar ao início",
+      "joinErrorTitle": "Não foi possível entrar na sala",
+      "joinErrorDescription": "Verifique sua conexão e tente novamente.",
+      "back": "Voltar ao início",
+      "eyebrow": "Convite para o time",
+      "title": "Entre na sala",
+      "description": "Digite seu nome e participe da próxima estimativa em tempo real.",
+      "submit": "Entrar na sala"
+    },
+    "username": {
+      "label": "Como seu time chama você?",
+      "placeholder": "Ex.: Pedro",
+      "invalid": "Digite seu nome para continuar.",
+      "help": "Sem cadastro. O nome será usado apenas nesta sala.",
+      "submit": "Continuar",
+      "loading": "Entrando"
+    },
+    "share": {
+      "unavailable": "Link indisponível",
+      "wait": "Aguarde a sala terminar de carregar e tente novamente.",
+      "copied": "Link copiado",
+      "send": "Agora é só enviar para o seu time.",
+      "copy": "Compartilhar",
+      "done": "Copiado"
+    },
+    "suggestion": {
+      "buttonLabel": "Enviar sugestão",
+      "title": "Envie uma sugestão",
+      "description": "Conte o que você pensou. Sua mensagem será enviada de forma anônima.",
+      "label": "Sua sugestão",
+      "placeholder": "Descreva sua ideia, melhoria ou dificuldade...",
+      "help": "{count} de {max} caracteres",
+      "required": "Descreva sua sugestão antes de enviar.",
+      "tooLong": "A sugestão deve ter no máximo 1000 caracteres.",
+      "cancel": "Cancelar",
+      "submit": "Enviar sugestão",
+      "submitting": "Enviando",
+      "successTitle": "Sugestão enviada",
+      "successDescription": "Obrigado por ajudar a melhorar o Battle Poker.",
+      "errorTitle": "Não foi possível enviar",
+      "errorDescription": "Verifique sua conexão e tente novamente."
+    },
+    "participant": {
+      "revealed": "Revelado",
+      "absent": "Não votou",
+      "voted": "Votou",
+      "thinking": "Pensando",
+      "you": "Você",
+      "added": "Votou após revelação",
+      "changed": "Voto alterado",
+      "minimum": "Menor voto",
+      "maximum": "Maior voto",
+      "consensus": "Consenso",
+      "presence": {
+        "online": "Online",
+        "reconnecting": "Reconectando",
+        "offline": "Offline",
+        "unknown": "Status desconhecido"
+      }
+    },
+    "results": {
+      "averageEyebrow": "Média da rodada",
+      "noNumericAverage": "Sem média numérica",
+      "numericVoteCount": "{count} voto numérico",
+      "numericVotesCount": "{count} votos numéricos",
+      "distributionEyebrow": "Distribuição",
+      "distributionTitle": "Como os votos foram registrados",
+      "voteCount": "{count} voto",
+      "votesCount": "{count} votos",
+      "didNotVote": "Não votou",
+      "discussionEyebrow": "Próxima conversa",
+      "discussionTitle": "Estimativas divergentes",
+      "discussionDescription": "Convide quem está nos extremos a compartilhar as premissas por trás das estimativas.",
+      "consensusEyebrow": "Estimativas alinhadas",
+      "consensusDescription": "Todos os participantes ativos votaram e os votos registrados chegaram ao mesmo valor numérico.",
+      "consensusSummary": "Consenso: {value}",
+      "averageSecondary": "Média matemática: {average}",
+      "singleVoteEyebrow": "Estimativa registrada",
+      "singleDistribution": "Distribuição: {value} — 1 voto",
+      "minimumLabel": "Menor estimativa",
+      "maximumLabel": "Maior estimativa"
+    },
+    "roundStatus": {
+      "waiting": {
+        "label": "Escolha sua estimativa",
+        "description": "Seu voto ficará oculto até a revelação."
+      },
+      "secret": {
+        "label": "Seu voto foi registrado",
+        "description": "Pessoas ativas sem votar: {pending}."
+      },
+      "ready": {
+        "label": "Todos votaram",
+        "description": "As cartas estão prontas para serem reveladas."
+      },
+      "revealed": {
+        "label": "Resultado provisório",
+        "description": "Revise os votos e registre a decisão do time."
+      },
+      "counts": "Votos registrados: {votes} · Ativos: {active} · Pendentes: {pending}"
+    },
+    "room": {
+      "header": {
+        "accessibleHeading": "Sala de Planning Poker",
+        "inRoom": "Você está na sala",
+        "leave": "Sair da sala",
+        "leaving": "Saindo"
+      },
+      "participants": {
+        "eyebrow": "Time",
+        "title": "Participantes",
+        "mobileSummary": "Ativos: {active} de {total}",
+        "votesSummary": "Votos: {votes} · Ativos pendentes: {pending}",
+        "active": "Ativos: {count}",
+        "inactive": "Offline/desconhecidos: {count}"
+      },
+      "round": {
+        "eyebrow": "Rodada atual"
+      },
+      "actions": {
+        "redo": "Votar novamente neste item",
+        "confirm": "Confirmar resultado e avançar",
+        "confirming": "Preparando",
+        "reveal": "Revelar cartas",
+        "revealing": "Revelando",
+        "revealUnavailable": "Disponível depois do primeiro voto.",
+        "anyParticipant": "Qualquer participante pode revelar, votar novamente ou confirmar a rodada."
+      },
+      "voting": {
+        "eyebrow": "Sua estimativa",
+        "chooseTitle": "Escolha sua estimativa",
+        "registeredTitle": "Seu voto foi registrado",
+        "reviseTitle": "Revise sua estimativa",
+        "secretDescription": "Escolha uma carta. Seu voto ficará oculto para as outras pessoas.",
+        "registeredDescription": "Seu voto continua secreto. Ativos pendentes: {pending}.",
+        "revealedWithVote": "Resultado provisório. Alterar sua carta atualizará o resultado para todos.",
+        "revealedWithoutVote": "Você ainda não votou. O novo voto aparecerá imediatamente para todos.",
+        "registered": "Voto registrado: {point}",
+        "remove": "Remover voto",
+        "cardsAria": "Cartas de estimativa",
+        "specialAria": "Explicação das cartas especiais",
+        "questionCard": "Preciso de mais informações",
+        "pauseCard": "Pausa"
+      },
+      "results": {
+        "eyebrow": "Resultado provisório",
+        "title": "Revise antes de confirmar",
+        "description": "Os votos ainda podem ser alterados. Média, distribuição e participantes serão atualizados imediatamente para todos."
+      },
+      "feedback": {
+        "loadingTitle": "Preparando a mesa",
+        "loadingDescription": "Estamos sincronizando a sala e os participantes.",
+        "notFoundTitle": "Sala não encontrada",
+        "notFoundDescription": "Esta sala pode ter expirado ou o link não é válido.",
+        "notFoundAction": "Criar uma nova sala",
+        "connectionTitle": "A sala perdeu a conexão",
+        "connectionDescription": "Recarregue a página para tentar sincronizar novamente.",
+        "connectionAction": "Recarregar sala"
+      },
+      "notifications": {
+        "retryDescription": "Verifique sua conexão e tente novamente.",
+        "staleTitle": "A rodada foi alterada",
+        "staleDescription": "Os dados mudaram em outra aba. Revise as informações antes de confirmar novamente.",
+        "saveTitleError": "Não foi possível salvar o item da rodada",
+        "saveVoteError": "Não foi possível registrar seu voto",
+        "undoVoteError": "Não foi possível desfazer seu voto",
+        "noVotesError": "A rodada ainda não possui votos",
+        "revealError": "Não foi possível revelar as cartas",
+        "prepareNewRoundError": "Não foi possível preparar a nova rodada",
+        "invalidOutcomeError": "Escolha um resultado válido para a rodada",
+        "confirmedTitle": "Rodada confirmada",
+        "confirmedDescription": "A próxima rodada está pronta.",
+        "startNewRoundError": "Não foi possível iniciar uma nova rodada",
+        "prepareRedoError": "Não foi possível preparar a rodada",
+        "redoError": "Não foi possível refazer a rodada"
+      }
+    },
+    "roomTitle": {
+      "label": "Item da rodada",
+      "placeholder": "Dê um nome ao item (opcional)",
+      "idle": "Salvamento automático e compartilhado com toda a sala.",
+      "saving": "Salvando para todos...",
+      "saved": "Salvo para todos",
+      "error": "Não foi possível salvar. Tente novamente."
+    },
+    "partialRevealDialog": {
+      "title": "Revelar antes de todos votarem?",
+      "readyTitle": "Todos votaram",
+      "descriptionOne": "1 participante ativo ainda não votou.",
+      "descriptionMany": "{count} participantes ativos ainda não votaram.",
+      "readyDescription": "As cartas estão prontas para serem reveladas.",
+      "consequence": "Os votos registrados ficarão visíveis para todos, e quem ainda não votou poderá adicionar sua carta depois.",
+      "noVotes": "A revelação ficará disponível depois do primeiro voto.",
+      "cancel": "Continuar aguardando",
+      "confirm": "Revelar cartas",
+      "revealing": "Revelando"
+    },
+    "roomHistory": {
+      "eyebrow": "Decisões anteriores",
+      "title": "Histórico da sala",
+      "empty": "Histórico vazio — as decisões confirmadas aparecerão aqui.",
+      "finalEstimate": "Estimativa final: {value}",
+      "noConsensus": "Sem consenso",
+      "postponed": "História adiada",
+      "legacy": "Estimativa final não registrada",
+      "confirmedAt": "Confirmada em",
+      "dateUnavailable": "data indisponível",
+      "average": "Média dos votos: {average}",
+      "noParticipants": "Esta rodada foi confirmada sem participantes.",
+      "didNotVote": "Não votou"
+    },
+    "roomHelp": {
+      "label": "Ajuda",
+      "tutorial": "Ver tutorial",
+      "suggestion": "Enviar sugestão"
+    },
+    "roomTour": {
+      "steps": {
+        "1": {
+          "title": "Sua sala",
+          "content": "Veja sua identificação, compartilhe o convite e saia da sala sem apagar seus dados."
+        },
+        "2": {
+          "title": "Participantes",
+          "content": "Acompanhe presença e votos registrados. As estimativas individuais continuam secretas até a revelação."
+        },
+        "3": {
+          "title": "Rodada atual",
+          "content": "Dê um nome ao item. A alteração é salva automaticamente e compartilhada com todos."
+        },
+        "4": {
+          "title": "Andamento da rodada",
+          "content": "Veja o próximo passo. Qualquer participante pode revelar, votar novamente ou confirmar a rodada."
+        },
+        "5": {
+          "title": "Espera e resultado",
+          "content": "O minijogo é individual e opcional enquanto há alguém ativo pendente. Depois da revelação, esta área mostra o resultado provisório."
+        },
+        "6": {
+          "title": "Escolha sua carta",
+          "content": "Selecione uma estimativa. Use “?” para pedir mais informações e “☕” para indicar uma pausa."
+        },
+        "7": {
+          "title": "Histórico de rodadas",
+          "content": "Somente decisões explicitamente confirmadas ficam registradas aqui."
+        }
+      },
+      "tour": {
+        "back": "Voltar",
+        "close": "Fechar",
+        "last": "Concluir",
+        "next": "Próximo",
+        "nextWithProgress": "Próximo ({current} de {total})",
+        "open": "Abrir tutorial",
+        "skip": "Pular"
+      }
+    },
+    "votingCard": {
+      "vote": "Votar {value}",
+      "question": "Preciso de mais informações (?)",
+      "pause": "Pausa (☕)"
+    },
+    "roundConfirmationDialog": {
+      "title": "Confirmar resultado e avançar?",
+      "description": "Registre a decisão do time. Somente depois da confirmação esta rodada entrará no histórico e a próxima será iniciada.",
+      "item": "Item",
+      "average": "Média dos votos",
+      "summary": "Resumo dos votos",
+      "agreed": "Estimativa acordada",
+      "averageHelp": "A média ajuda na discussão, mas não define o consenso.",
+      "noConsensus": "Sem consenso",
+      "postponed": "Adiar história",
+      "required": "Escolha uma estimativa ou informe como a história foi encerrada.",
+      "cancel": "Continuar revisando",
+      "confirm": "Confirmar resultado e avançar",
+      "confirming": "Confirmando"
+    },
+    "redoRoundDialog": {
+      "title": "Votar novamente neste item?",
+      "description": "Todos os votos e marcações atuais serão removidos, e este resultado não será registrado no histórico.",
+      "preserved": "O item, os participantes e o histórico serão mantidos.",
+      "cancel": "Continuar revisando",
+      "confirm": "Votar novamente neste item",
+      "loading": "Preparando"
+    },
+    "faqPage": {
+      "home": "Início",
+      "title": "Perguntas Frequentes",
+      "description": "Encontre respostas para as principais dúvidas sobre Planning Poker, metodologia ágil e como usar o Battle Poker para melhorar suas estimativas.",
+      "questions": "Perguntas",
+      "categories": "Categorias",
+      "averageReading": "Leitura média",
+      "useful": "Úteis",
+      "allQuestions": "Todas as perguntas",
+      "questionCount": "{count} perguntas",
+      "stillQuestions": "Ainda tem dúvidas?",
+      "ctaDescription": "Não encontrou a resposta que procurava? Experimente o Battle Poker e descubra como o Planning Poker pode transformar suas estimativas ágeis.",
+      "createRoom": "Criar sala",
+      "completeGuide": "Guia completo",
+      "tip": "💡 Dica: marque esta página nos favoritos para consultar sempre que precisar!",
+      "basic": "Básico",
+      "technical": "Técnico",
+      "methodology": "Metodologia",
+      "practical": "Prático"
+    },
+    "guidePage": {
+      "home": "Início",
+      "breadcrumb": "O que é Planning Poker",
+      "eyebrow": "GUIA COMPLETO",
+      "title": "O que é Planning Poker? Guia Completo da Técnica de Estimativa Ágil",
+      "intro": "Descubra como o Planning Poker revoluciona a estimativa de projetos ágeis. Aprenda a técnica, benefícios e como implementar em sua equipe Scrum de forma eficiente.",
+      "tocTitle": "Neste guia",
+      "definitionTitle": "O que é Planning Poker?",
+      "howTitle": "Como funciona o Planning Poker",
+      "fibonacciTitle": "Por que usar a sequência de Fibonacci?",
+      "benefitsTitle": "Benefícios do Planning Poker",
+      "stepsTitle": "Como fazer Planning Poker: passo a passo detalhado",
+      "cardsTitle": "Tipos de cartas e valores no Planning Poker",
+      "interpretationTitle": "Interpretação dos valores",
+      "tipsTitle": "Dicas e melhores práticas",
+      "toolsTitle": "Ferramentas para Planning Poker online",
+      "faqTitle": "Perguntas frequentes sobre Planning Poker",
+      "finalTitle": "Transforme seu planejamento com Planning Poker",
+      "finalDescription": "Melhore suas estimativas e seu planejamento com uma conversa mais colaborativa.",
+      "createRoom": "Criar sala grátis",
+      "faqButton": "FAQ — Perguntas frequentes"
+    },
+    "landing": {
+      "tagline": "Planning Poker online e gratuito",
+      "heroTitle": "Estimativas mais honestas.",
+      "heroHighlight": "Conversas melhores.",
+      "heroDescription": "Reúna seu time, vote com cartas Fibonacci ou especiais e revele todas as estimativas ao mesmo tempo. Sem cadastro e sem distrações.",
+      "learnHow": "Entender como funciona",
+      "proofNoSignup": "Sem cadastro",
+      "proofRealtime": "Tempo real",
+      "proofFree": "100% gratuito",
+      "people": "4 pessoas",
+      "previewVoted1": "Marina votou",
+      "previewVoted2": "Rafael votou",
+      "previewThinking": "Joana está pensando",
+      "previewSecret": "Votos secretos",
+      "benefitsEyebrow": "Feito para o ritmo do time",
+      "benefitsTitle": "Planning Poker sem atrito",
+      "benefitsDescription": "Uma experiência leve para sprint planning, refinamentos e estimativas remotas.",
+      "benefit1Title": "Colaboração em tempo real",
+      "benefit1Description": "Acompanhe quem já votou e mantenha o time sincronizado sem atualizar a página.",
+      "benefit2Title": "Estimativas sem influência",
+      "benefit2Description": "As escolhas ficam secretas até a revelação simultânea das cartas.",
+      "benefit3Title": "Decisões registradas",
+      "benefit3Description": "Confirme a rodada para guardar a média, a distribuição e os votos no histórico da sala.",
+      "stepsEyebrow": "Como funciona",
+      "stepsTitle": "Da criação ao consenso em quatro passos",
+      "stepsDescription": "O fluxo foi desenhado para manter a atenção na história em discussão — não na ferramenta.",
+      "step1Title": "Crie a sala e dê contexto",
+      "step1Description": "Clique em “Criar sala grátis”, informe seu nome e nomeie a história ou tarefa da rodada.",
+      "step2Title": "Convide seu time",
+      "step2Description": "Compartilhe o link. Cada pessoa entra com o próprio nome, sem criar conta.",
+      "step3Title": "Vote em segredo",
+      "step3Description": "Escolha uma carta Fibonacci ou use ? para pedir mais informações e ☕ para sinalizar uma pausa.",
+      "step4Title": "Revele e avance",
+      "step4Description": "Compare a média e a distribuição, refaça a rodada ou confirme o resultado e inicie a próxima.",
+      "ctaEyebrow": "Convite por link",
+      "ctaTitle": "Sua próxima estimativa começa agora",
+      "ctaDescription": "Crie uma sala, envie o link e deixe o Battle Poker cuidar da votação e da revelação simultânea.",
+      "ctaButton": "Começar gratuitamente",
+      "learnEyebrow": "Aprenda mais",
+      "learnTitle": "Planning Poker para equipes ágeis",
+      "learnDescription": "Planning Poker é uma técnica de estimativa baseada em consenso. Cada pessoa escolhe uma carta em segredo e todas são reveladas ao mesmo tempo, reduzindo o viés de ancoragem.",
+      "completeGuide": "Guia completo",
+      "faq": "Perguntas frequentes",
+      "footer": "Battle Poker — Planning Poker online gratuito.",
+      "guide": "Guia"
+    },
+    "waitingGame": {
+      "eyebrow": "Enquanto o time vota",
+      "score": "Pontos",
+      "scoreAnnouncement": "Pontuação atual: {score}. O jogo é individual e não altera sua votação.",
+      "games": {
+        "pong": "Pong",
+        "slice": "Corta Essa!"
+      },
+      "modal": {
+        "ariaLabel": "Microjogo {game}",
+        "open": "Abrir {game}",
+        "close": "Fechar jogo"
+      },
+      "selector": {
+        "ariaLabel": "Escolher microjogo",
+        "eyebrow": "Sua vez de escolher",
+        "title": "Como você quer esperar?",
+        "description": "Escolha uma distração rápida. Você pode trocar de jogo quando quiser; a pontuação reinicia.",
+        "pongDescription": "Rebata a carta com mouse ou teclado.",
+        "sliceDescription": "Passe a lâmina do mouse sobre as frases."
+      },
+      "pong": {
+        "ariaLabel": "Microjogo Pong da espera",
+        "instructions": "Mova o mouse ou use ← → / A D",
+        "gameOver": "A carta caiu",
+        "finalScore": "Você fez {score} pontos.",
+        "restart": "Jogar de novo",
+        "restartHint": "Enter ou Espaço também reinicia"
+      },
+      "slice": {
+        "ariaLabel": "Microjogo Corta Essa da espera",
+        "instructions": "Espere o brilho e passe o mouse para cortar",
+        "combo": "Combo {combo} · x{multiplier}",
+        "lives": "Vidas",
+        "livesAnnouncement": "{lives} vidas restantes",
+        "scoreAnnouncement": "Pontuação atual: {score}. Combo de {combo} cartas, multiplicador {multiplier}. {lives} vidas restantes.",
+        "gameOver": "Fim de jogo",
+        "finalScore": "Você fez {score} pontos.",
+        "restart": "Jogar de novo",
+        "restartHint": "Enter ou Espaço também reinicia",
+        "history": {
+          "title": "Histórico do caos",
+          "empty": "As frases cortadas aparecem aqui.",
+          "latestAnnouncement": "{joke}"
+        },
+        "phrases": {
+          "development": [
+            "É só uma função",
+            "Funciona na minha máquina",
+            "Último ajuste",
+            "Depois refatora",
+            "Código autoexplicativo",
+            "É só um if",
+            "Bug é feature",
+            "Só mais uma camada",
+            "Método com personalidade",
+            "Dependência sem dependência",
+            "Comentário explica tudo",
+            "Null nunca acontece",
+            "Tipagem está quase certa",
+            "Biblioteca resolve",
+            "Copiei com contexto",
+            "Legado está estável",
+            "Endpoint bem REST",
+            "Cache resolve depois",
+            "Regex bem simples",
+            "Compila então funciona"
+          ],
+          "qa": [
+            "Cenário impossível",
+            "Não consegui reproduzir",
+            "Teste local passou",
+            "É só um detalhe",
+            "Sem passos para reproduzir",
+            "Cobertura está boa",
+            "Comigo passou",
+            "Só falha às vezes",
+            "Ambiente de teste",
+            "Massa bem realista",
+            "Caso de borda",
+            "Teste flutuante",
+            "Bug sem evidência",
+            "Homologação aprovada",
+            "Automação manual",
+            "Foi só no Safari",
+            "Usuário fez diferente",
+            "Evidência está no vídeo",
+            "Regressão surpresa",
+            "Teste feliz passou"
+          ],
+          "design": [
+            "É só um botão",
+            "Usuário vai entender",
+            "Última versão do layout",
+            "Alinha só um pixel",
+            "Cor quase igual",
+            "Fluxo bem simples",
+            "Só trocar a cor",
+            "Espaçamento quase igual",
+            "Design final",
+            "Cadê o estado vazio",
+            "Mobile depois ajusta",
+            "Ícone autoexplicativo",
+            "Contraste suficiente",
+            "Figma está atualizado",
+            "Componente reutilizável",
+            "Só mais uma variante",
+            "Modal resolve",
+            "Tooltip explica",
+            "Usuário não vai clicar",
+            "Está no design system"
+          ],
+          "product": [
+            "Cabe na sprint",
+            "Prioridade máxima",
+            "MVP bem pequeno",
+            "História está pronta",
+            "Vamos simplificar",
+            "Valor para o usuário",
+            "É prioridade zero",
+            "Backlog está organizado",
+            "Só falta refinar",
+            "Critério está claro",
+            "Valor é evidente",
+            "Vamos medir depois",
+            "Discovery rapidinho",
+            "Hipótese validada",
+            "Roadmap é flexível",
+            "É coisa de uma sprint",
+            "É só um experimento",
+            "Métrica vem depois",
+            "Débito de produto",
+            "Stakeholder alinhado"
+          ],
+          "business": [
+            "Cliente confirmou",
+            "Mudança bem pequena",
+            "Só para alinhar",
+            "Está tudo documentado",
+            "Cliente sabe o que quer",
+            "Regra é bem simples",
+            "Cliente pediu simples",
+            "Está no contrato",
+            "Requisito verbal vale",
+            "Só muda o fluxo",
+            "Regra sem exceção",
+            "Mandaram por e-mail",
+            "Áudio bem objetivo",
+            "Escopo foi entendido",
+            "Usuário confirmou",
+            "Processo é padrão",
+            "Planilha é o sistema",
+            "Campo opcional obrigatório",
+            "Cliente quer flexível",
+            "É só parametrizar"
+          ],
+          "operations": [
+            "Deploy tranquilo",
+            "Sem risco",
+            "Era configuração",
+            "Monitoramento está verde",
+            "Hotfix definitivo",
+            "Produção está estável",
+            "Deploy na sexta",
+            "Pipeline está verde",
+            "Foi só o cache",
+            "Reinicia que resolve",
+            "Ambiente igual produção",
+            "Variável está configurada",
+            "Alerta não disparou",
+            "Backup está recente",
+            "Escala automático",
+            "Servidor está tranquilo",
+            "Latência aceitável",
+            "DNS já propagou",
+            "Permissão está certa",
+            "Log não mostrou nada"
+          ],
+          "meetings": [
+            "Reunião rápida",
+            "Podia ser um e-mail",
+            "Vamos estacionar isso",
+            "Todos alinhados",
+            "Só cinco minutos",
+            "Faltou contexto",
+            "Você está no mudo",
+            "Compartilha sua tela",
+            "Só para dar visibilidade",
+            "Voltamos nesse ponto",
+            "Vamos levar como ação",
+            "Marcamos outra call",
+            "Pauta bem objetiva",
+            "Sem mais assuntos",
+            "Alguém quer comentar",
+            "Vamos fazer uma rodada",
+            "Ficou como próximo passo",
+            "Depois alinhamos offline",
+            "Temos cinco minutos",
+            "Reunião sem pauta"
+          ],
+          "delivery": [
+            "É para ontem",
+            "Prazo está folgado",
+            "Quase terminando",
+            "Entrega sem pressão",
+            "Estimativa otimista",
+            "Dá tempo de sobra",
+            "Prazo negociável",
+            "Sprint de emergência",
+            "Planejado no susto",
+            "Deadline surpresa",
+            "Cinco minutos de tarefa",
+            "Só mais duas semanas",
+            "Entrega quase pronta",
+            "Falta pouca coisa",
+            "Sai hoje",
+            "Sem dependências",
+            "Bloqueio resolvido",
+            "Cabe até sexta",
+            "Data é confortável",
+            "É só publicar"
+          ],
+          "git": [
+            "PR pequeno",
+            "Só um arquivo",
+            "Commit final",
+            "Merge sem conflito",
+            "Review rapidinho",
+            "Rebase tranquilo",
+            "Aprova esse PR",
+            "Conflito resolvido",
+            "Force push terapêutico",
+            "Branch quase atualizada",
+            "Mensagem commit ajustes",
+            "Quem apagou a branch",
+            "Squash depois",
+            "Cherry-pick tranquilo",
+            "Só conflito de espaço",
+            "Main está protegida",
+            "CI passa já",
+            "PR sem comentários",
+            "Tag correta",
+            "Commit pequeno"
+          ],
+          "teamLife": [
+            "Hoje é foco total",
+            "Café é opcional",
+            "A IA resolveu",
+            "Só mais um prompt",
+            "Internet está normal",
+            "Ninguém mexeu nisso",
+            "É rapidinho",
+            "Café virou dependência",
+            "VPN contemplativa",
+            "Senha expirou de novo",
+            "Notebook pediu férias",
+            "DNS com personalidade",
+            "Permissão negada",
+            "Servidor meditando",
+            "Hoje era dia de foco",
+            "Agenda está livre",
+            "Notificação importante",
+            "Almoço em cinco minutos",
+            "Sexta está tranquila",
+            "Segunda começa leve"
+          ]
+        }
+      }
+    }
+  },
+  "guide": {
+    "definition": [
+      "Planning Poker, também conhecido como Scrum Poker, é uma técnica colaborativa de estimativa ágil baseada em consenso. A equipe usa cartas numeradas para comparar o esforço, a complexidade e a incerteza das histórias de usuário.",
+      "A votação secreta evita que a primeira opinião apresentada influencie as demais. Depois da revelação simultânea, as diferenças viram uma conversa sobre riscos, requisitos e abordagens técnicas."
+    ],
+    "howCards": [
+      {
+        "title": "Objetivo principal",
+        "text": "Criar uma estimativa compartilhada com a participação de toda a equipe, sem favorecer a opinião mais influente."
+      },
+      {
+        "title": "Processo colaborativo",
+        "text": "Combinar reflexão individual, revelação simultânea e discussão para construir entendimento antes do consenso."
+      }
+    ],
+    "process": [
+      "O Product Owner apresenta a história e os critérios de aceitação.",
+      "A equipe esclarece dúvidas, dependências, riscos e limites do escopo.",
+      "Cada participante escolhe uma carta sem mostrar aos demais.",
+      "Todos revelam suas cartas ao mesmo tempo.",
+      "As pessoas com estimativas mais distantes explicam seu raciocínio.",
+      "A equipe vota novamente até chegar a um consenso útil."
+    ],
+    "fibonacci": [
+      {
+        "title": "Incerteza crescente",
+        "text": "Quanto maior a história, menor a precisão possível. Os intervalos da sequência representam essa incerteza."
+      },
+      {
+        "title": "Sem falsa precisão",
+        "text": "A equipe evita discussões pouco úteis sobre diferenças pequenas entre valores próximos."
+      },
+      {
+        "title": "Sinal para dividir",
+        "text": "Estimativas muito altas indicam que a história pode precisar ser dividida ou esclarecida."
+      }
+    ],
+    "benefits": [
+      "Reduz o viés de ancoragem e a influência de opiniões dominantes.",
+      "Expõe riscos, dependências e interpretações diferentes do requisito.",
+      "Compartilha conhecimento técnico entre os participantes.",
+      "Aumenta o envolvimento e a responsabilidade coletiva.",
+      "Ajuda a equipe a planejar com uma referência relativa consistente.",
+      "Transforma divergências de votos em conversas objetivas."
+    ],
+    "steps": [
+      {
+        "title": "Prepare a sessão",
+        "text": "Selecione histórias refinadas, reúna as pessoas que executarão o trabalho e defina a escala de cartas."
+      },
+      {
+        "title": "Apresente a história",
+        "text": "Explique o objetivo, o valor esperado e os critérios de aceitação, sem sugerir uma estimativa."
+      },
+      {
+        "title": "Converse sobre o escopo",
+        "text": "Esclareça dúvidas e identifique integrações, testes, riscos e trabalho técnico relevante."
+      },
+      {
+        "title": "Vote em segredo",
+        "text": "Cada participante escolhe a carta que melhor representa esforço, complexidade e incerteza."
+      },
+      {
+        "title": "Revele simultaneamente",
+        "text": "Mostre todos os votos juntos para manter as avaliações independentes."
+      },
+      {
+        "title": "Discuta as diferenças",
+        "text": "Comece pelos extremos e procure informações que parte da equipe ainda não considerou."
+      },
+      {
+        "title": "Vote novamente",
+        "text": "Repita após a conversa. Se a divergência continuar, esclareça ou divida a história."
+      }
+    ],
+    "cardsIntro": "Uma escala comum usa 0, 1, 2, 3, 5, 8, 13 e 21. O crescimento dos intervalos acompanha o aumento da incerteza.",
+    "specialCards": [
+      "? — não há informação suficiente para estimar",
+      "☕ — a pessoa sugere uma pausa",
+      "21+ — a história provavelmente precisa ser dividida"
+    ],
+    "tips": [
+      "Defina critérios de aceitação antes de votar.",
+      "Inclua quem participará da execução e dos testes.",
+      "Mantenha a conversa focada no escopo da história.",
+      "Não use story points para comparar pessoas ou equipes.",
+      "Registre premissas importantes descobertas na discussão.",
+      "Revise a escala com base no contexto da própria equipe."
+    ],
+    "tools": [
+      {
+        "title": "Tempo real",
+        "text": "Todos acompanham a sala e revelam as cartas juntos, mesmo trabalhando remotamente."
+      },
+      {
+        "title": "Sem cadastro",
+        "text": "Crie uma sala, compartilhe o link e comece a estimar em poucos segundos."
+      },
+      {
+        "title": "Gratuito",
+        "text": "Use o fluxo principal de estimativa sem cobrança ou cadastro obrigatório."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Planning Poker estima horas?",
+        "answer": "Normalmente a equipe usa story points para comparar esforço, complexidade e incerteza. Horas podem ser usadas, mas tendem a sugerir uma precisão que ainda não existe."
+      },
+      {
+        "question": "Quantas pessoas devem participar?",
+        "answer": "Participam as pessoas necessárias para executar e compreender o trabalho. Grupos menores facilitam a conversa; equipes grandes podem dividir a sessão."
+      },
+      {
+        "question": "O que fazer sem consenso?",
+        "answer": "Investigue os extremos, esclareça as premissas e vote novamente. Se a diferença persistir, obtenha mais informações ou divida a história."
+      },
+      {
+        "question": "Funciona com equipes remotas?",
+        "answer": "Sim. Uma sala online preserva a escolha secreta, a revelação simultânea e a participação de pessoas em locais diferentes."
+      }
+    ]
+  },
+  "faq": [
+    {
+      "id": "o-que-e-planning-poker",
+      "question": "O que é Planning Poker?",
+      "answer": "Planning Poker é uma técnica de estimativa ágil baseada em consenso, usada principalmente em metodologias Scrum. Os membros da equipe usam cartas numeradas (geralmente seguindo a sequência de Fibonacci) para estimar a complexidade, esforço ou tempo necessário para completar uma tarefa ou história de usuário.",
+      "category": "basico"
+    },
+    {
+      "id": "como-funciona-planning-poker",
+      "question": "Como funciona o Planning Poker?",
+      "answer": "O Planning Poker funciona em rodadas: 1) O Product Owner apresenta uma história de usuário; 2) A equipe discute e esclarece dúvidas; 3) Cada membro escolhe uma carta secretamente; 4) Todos revelam as cartas simultaneamente; 5) Se há consenso, a estimativa é aceita; 6) Se não, discute-se as diferenças e repete-se o processo.",
+      "category": "basico"
+    },
+    {
+      "id": "sequencia-fibonacci-planning-poker",
+      "question": "Por que usar a sequência de Fibonacci no Planning Poker?",
+      "answer": "A sequência de Fibonacci (1, 2, 3, 5, 8, 13, 21...) é usada porque reflete a incerteza natural das estimativas. Conforme as tarefas ficam maiores, torna-se mais difícil estimar com precisão, e os intervalos maiores da sequência capturam essa incerteza crescente.",
+      "category": "metodologia"
+    },
+    {
+      "id": "beneficios-planning-poker",
+      "question": "Quais são os principais benefícios do Planning Poker?",
+      "answer": "Os benefícios incluem: estimativas mais precisas através do consenso da equipe, maior engajamento de todos os membros, redução da influência de opiniões dominantes, melhor compreensão dos requisitos, identificação precoce de riscos e dependências, e fortalecimento da colaboração da equipe.",
+      "category": "basico"
+    },
+    {
+      "id": "diferenca-story-points-horas",
+      "question": "Qual a diferença entre Story Points e estimativa em horas?",
+      "answer": "Story Points representam a complexidade relativa, esforço e incerteza de uma tarefa, sendo mais estáveis ao longo do tempo. Estimativas em horas são absolutas e podem variar muito entre pessoas e contextos. Story Points focam no \"quão difícil\" enquanto horas focam no \"quanto tempo\".",
+      "category": "metodologia"
+    },
+    {
+      "id": "quantas-pessoas-planning-poker",
+      "question": "Quantas pessoas devem participar do Planning Poker?",
+      "answer": "O ideal são 3-9 pessoas, incluindo desenvolvedores, testadores, arquitetos e o Scrum Master. Muito poucas pessoas limitam perspectivas diferentes, enquanto muitas pessoas tornam o processo longo e difícil de gerenciar. O Product Owner participa apresentando as histórias, mas geralmente não vota.",
+      "category": "pratico"
+    },
+    {
+      "id": "quanto-tempo-planning-poker",
+      "question": "Quanto tempo deve durar uma sessão de Planning Poker?",
+      "answer": "Uma sessão típica dura 1-4 horas, dependendo do número de histórias e da complexidade. Recomenda-se fazer pausas a cada hora e limitar a 2-3 horas por sessão para manter a concentração. Para sprints de 2 semanas, geralmente 2-4 horas são suficientes.",
+      "category": "pratico"
+    },
+    {
+      "id": "cartas-planning-poker-valores",
+      "question": "Quais valores usar nas cartas de Planning Poker?",
+      "answer": "Os valores mais comuns são: 0, 1/2, 1, 2, 3, 5, 8, 13, 20, 40, 100, ∞ (infinito) e ? (dúvida). Algumas equipes usam apenas Fibonacci modificado: 1, 2, 3, 5, 8, 13, 21. O importante é ter uma progressão que reflita a incerteza crescente.",
+      "category": "tecnico"
+    },
+    {
+      "id": "planning-poker-remoto",
+      "question": "Como fazer Planning Poker remoto ou online?",
+      "answer": "Use ferramentas como Battle Poker, Planning Poker Online, ou similares. Garanta que todos tenham boa conexão de internet, câmeras ligadas para melhor comunicação, e estabeleça regras claras. Ferramentas digitais podem até facilitar o processo com timers automáticos e histórico de estimativas.",
+      "category": "tecnico"
+    },
+    {
+      "id": "planning-poker-sem-consenso",
+      "question": "O que fazer quando não há consenso no Planning Poker?",
+      "answer": "Quando as estimativas são muito diferentes: 1) Peça para os membros com estimativas extremas explicarem seu raciocínio; 2) Discuta aspectos técnicos, dependências ou riscos não considerados; 3) Faça uma nova rodada de estimativas; 4) Se persistir a diferença, considere quebrar a história em partes menores.",
+      "category": "pratico"
+    },
+    {
+      "id": "planning-poker-historias-grandes",
+      "question": "Como lidar com histórias muito grandes no Planning Poker?",
+      "answer": "Histórias estimadas acima de 13 pontos devem ser quebradas em histórias menores. Use técnicas como User Story Mapping, decomposição funcional, ou separação por personas. Histórias grandes geralmente indicam falta de clareza nos requisitos ou dependências complexas.",
+      "category": "metodologia"
+    },
+    {
+      "id": "papel-product-owner-planning-poker",
+      "question": "Qual o papel do Product Owner no Planning Poker?",
+      "answer": "O Product Owner apresenta e explica as histórias de usuário, esclarece dúvidas sobre requisitos, define critérios de aceitação, e prioriza as histórias. Geralmente não participa das estimativas para não influenciar a equipe técnica, mas pode opinar sobre valor de negócio.",
+      "category": "metodologia"
+    },
+    {
+      "id": "scrum-master-planning-poker",
+      "question": "Como o Scrum Master deve facilitar o Planning Poker?",
+      "answer": "O Scrum Master facilita o processo mantendo o foco, gerenciando o tempo, garantindo que todos participem, mediando discussões, e ajudando a resolver conflitos. Deve permanecer neutro nas estimativas e focar na qualidade do processo de consenso.",
+      "category": "pratico"
+    },
+    {
+      "id": "planning-poker-criterios-aceitacao",
+      "question": "Como os critérios de aceitação afetam o Planning Poker?",
+      "answer": "Critérios de aceitação claros e bem definidos são essenciais para estimativas precisas. Eles ajudam a equipe a entender exatamente o que precisa ser feito, reduzem ambiguidades, e permitem estimativas mais confiáveis. Histórias sem critérios claros tendem a ter estimativas muito divergentes.",
+      "category": "metodologia"
+    },
+    {
+      "id": "planning-poker-dependencias",
+      "question": "Como identificar dependências durante o Planning Poker?",
+      "answer": "Durante as discussões, questione: \"Esta história depende de outras tarefas?\", \"Precisamos de APIs externas?\", \"Há dependências de outras equipes?\". Mapeie dependências visualmente e considere seu impacto nas estimativas. Dependências podem aumentar significativamente a complexidade.",
+      "category": "tecnico"
+    },
+    {
+      "id": "velocidade-equipe-planning-poker",
+      "question": "Como calcular a velocidade da equipe com Planning Poker?",
+      "answer": "A velocidade é a soma dos story points das histórias completadas em um sprint. Após 3-5 sprints, você terá uma média confiável. Use esta média para planejar sprints futuros, considerando variações sazonais, férias, e mudanças na equipe.",
+      "category": "metodologia"
+    },
+    {
+      "id": "planning-poker-novos-membros",
+      "question": "Como incluir novos membros da equipe no Planning Poker?",
+      "answer": "Novos membros devem observar algumas sessões antes de participar ativamente. Explique o processo, as regras, e o significado dos story points. Emparelhe-os com membros experientes durante as primeiras estimativas. Suas perspectivas frescas podem ser valiosas.",
+      "category": "pratico"
+    },
+    {
+      "id": "planning-poker-refinamento-backlog",
+      "question": "Planning Poker é igual ao Refinamento de Backlog?",
+      "answer": "Não são iguais, mas complementares. O Refinamento de Backlog é um processo contínuo de preparação das histórias (esclarecimentos, divisão, priorização). O Planning Poker é uma técnica específica de estimativa que pode ser usada durante o refinamento ou na Sprint Planning.",
+      "category": "metodologia"
+    },
+    {
+      "id": "planning-poker-estimativas-individuais",
+      "question": "É melhor estimar individualmente ou em grupo?",
+      "answer": "O Planning Poker em grupo é mais eficaz que estimativas individuais porque: combina diferentes perspectivas, reduz viés individual, promove discussões valiosas, identifica riscos e dependências, e cria maior comprometimento da equipe com as estimativas.",
+      "category": "basico"
+    },
+    {
+      "id": "planning-poker-arquitetura-tecnica",
+      "question": "Como considerar questões técnicas e arquiteturais no Planning Poker?",
+      "answer": "Questões técnicas devem ser discutidas abertamente: complexidade do código, necessidade de refatoração, impacto na arquitetura, débito técnico, e requisitos não-funcionais. Desenvolvedores seniores devem compartilhar conhecimento técnico para estimativas mais precisas.",
+      "category": "tecnico"
+    },
+    {
+      "id": "planning-poker-retrospectiva-estimativas",
+      "question": "Como melhorar as estimativas baseado em retrospectivas?",
+      "answer": "Na retrospectiva, analise: quais estimativas foram precisas/imprecisas e por quê, que fatores não foram considerados, como melhorar a decomposição de histórias, e ajustes no processo de Planning Poker. Use dados históricos para calibrar futuras estimativas.",
+      "category": "metodologia"
+    },
+    {
+      "id": "planning-poker-ferramentas-digitais",
+      "question": "Quais são as melhores ferramentas digitais para Planning Poker?",
+      "answer": "Ferramentas populares incluem: Battle Poker, Planning Poker Online, Scrum Poker Cards, PlanITpoker, e Pointing Poker. Escolha baseado em: facilidade de uso, integração com outras ferramentas, suporte a equipes remotas, histórico de estimativas, e custo.",
+      "category": "tecnico"
+    },
+    {
+      "id": "planning-poker-metricas-sucesso",
+      "question": "Como medir o sucesso do Planning Poker?",
+      "answer": "Métricas importantes: precisão das estimativas vs. realidade, redução na variância das estimativas ao longo do tempo, aumento na velocidade da equipe, melhoria na previsibilidade de entregas, e satisfação da equipe com o processo de estimativa.",
+      "category": "metodologia"
+    },
+    {
+      "id": "planning-poker-cultura-organizacional",
+      "question": "Como o Planning Poker impacta a cultura organizacional?",
+      "answer": "O Planning Poker promove transparência, colaboração, e responsabilidade compartilhada. Reduz a cultura de culpa por estimativas incorretas, encoraja discussões abertas sobre dificuldades, e democratiza o processo de tomada de decisões técnicas.",
+      "category": "basico"
+    },
+    {
+      "id": "planning-poker-escalabilidade",
+      "question": "Planning Poker funciona para projetos grandes e múltiplas equipes?",
+      "answer": "Para projetos grandes, use Planning Poker por equipe separadamente, depois normalize estimativas entre equipes. Considere usar técnicas como T-shirt sizing para épicos maiores, e mantenha comunicação constante entre equipes para alinhamento.",
+      "category": "tecnico"
+    }
+  ]
+}

@@ -70,6 +70,7 @@ import {
   userService,
 } from "@/services/UserService";
 import { LanguageSwitcher, useLocale, useTranslations } from "@/i18n";
+import { getLocalizedHref } from "@/lib/locale-routing";
 
 interface ParamsUrl {
   key: string;
@@ -156,7 +157,7 @@ export default function Page({
         const storedUser = userService.getCurrentUser();
 
         if (!storedUser) {
-          router.replace(`${locale === "en" ? "/en" : ""}/room/join/${roomKey}`);
+          router.replace(`/room/join/${roomKey}`);
           return;
         }
 
@@ -190,7 +191,7 @@ export default function Page({
         );
 
         if (!roomCurrentUser) {
-          router.replace(`${locale === "en" ? "/en" : ""}/room/join/${roomKey}`);
+          router.replace(`/room/join/${roomKey}`);
           return;
         }
 
@@ -538,7 +539,7 @@ export default function Page({
   function showActionError(title: string) {
     toast({
       title,
-      description: "Verifique sua conexão e tente novamente.",
+      description: t("notifications.retryDescription"),
       status: "error",
       duration: 4000,
       position: "top",
@@ -548,9 +549,8 @@ export default function Page({
 
   function showStaleRoundWarning() {
     toast({
-      title: "A rodada foi alterada",
-      description:
-        "Os dados mudaram em outra aba. Revise as informações antes de confirmar novamente.",
+      title: t("notifications.staleTitle"),
+      description: t("notifications.staleDescription"),
       status: "warning",
       duration: 5000,
       position: "top",
@@ -604,7 +604,7 @@ export default function Page({
     } catch (error) {
       console.error(error);
       setTitleSaveStatus("error");
-      showActionError("Não foi possível salvar o item da rodada");
+      showActionError(t("notifications.saveTitleError"));
       return null;
     }
   }
@@ -651,7 +651,7 @@ export default function Page({
     } catch (error) {
       console.error(error);
       setPointSelected(previousPoint);
-      showActionError("Não foi possível registrar seu voto");
+      showActionError(t("notifications.saveVoteError"));
     } finally {
       setIsVoteLoading(false);
     }
@@ -676,7 +676,7 @@ export default function Page({
     } catch (error) {
       console.error(error);
       setPointSelected(previousPoint);
-      showActionError("Não foi possível desfazer seu voto");
+      showActionError(t("notifications.undoVoteError"));
     } finally {
       setIsVoteLoading(false);
     }
@@ -695,13 +695,13 @@ export default function Page({
       if (result.status === "stale") {
         showStaleRoundWarning();
       } else if (result.status === "no_votes") {
-        showActionError("A rodada ainda não possui votos");
+        showActionError(t("notifications.noVotesError"));
       } else {
         setIsPartialRevealOpen(false);
       }
     } catch (error) {
       console.error(error);
-      showActionError("Não foi possível revelar as cartas");
+      showActionError(t("notifications.revealError"));
     } finally {
       setIsRoundActionLoading(false);
     }
@@ -758,7 +758,7 @@ export default function Page({
       });
     } catch (error) {
       console.error(error);
-      showActionError("Não foi possível preparar a nova rodada");
+      showActionError(t("notifications.prepareNewRoundError"));
     } finally {
       setIsRoundActionLoading(false);
     }
@@ -781,12 +781,12 @@ export default function Page({
         setConfirmation(null);
         showStaleRoundWarning();
       } else if (result.status === "invalid_outcome") {
-        showActionError("Escolha um resultado válido para a rodada");
+        showActionError(t("notifications.invalidOutcomeError"));
       } else {
         setConfirmation(null);
         toast({
-          title: "Rodada confirmada",
-          description: "A próxima rodada está pronta.",
+          title: t("notifications.confirmedTitle"),
+          description: t("notifications.confirmedDescription"),
           status: "success",
           duration: 3500,
           position: "top",
@@ -795,7 +795,7 @@ export default function Page({
       }
     } catch (error) {
       console.error(error);
-      showActionError("Não foi possível iniciar uma nova rodada");
+      showActionError(t("notifications.startNewRoundError"));
     } finally {
       setIsRoundActionLoading(false);
     }
@@ -814,7 +814,7 @@ export default function Page({
       setRedoConfirmationRoundId(currentRoundId);
     } catch (error) {
       console.error(error);
-      showActionError("Não foi possível preparar a rodada");
+      showActionError(t("notifications.prepareRedoError"));
     } finally {
       setIsRoundActionLoading(false);
     }
@@ -840,7 +840,7 @@ export default function Page({
       }
     } catch (error) {
       console.error(error);
-      showActionError("Não foi possível refazer a rodada");
+      showActionError(t("notifications.redoError"));
     } finally {
       setIsRoundActionLoading(false);
     }
@@ -856,7 +856,7 @@ export default function Page({
     try {
       await presenceConnectionRef.current?.disconnect();
     } finally {
-      router.push(locale === "en" ? "/en" : "/");
+      router.push(getLocalizedHref(locale, "home"));
     }
   }
 
@@ -867,26 +867,26 @@ export default function Page({
           {pageState === "loading" ? (
             <FeedbackState
               status="loading"
-              title="Preparando a mesa"
-              description="Estamos sincronizando a sala e os participantes."
+              title={t("feedback.loadingTitle")}
+              description={t("feedback.loadingDescription")}
             />
           ) : null}
           {pageState === "not-found" ? (
             <FeedbackState
               status="error"
-              title="Sala não encontrada"
-              description="Esta sala pode ter expirado ou o link não é válido."
-              actionHref="/"
-              actionLabel="Criar uma nova sala"
+              title={t("feedback.notFoundTitle")}
+              description={t("feedback.notFoundDescription")}
+              actionHref={getLocalizedHref(locale, "home")}
+              actionLabel={t("feedback.notFoundAction")}
             />
           ) : null}
           {pageState === "error" ? (
             <FeedbackState
               status="error"
-              title="A sala perdeu a conexão"
-              description="Recarregue a página para tentar sincronizar novamente."
+              title={t("feedback.connectionTitle")}
+              description={t("feedback.connectionDescription")}
               actionHref={`/room/${roomKey}`}
-              actionLabel="Recarregar sala"
+              actionLabel={t("feedback.connectionAction")}
             />
           ) : null}
         </Container>

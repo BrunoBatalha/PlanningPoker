@@ -1,23 +1,22 @@
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 
 const CATEGORIES = [
-  "deadlines",
-  "bugs",
-  "scope",
+  "development",
+  "qa",
+  "design",
+  "product",
+  "business",
+  "operations",
+  "delivery",
   "meetings",
-  "deploy",
-  "legacy",
-  "testing",
   "git",
-  "ai",
-  "devLife",
+  "teamLife",
 ];
 
-const LOCALES = ["pt-BR", "en"];
-const PHRASES_PER_CATEGORY = 12;
-const MINIMUM_TOTAL = 120;
+const PHRASES_PER_CATEGORY = 20;
+const MINIMUM_TOTAL = 200;
 const MAXIMUM_LENGTH = 54;
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDirectory, "..");
@@ -26,16 +25,20 @@ const normalize = (phrase) =>
   phrase.trim().replace(/\s+/gu, " ").toLocaleLowerCase();
 
 const readMessages = async (locale) => {
-  const path = resolve(projectRoot, "src", "messages", `${locale}.json`);
+  const path = resolve(projectRoot, "src", "locales", `${locale}.json`);
   return JSON.parse(await readFile(path, "utf8"));
 };
 
 const errors = [];
 const catalogs = new Map();
+const localeFiles = (await readdir(resolve(projectRoot, "src", "locales")))
+  .filter((file) => file.endsWith(".json"))
+  .sort();
+const LOCALES = localeFiles.map((file) => file.slice(0, -5));
 
 for (const locale of LOCALES) {
   const messages = await readMessages(locale);
-  const catalog = messages?.waitingGame?.slice?.phrases;
+  const catalog = messages?.messages?.waitingGame?.slice?.phrases;
 
   if (!catalog || typeof catalog !== "object" || Array.isArray(catalog)) {
     errors.push(`${locale}: waitingGame.slice.phrases não existe.`);
@@ -105,18 +108,18 @@ for (const locale of LOCALES) {
   }
 }
 
-const portugueseCatalog = catalogs.get("pt-BR");
-const englishCatalog = catalogs.get("en");
-
-if (portugueseCatalog && englishCatalog) {
+const referenceLocale = LOCALES[0];
+const referenceCatalog = catalogs.get(referenceLocale);
+if (referenceCatalog) {
+  for (const [locale, catalog] of catalogs) {
+    if (locale === referenceLocale) continue;
   for (const category of CATEGORIES) {
-    const portugueseCount = portugueseCatalog[category]?.length ?? 0;
-    const englishCount = englishCatalog[category]?.length ?? 0;
+      const referenceCount = referenceCatalog[category]?.length ?? 0;
+      const localeCount = catalog[category]?.length ?? 0;
 
-    if (portugueseCount !== englishCount) {
-      errors.push(
-        `${category}: quantidades diferentes entre pt-BR (${portugueseCount}) e en (${englishCount}).`,
-      );
+      if (referenceCount !== localeCount) {
+        errors.push(`${category}: quantidades diferentes entre ${referenceLocale} (${referenceCount}) e ${locale} (${localeCount}).`);
+      }
     }
   }
 }
@@ -128,6 +131,6 @@ if (errors.length > 0) {
 } else {
   const total = CATEGORIES.length * PHRASES_PER_CATEGORY;
   console.log(
-    `Catálogo válido: ${total} frases em pt-BR + ${total} frases em inglês.`,
+    `Catálogo válido: ${total} frases em ${LOCALES.length} locale(s).`,
   );
 }

@@ -1,13 +1,14 @@
 import { push, ref, serverTimestamp, set } from "firebase/database";
 
 import { database } from "../../../firebase";
+import type { Locale } from "@/generated/locale-catalogs";
 
 export const SUGGESTION_MAX_LENGTH = 1000;
 
 export interface SuggestionInput {
   message: string;
   path: string;
-  locale: "pt-BR" | "en";
+  locale: Locale;
 }
 
 async function createSuggestion({ message, path, locale }: SuggestionInput) {

@@ -7,6 +7,8 @@ import { headers } from "next/headers";
 import Script from "next/script";
 
 import { Providers } from "./providers";
+import { getLocaleCatalog } from "@/i18n/server";
+import { defaultLocale, isLocale } from "@/lib/locale-routing";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://planningpoker.devnabatalha.com"),
@@ -30,13 +32,14 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const locale =
-    headers().get("x-battle-poker-locale") === "en" ? "en" : "pt-BR";
+  const requestedLocale = headers().get("x-battle-poker-locale");
+  const locale = isLocale(requestedLocale) ? requestedLocale : defaultLocale;
+  const catalog = getLocaleCatalog(locale);
 
   return (
-    <html lang={locale}>
+    <html lang={catalog.$locale.languageTag}>
       <body>
-        <Providers>{children}</Providers>
+        <Providers locale={locale} catalog={catalog}>{children}</Providers>
         <Script id="microsoft-clarity" strategy="afterInteractive">
           {`(function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};

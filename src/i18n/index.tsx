@@ -1,50 +1,77 @@
 "use client";
 
 import { Button, Menu, MenuButton, MenuItem, MenuList, Portal } from "@chakra-ui/react";
-import { usePathname, useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useTransition, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
+import { createContext, useContext, useTransition, type ReactNode } from "react";
 
-import en from "@/messages/en.json";
-import ptBR from "@/messages/pt-BR.json";
+import type { Locale } from "@/generated/locale-catalogs";
+import { getLocaleDefinition, localeDefinitions } from "@/lib/locale-routing";
+import type { LocaleCatalog } from "@/lib/locale-types";
 
-export type Locale = "pt-BR" | "en";
-type Messages = typeof ptBR;
+type Messages = Record<string, unknown>;
 type TranslationValues = Record<string, string | number>;
-const dictionaries: Record<Locale, Messages> = { "pt-BR": ptBR, en };
-const LocaleContext = createContext<Locale>("pt-BR");
-const MessagesContext = createContext<Messages>(ptBR);
 
-export function getLocaleFromPath(pathname: string): Locale { return pathname === "/en" || pathname.startsWith("/en/") ? "en" : "pt-BR"; }
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const locale = getLocaleFromPath(usePathname());
+const LocaleContext = createContext<Locale | null>(null);
+const MessagesContext = createContext<Messages | null>(null);
+const ContentContext = createContext<Pick<LocaleCatalog, "guide" | "faq"> | null>(null);
 
-  useEffect(() => {
-    document.documentElement.lang = locale;
-  }, [locale]);
+export type { Locale } from "@/generated/locale-catalogs";
 
+export function LanguageProvider({
+  children,
+  locale,
+  catalog,
+}: {
+  children: ReactNode;
+  locale: Locale;
+  catalog: LocaleCatalog;
+}) {
   return (
     <LocaleContext.Provider value={locale}>
-      <MessagesContext.Provider value={dictionaries[locale]}>
-        {children}
+      <MessagesContext.Provider value={catalog.messages}>
+        <ContentContext.Provider value={{ guide: catalog.guide, faq: catalog.faq }}>
+          {children}
+        </ContentContext.Provider>
       </MessagesContext.Provider>
     </LocaleContext.Provider>
   );
 }
-export function useLocale(): Locale { return useContext(LocaleContext); }
-export function useTranslations(namespace: keyof Messages) {
-  const dictionary = useContext(MessagesContext)[namespace] as Record<string, unknown>;
+
+export function useLocaleContent() {
+  const content = useContext(ContentContext);
+  if (!content) throw new Error("useLocaleContent deve ser usado dentro de LanguageProvider");
+  return content;
+}
+
+export function useLocale(): Locale {
+  const locale = useContext(LocaleContext);
+  if (!locale) throw new Error("useLocale deve ser usado dentro de LanguageProvider");
+  return locale;
+}
+
+export function useTranslations(namespace: string) {
+  const messages = useContext(MessagesContext);
+  if (!messages) throw new Error("useTranslations deve ser usado dentro de LanguageProvider");
+  const dictionary = messages[namespace] as Record<string, unknown> | undefined;
   const translate = (key: string, values?: TranslationValues) => {
-    const message = key.split(".").reduce<unknown>((entry, segment) => (entry as Record<string, unknown>)?.[segment], dictionary);
+    const message = key.split(".").reduce<unknown>(
+      (entry, segment) => (entry as Record<string, unknown> | undefined)?.[segment],
+      dictionary,
+    );
     if (typeof message !== "string") return key;
-    return Object.entries(values ?? {}).reduce((result, [name, value]) => result.replaceAll(`{${name}}`, String(value)), message);
+    return Object.entries(values ?? {}).reduce(
+      (result, [name, value]) => result.replaceAll(`{${name}}`, String(value)),
+      message,
+    );
   };
   translate.raw = (key: string) =>
     key.split(".").reduce<unknown>(
-      (entry, segment) => (entry as Record<string, unknown>)?.[segment],
+      (entry, segment) => (entry as Record<string, unknown> | undefined)?.[segment],
       dictionary,
     );
   return translate;
 }
+
 export function LanguageSwitcher({
   size = "sm",
   localeHrefs,
@@ -54,7 +81,6 @@ export function LanguageSwitcher({
 }) {
   const locale = useLocale();
   const pathname = usePathname();
-  const router = useRouter();
   const t = useTranslations("language");
   const [isPending, startTransition] = useTransition();
 
@@ -62,10 +88,36 @@ export function LanguageSwitcher({
     if (nextLocale === locale) return;
     document.cookie = `NEXT_LOCALE=${nextLocale}; path=/; max-age=31536000; samesite=lax`;
     startTransition(() => {
-      const mappedHref = localeHrefs?.[nextLocale];
-      router.push(mappedHref ?? (nextLocale === "en" ? (pathname === "/" ? "/en" : `/en${pathname}`) : (pathname === "/en" ? "/" : pathname.slice(3) || "/")));
+      window.location.assign(localeHrefs?.[nextLocale] ?? pathname);
     });
   }
 
-  return <Menu closeOnSelect={!isPending}><MenuButton as={Button} size={size} variant="subtle" aria-label={t("ariaLabel")} isLoading={isPending} loadingText="">{locale === "en" ? "EN" : "PT"}</MenuButton><Portal><MenuList zIndex="dropdown" bg="canvas.800" borderColor="whiteAlpha.200"><MenuItem bg="transparent" onClick={() => switchLocale("pt-BR")} isDisabled={locale === "pt-BR" || isPending}>{t("portuguese")}</MenuItem><MenuItem bg="transparent" onClick={() => switchLocale("en")} isDisabled={locale === "en" || isPending}>{t("english")}</MenuItem></MenuList></Portal></Menu>;
+  return (
+    <Menu closeOnSelect={!isPending}>
+      <MenuButton
+        as={Button}
+        size={size}
+        variant="subtle"
+        aria-label={t("ariaLabel")}
+        isLoading={isPending}
+        loadingText=""
+      >
+        {getLocaleDefinition(locale).shortName}
+      </MenuButton>
+      <Portal>
+        <MenuList zIndex="dropdown" bg="canvas.800" borderColor="whiteAlpha.200">
+          {localeDefinitions.map((definition) => (
+            <MenuItem
+              key={definition.id}
+              bg="transparent"
+              onClick={() => switchLocale(definition.id)}
+              isDisabled={definition.id === locale || isPending}
+            >
+              {definition.nativeName}
+            </MenuItem>
+          ))}
+        </MenuList>
+      </Portal>
+    </Menu>
+  );
 }

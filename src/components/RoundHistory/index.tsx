@@ -18,6 +18,7 @@ import {
 
 import { GlassPanel } from "@/components/GlassPanel";
 import { useLocale, useTranslations } from "@/i18n";
+import { getLocaleDefinition } from "@/lib/locale-routing";
 import { formatRoundAverage } from "@/services/RoomService";
 import type { RoundHistoryItem } from "@/services/RoomService";
 
@@ -44,7 +45,7 @@ function getOutcomeLabel(
 export function RoundHistory({ history }: RoundHistoryProps) {
   const locale = useLocale();
   const t = useTranslations("roomHistory");
-  const dateFormatter = new Intl.DateTimeFormat(locale, {
+  const dateFormatter = new Intl.DateTimeFormat(getLocaleDefinition(locale).languageTag, {
     dateStyle: "short",
     timeStyle: "short",
   });

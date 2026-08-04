@@ -25,6 +25,7 @@ import Header from "@/components/Header";
 import { useTranslations } from "@/i18n";
 import { ArticleCard } from "./ArticleCard";
 import CreateRoomButton from "@/components/CreateRoomButton";
+import { getArticlePath, getLocaleDefinition, getLocalizedHref, locales } from "@/lib/locale-routing";
 
 export function ArticleDetailPage({
   article,
@@ -38,17 +39,20 @@ export function ArticleDetailPage({
   children: ReactNode;
 }) {
   const t = useTranslations("articles");
-  const indexHref = article.locale === "en" ? "/en/articles" : "/artigos";
-  const homeHref = article.locale === "en" ? "/en" : "/";
-  const articleHref = article.locale === "en" ? `/en/articles/${article.slug}` : `/artigos/${article.slug}`;
-  const formatDate = (date: string) => new Intl.DateTimeFormat(article.locale, {
+  const indexHref = getLocalizedHref(article.locale, "articles");
+  const homeHref = getLocalizedHref(article.locale, "home");
+  const articleHref = getArticlePath(article.locale, article.slug);
+  const switcherHrefs = Object.fromEntries(
+    locales.map((locale) => [locale, alternates[locale] ?? getLocalizedHref(locale, "articles")]),
+  ) as Record<Locale, string>;
+  const formatDate = (date: string) => new Intl.DateTimeFormat(getLocaleDefinition(article.locale).languageTag, {
     dateStyle: "long",
     timeZone: "UTC",
   }).format(new Date(`${date}T00:00:00.000Z`));
 
   return (
     <AppShell>
-      <Header localeHrefs={alternates} />
+      <Header localeHrefs={switcherHrefs} />
       <Box as="main">
         <Container maxW="5xl" px={{ base: 4, md: 6 }} py={{ base: 10, md: 16 }}>
           <Breadcrumb color="ink.300" fontSize="sm" mb={8}>
@@ -100,7 +104,7 @@ export function ArticleDetailPage({
                   <ArticleCard
                     key={candidate.id}
                     article={candidate}
-                    href={article.locale === "en" ? `/en/articles/${candidate.slug}` : `/artigos/${candidate.slug}`}
+                    href={getArticlePath(article.locale, candidate.slug)}
                   />
                 ))}
               </SimpleGrid>

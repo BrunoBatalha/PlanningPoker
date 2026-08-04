@@ -27,8 +27,7 @@ export function generateMetadata({ params }: ArticlePageProps): Metadata {
   return createArticleMetadata({
     article,
     canonicalPath: alternates["pt-BR"],
-    portuguesePath: alternates["pt-BR"],
-    englishPath: alternates.en,
+    alternates,
   });
 }
 
@@ -40,7 +39,6 @@ export default function ArticlePage({ params }: ArticlePageProps) {
   const schemas = createArticleSchemas({
     article,
     canonicalPath: alternates["pt-BR"],
-    indexPath: "/artigos",
   });
   const { content, ...summary } = article;
 

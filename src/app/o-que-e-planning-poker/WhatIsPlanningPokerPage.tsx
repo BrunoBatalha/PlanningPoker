@@ -27,24 +27,20 @@ import Link from "next/link";
 import { AppShell, Header } from "@/components";
 import { CheckCircleIcon, ChevronRightIcon } from "@/components/Icons";
 import CreateRoomButton from "@/components/CreateRoomButton";
-import englishContent from "@/content/guide/en.json";
-import portugueseContent from "@/content/guide/pt-BR.json";
-import { useLocale, useTranslations } from "@/i18n";
+import { useLocale, useLocaleContent, useTranslations } from "@/i18n";
+import { getLocalizedHref, getPageAlternates } from "@/lib/locale-routing";
+import type portugueseCatalog from "@/locales/pt-BR.json";
 
-const contentByLocale = {
-  "pt-BR": portugueseContent,
-  en: englishContent,
-};
+type GuideContent = typeof portugueseCatalog.guide;
 
 export default function WhatIsPlanningPokerPage() {
   const locale = useLocale();
-  const content = contentByLocale[locale];
+  const content = useLocaleContent().guide as GuideContent;
   const t = useTranslations("guidePage");
-  const prefix = locale === "en" ? "/en" : "";
 
   return (
     <AppShell>
-      <Header />
+      <Header localeHrefs={getPageAlternates("guide")} />
       <Box as="main">
         <Container maxW="4xl" py={{ base: 10, md: 16 }} px={{ base: 4, md: 6 }}>
           <Breadcrumb
@@ -54,7 +50,7 @@ export default function WhatIsPlanningPokerPage() {
             textStyle="body-sm"
           >
             <BreadcrumbItem>
-              <BreadcrumbLink as={Link} href={prefix || "/"} color="brand.200">
+              <BreadcrumbLink as={Link} href={getLocalizedHref(locale, "home")} color="brand.200">
                 {t("home")}
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -187,7 +183,7 @@ export default function WhatIsPlanningPokerPage() {
                   <Text textStyle="body-lg">{t("finalDescription")}</Text>
                   <HStack flexWrap="wrap" justify="center">
                     <CreateRoomButton label={t("createRoom")} />
-                    <Button as={Link} href={`${prefix}/faq`} variant="outline">{t("faqButton")}</Button>
+                    <Button as={Link} href={getLocalizedHref(locale, "faq")} variant="outline">{t("faqButton")}</Button>
                   </HStack>
                 </VStack>
               </CardBody>

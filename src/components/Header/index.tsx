@@ -19,6 +19,7 @@ import {
 import Link from "next/link";
 import { FiLayers, FiMenu } from "react-icons/fi";
 import { LanguageSwitcher, type Locale, useLocale, useTranslations } from "@/i18n";
+import { getLocalizedHref } from "@/lib/locale-routing";
 
 interface HeaderProps {
   showFullLogo?: boolean;
@@ -28,7 +29,6 @@ interface HeaderProps {
 export default function Header({ showFullLogo = false, localeHrefs }: HeaderProps) {
   const locale = useLocale();
   const t = useTranslations("header");
-  const prefix = locale === "en" ? "/en" : "";
   return (
     <Box
       as="header"
@@ -49,7 +49,7 @@ export default function Header({ showFullLogo = false, localeHrefs }: HeaderProp
         <HStack spacing={4}>
           <ChakraLink
             as={Link}
-            href={prefix || "/"}
+            href={getLocalizedHref(locale, "home")}
             display="flex"
             alignItems="center"
             gap={3}
@@ -85,7 +85,7 @@ export default function Header({ showFullLogo = false, localeHrefs }: HeaderProp
                   display={{ base: "none", sm: "block" }}
                   whiteSpace="nowrap"
                 >
-                  Planning Poker para times ágeis
+                  {t("subtitle")}
                 </Text>
               ) : null}
             </Box>
@@ -95,22 +95,22 @@ export default function Header({ showFullLogo = false, localeHrefs }: HeaderProp
 
           <HStack
             as="nav"
-            aria-label="Navegação principal"
+            aria-label={t("navAria")}
             spacing={1}
             display={{ base: "none", md: "flex" }}
           >
             <Button
               as={Link}
-              href={locale === "en" ? "/en/what-is-planning-poker" : "/o-que-e-planning-poker"}
+              href={getLocalizedHref(locale, "guide")}
               variant="subtle"
               size="sm"
             >
               {t("guide")}
             </Button>
-            <Button as={Link} href={prefix ? "/en/articles" : "/artigos"} variant="subtle" size="sm">
+            <Button as={Link} href={getLocalizedHref(locale, "articles")} variant="subtle" size="sm">
               {t("articles")}
             </Button>
-            <Button as={Link} href={prefix ? "/en/faq" : "/faq"} variant="subtle" size="sm">
+            <Button as={Link} href={getLocalizedHref(locale, "faq")} variant="subtle" size="sm">
               {t("faq")}
             </Button>
           </HStack>
@@ -125,20 +125,20 @@ export default function Header({ showFullLogo = false, localeHrefs }: HeaderProp
             />
             <Portal>
               <MenuList zIndex="dropdown" bg="canvas.800" borderColor="whiteAlpha.200">
-                <MenuItem as={Link} href={locale === "en" ? "/en/what-is-planning-poker" : "/o-que-e-planning-poker"} bg="transparent">
+                <MenuItem as={Link} href={getLocalizedHref(locale, "guide")} bg="transparent">
                   {t("guide")}
                 </MenuItem>
-                <MenuItem as={Link} href={prefix ? "/en/articles" : "/artigos"} bg="transparent">
+                <MenuItem as={Link} href={getLocalizedHref(locale, "articles")} bg="transparent">
                   {t("articles")}
                 </MenuItem>
-                <MenuItem as={Link} href={prefix ? "/en/faq" : "/faq"} bg="transparent">
+                <MenuItem as={Link} href={getLocalizedHref(locale, "faq")} bg="transparent">
                   {t("faq")}
                 </MenuItem>
               </MenuList>
             </Portal>
           </Menu>
           <LanguageSwitcher localeHrefs={localeHrefs} />
-          <Button as={Link} href={prefix || "/"} variant="glass" size="sm">
+          <Button as={Link} href={getLocalizedHref(locale, "home")} variant="glass" size="sm">
             {t("createRoom")}
           </Button>
         </HStack>

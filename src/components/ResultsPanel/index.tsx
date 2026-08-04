@@ -23,6 +23,7 @@ import {
   type VoteExtremeParticipant,
 } from "@/domain/estimation";
 import { useLocale, useTranslations } from "@/i18n";
+import { getLocaleDefinition } from "@/lib/locale-routing";
 import { calculateRoundAverage } from "@/services/RoomService";
 import type { RoomUser } from "@/services/UserService";
 
@@ -115,7 +116,7 @@ export function ResultsPanel({
   const averageLabel =
     average === null
       ? t("noNumericAverage")
-      : new Intl.NumberFormat(locale, {
+      : new Intl.NumberFormat(getLocaleDefinition(locale).languageTag, {
           maximumFractionDigits: 2,
         }).format(average);
   const distribution = getVoteDistribution(points);

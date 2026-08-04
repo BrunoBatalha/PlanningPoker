@@ -9,6 +9,7 @@ import { GlassPanel } from "@/components/GlassPanel";
 import Header from "@/components/Header";
 import { useTranslations } from "@/i18n";
 import { ArticleCard } from "./ArticleCard";
+import { getArticlePath, getLocalizedHref, getPageAlternates } from "@/lib/locale-routing";
 
 export function ArticlesIndexPage({
   articles,
@@ -18,11 +19,11 @@ export function ArticlesIndexPage({
   locale: ArticleLocale;
 }) {
   const t = useTranslations("articles");
-  const guideHref = locale === "en" ? "/en/what-is-planning-poker" : "/o-que-e-planning-poker";
+  const guideHref = getLocalizedHref(locale, "guide");
 
   return (
     <AppShell>
-      <Header localeHrefs={{ "pt-BR": "/artigos", en: "/en/articles" }} />
+      <Header localeHrefs={getPageAlternates("articles")} />
       <Box as="main">
         <Container maxW="7xl" px={{ base: 4, md: 6 }} py={{ base: 14, md: 20 }}>
           <VStack align="flex-start" spacing={4} maxW="3xl" mb={{ base: 10, md: 14 }}>
@@ -37,7 +38,7 @@ export function ArticlesIndexPage({
                 <ArticleCard
                   key={article.id}
                   article={article}
-                  href={locale === "en" ? `/en/articles/${article.slug}` : `/artigos/${article.slug}`}
+                  href={getArticlePath(locale, article.slug)}
                 />
               ))}
             </SimpleGrid>
