@@ -1,5 +1,30 @@
 [
   {
+    "id": "como-estimar-story-points",
+    "locale": "pt-BR",
+    "slug": "como-estimar-story-points",
+    "title": "Como estimar story points: passo a passo prático",
+    "primaryKeyword": "como estimar story points",
+    "secondaryKeywords": [
+      "story points exemplos",
+      "tabela de story points",
+      "story points x horas",
+      "escala fibonacci story points",
+      "estimativa relativa ágil"
+    ],
+    "searchIntent": "Aprender, com um exemplo completo, a calibrar uma escala e estimar histórias de usuário em story points de forma relativa.",
+    "summary": "Um método reproduzível para calibrar story points, comparar histórias e conduzir a votação com critérios explícitos de trabalho, complexidade e incerteza.",
+    "publishedAt": "2026-08-05",
+    "updatedAt": "2026-08-05",
+    "author": "Equipe Battle Poker",
+    "relatedContent": [
+      "/o-que-e-planning-poker",
+      "/artigos/divergencia-votos-planning-poker",
+      "/faq",
+      "/"
+    ]
+  },
+  {
     "id": "divergencia-votos-planning-poker",
     "locale": "pt-BR",
     "slug": "divergencia-votos-planning-poker",
