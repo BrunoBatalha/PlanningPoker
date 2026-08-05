@@ -1,0 +1,186 @@
+---
+status: "draft"
+slug: "planning-poker-vote-disagreement"
+title: "Planning Poker vote disagreement: how to resolve it"
+description: "Learn how to facilitate divergent Planning Poker votes, uncover risks, avoid premature averages, and decide when to vote again or defer."
+summary: "A practical guide to turning widely different cards into useful questions, clarifying the story, and closing the round without forcing consensus."
+author: "Equipe Battle Poker"
+primaryKeyword: "planning poker vote disagreement"
+secondaryKeywords:
+  - "divergent planning poker votes"
+  - "planning poker consensus"
+  - "how to resolve different estimates"
+  - "agile estimation facilitation"
+searchIntent: "Resolve, step by step, what to do after a Planning Poker round reveals widely different estimates."
+relatedContent:
+  - "/en/what-is-planning-poker"
+  - "/en/faq"
+  - "/en"
+publishedAt: "2026-08-04"
+updatedAt: "2026-08-05"
+coverImage: "/blog/divergencia-votos-planning-poker/divergencia-votos-planning-poker-capa.webp"
+coverAlt: "Cards showing 3, 5, 8, and 13 converging on a conversation symbol"
+socialImage: "/blog/divergencia-votos-planning-poker/vote-disagreement-social-en.webp"
+ctaTitle: "Try this approach with your next story"
+ctaDescription: "Create a room, share the link, and reveal every vote at the same time. If the result is 3 versus 13, use the questions in this guide before the next round."
+ctaButton: "Create a room to estimate"
+---
+
+When Planning Poker reveals widely different votes, **do not calculate an average immediately or ask anyone to “go with the majority.”** First, invite the people who chose the extremes to explain which assumptions, risks, and parts of the work influenced their cards. Clarify the story, record what the team discovered, and only then hold another vote.
+
+That disagreement does not mean the exercise failed. It is often the most useful signal in the round: someone may have noticed a hidden integration, understood an acceptance criterion differently, or assumed a different technical solution.
+
+## What the disagreement is telling you
+
+In Planning Poker, cards are chosen privately and revealed simultaneously. The [Agile Alliance describes the practice](https://agilealliance.org/glossary/planning-poker/) as a conversation in which the highest and lowest estimates are explained before additional rounds. The same reference warns that making convergence mandatory can erase valuable information: the degree of uncertainty expressed by the gap between votes.
+
+In practice, a difference between 5 and 8 may simply reflect normal variation in perception. A difference between 3 and 13 deserves investigation. There is no universal mathematical threshold; the facilitator needs to assess whether the cards represent different understandings of the item.
+
+Ask which of these situations is happening:
+
+- **The scope was understood differently:** one person included a data migration and another did not.
+- **Only a few people know about a risk:** someone has worked with that integration before and expects a limitation.
+- **The acceptance criteria are incomplete:** the story does not say what should happen in a failure scenario.
+- **People assumed different technical solutions:** one estimate assumes reuse; another assumes new development.
+- **Reference points are inconsistent:** people compared the story with different baseline items.
+- **The uncertainty is legitimate:** there is not enough information yet for a responsible estimate.
+
+<ArticleImage
+  src="/blog/divergencia-votos-planning-poker/resolve-vote-disagreement-flow-en.webp"
+  alt="Four-step flow: reveal, hear both extremes, clarify the story, and vote again"
+  width={1400}
+  height={788}
+  caption="The new vote comes after clarification—not before."
+/>
+
+## A four-step facilitation approach
+
+### 1. Make the difference visible without judging it
+
+Start by describing the result: “We have votes ranging from 3 to 13; let’s understand the assumptions before voting again.” Avoid saying that one of the votes is wrong or calling the highest estimate pessimistic.
+
+If someone used `?`, treat the card as a request for information. If they chose `☕`, confirm whether they need a break; neither value should be included in a numerical average.
+
+### 2. Hear from the people at the extremes first
+
+Ask for short, concrete explanations. A useful order is to hear the lowest estimate first and the highest second, without opening a debate during either explanation.
+
+Questions that help:
+
+1. “What did you include in the scope?”
+2. “Which assumption makes this story seem small or large?”
+3. “What risk or dependency might be invisible to the rest of the team?”
+4. “Which completed story did you compare this item with?”
+
+The goal is not to defend a card. It is to make the reasoning available to everyone.
+
+### 3. Correct the story, not just the vote
+
+Turn the conversation into a verifiable change: add an acceptance criterion, split the item, record a dependency, or create a short technical investigation. If no information changes, a second vote is likely to repeat the same conflict or produce conformity without learning.
+
+The [Scrum Guide](https://scrumguides.org/scrum-guide.html) assigns sizing to the Developers who will perform the work; the Product Owner can help by clarifying the item and its trade-offs. The facilitator should therefore protect the autonomy of the people doing the work and avoid imposing an estimate.
+
+### 4. Vote again—or choose a better next step
+
+Hold another round only after everyone has heard the same explanation. Reveal the cards at the same time again and use these criteria:
+
+| Second-round result | Next action |
+| --- | --- |
+| The cards converged and the team can explain the estimate | Record the agreed estimate |
+| The gap narrowed, but one objective question remains | Answer the question and hold one final round |
+| The story contains independent parts | Split the story and estimate each part |
+| Technical evidence is missing | Create a short investigation and defer the estimate |
+| The disagreement is about priority or the solution, not size | Remove the item from voting and resolve the appropriate decision |
+
+Consensus does not have to mean that everyone chose the same card. It means the team understands the recorded decision, can work with it, and knows which uncertainties remain.
+
+## Example: a password recovery story
+
+A team estimates the story: “As a customer, I want to recover my password by email so I can regain access to my account.” The votes are `3`, `5`, `5`, and `13`.
+
+The person who voted 3 considered one screen and an email link sent through the existing email service. The person who voted 13 remembered that the product does not yet invalidate active sessions after a password change and that the link needs to expire.
+
+Instead of calculating the 6.5 average and choosing 8, the team asks:
+
+- can the link be used more than once?
+- when should it expire?
+- should every active session be ended?
+- is there a request limit per account?
+
+The Product Owner clarifies the first three points and turns the request limit into a separate security item. In the second round, the votes range from 5 to 8. The team records 8 and notes the authentication service dependency.
+
+The value of the exercise was not “finding the correct number.” It was uncovering work that had not been visible.
+
+## Three scenarios and how to respond
+
+### Happy path: the conversation uncovers an assumption
+
+After hearing both extremes, the team realizes that half the group included compatibility testing and half did not. The criterion is added, everyone votes again, and the estimates move into a narrow range. Record the agreed estimate and move on.
+
+### Failure scenario: the majority pressures the outlier
+
+Statements like “everyone else voted 5, so change yours to 5” undermine the main benefit of simultaneous reveal. The facilitator should interrupt the pressure and ask what the person saw differently. If the environment does not allow disagreement, more rounds will not fix the problem.
+
+### Alternative scenario: the story still cannot be estimated
+
+If the conversation ends with “it depends on the vendor’s API” and no one knows the contract, do not invent precision. Defer the story, decide who will obtain the information, and record the question that needs an answer. In Battle Poker, a round can also end **without consensus** or as a **deferred story**, instead of turning the average into the final decision.
+
+## Common mistakes when trying to reach consensus
+
+### Using the average as an automatic answer
+
+The average summarizes the distribution, but it does not resolve incompatible assumptions. A 3 and a 13 can produce 8 mathematically even when no one believes that 8 represents the work.
+
+### Debating the solution before understanding the scope
+
+A detailed technical discussion can consume the entire session. First determine whether the disagreement comes from the “what” or the “how.” If the item requires technical design, record that need and remove it from the estimation queue.
+
+### Holding unlimited rounds
+
+After two or three rounds without new information, repeating votes becomes a ritual. Choose a way forward: split, investigate, defer, or explicitly accept a range of uncertainty.
+
+### Letting leadership or seniority end the discussion
+
+Simultaneous reveal exists so that the first number or the most influential person does not determine everyone else’s response. Ask for evidence and assumptions, not authority.
+
+## Checklist for your next disagreement
+
+- [ ] I described the gap between votes without labeling anyone.
+- [ ] I heard the reasoning behind the lowest and highest cards.
+- [ ] I gave anyone who used `?` space to explain which information was missing.
+- [ ] I identified whether the difference came from scope, risk, solution, or reference point.
+- [ ] I updated the story or recorded the discovery before the new vote.
+- [ ] I avoided using the average as the automatic final estimate.
+- [ ] I limited the rounds and defined an exit if uncertainty remained.
+- [ ] I explicitly recorded an agreed estimate, “no consensus,” or “deferred.”
+
+If you are still setting up the exercise, read [What is Planning Poker?](/en/what-is-planning-poker). For questions about cards, averages, and participation, visit the [Battle Poker FAQ](/en/faq).
+
+## Frequently asked questions
+
+### Who should explain first: the highest or the lowest vote?
+
+There is no required order. Starting with the lowest estimate and then hearing the highest works well because it exposes two contrasting assumptions. What matters is allowing each person to speak briefly without interruption before the group discussion.
+
+### How many times should the team vote again?
+
+As long as there is new information and the conversation is reducing uncertainty. If two or three rounds repeat the same arguments, stop and choose another action: split, investigate, or defer.
+
+### Can the majority decide the estimate?
+
+The team may have an agreed decision rule, but majority voting is not a substitute for clarification. Before closing the discussion, confirm that the minority was heard and that the risk they raised was not dismissed without an answer.
+
+### Is it wrong to choose an estimate that differs from the average?
+
+No. Story points are not a statistical survey. The agreed estimate may match one of the cards, use another value from the scale, or result in deferral. The average is a signal that supports the conversation, not a requirement.
+
+## Conclusion: disagreement is information
+
+Good facilitation does not eliminate differences quickly; it turns those differences into shared understanding. Reveal, hear both extremes, clarify the story, and vote again only after the team has learned something.
+
+In [Battle Poker](/en), you can create a room without signing up, share the link, keep votes hidden until the reveal, and review the distribution before recording the agreed estimate or starting another round.
+
+## References
+
+- [Scrum Guide—Product Backlog and accountability for sizing](https://scrumguides.org/scrum-guide.html)
+- [Agile Alliance—Planning Poker definition, benefits, and pitfalls](https://agilealliance.org/glossary/planning-poker/)
