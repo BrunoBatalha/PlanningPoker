@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="788" viewBox="0 0 1400 788" role="img" aria-labelledby="title desc">
+  <title id="title">Decisão entre Planning Poker síncrono e assíncrono</title>
+  <desc id="desc">Fluxo que parte da existência de um horário comum e indica sessão síncrona, preparação assíncrona com encontro curto ou ferramenta totalmente assíncrona.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#080d1d"/>
+      <stop offset="0.55" stop-color="#111a35"/>
+      <stop offset="1" stop-color="#0a142b"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#886bff"/>
+      <stop offset="1" stop-color="#4de3e3"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7583a8"/>
+    </marker>
+  </defs>
+  <rect width="1400" height="788" rx="36" fill="url(#bg)"/>
+  <circle cx="1180" cy="80" r="220" fill="#7048f5" opacity="0.12" filter="url(#glow)"/>
+  <circle cx="170" cy="720" r="190" fill="#4de3e3" opacity="0.08" filter="url(#glow)"/>
+
+  <text x="72" y="90" fill="#f8faff" font-family="Arial, sans-serif" font-size="38" font-weight="700">Qual formato usar no Planning Poker remoto?</text>
+  <text x="72" y="132" fill="#9aa7c4" font-family="Arial, sans-serif" font-size="21">Escolha pelo tempo compartilhado e pelo tipo de conversa que a estimativa exige.</text>
+
+  <rect x="430" y="184" width="540" height="118" rx="28" fill="#172342" stroke="url(#brand)" stroke-width="3"/>
+  <text x="700" y="232" text-anchor="middle" fill="#c2b5ff" font-family="Arial, sans-serif" font-size="19" font-weight="700">PERGUNTA CENTRAL</text>
+  <text x="700" y="271" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="28" font-weight="700">Há um horário curto em comum?</text>
+
+  <path d="M 565 302 C 510 350, 355 348, 290 392" fill="none" stroke="#7583a8" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M 700 302 L 700 392" fill="none" stroke="#7583a8" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M 835 302 C 890 350, 1045 348, 1110 392" fill="none" stroke="#7583a8" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect x="108" y="394" width="364" height="230" rx="26" fill="#111931" stroke="#4de3e3" stroke-width="2"/>
+  <rect x="132" y="418" width="72" height="34" rx="17" fill="#123b4a"/>
+  <text x="168" y="442" text-anchor="middle" fill="#69f1f1" font-family="Arial, sans-serif" font-size="17" font-weight="700">SIM</text>
+  <text x="140" y="500" fill="#f8faff" font-family="Arial, sans-serif" font-size="27" font-weight="700">Sessão síncrona</text>
+  <text x="140" y="540" fill="#aab5cf" font-family="Arial, sans-serif" font-size="20">Contexto → voto secreto</text>
+  <text x="140" y="573" fill="#aab5cf" font-family="Arial, sans-serif" font-size="20">→ revelação → conversa</text>
+  <text x="140" y="606" fill="#aab5cf" font-family="Arial, sans-serif" font-size="20">→ decisão registrada</text>
+
+  <rect x="518" y="394" width="364" height="230" rx="26" fill="#151b39" stroke="#886bff" stroke-width="2"/>
+  <rect x="542" y="418" width="154" height="34" rx="17" fill="#322464"/>
+  <text x="619" y="442" text-anchor="middle" fill="#c2b5ff" font-family="Arial, sans-serif" font-size="17" font-weight="700">COM AJUSTE</text>
+  <text x="550" y="500" fill="#f8faff" font-family="Arial, sans-serif" font-size="27" font-weight="700">Prepare antes</text>
+  <text x="550" y="540" fill="#aab5cf" font-family="Arial, sans-serif" font-size="20">Envie história e critérios</text>
+  <text x="550" y="573" fill="#aab5cf" font-family="Arial, sans-serif" font-size="20">de forma assíncrona; use</text>
+  <text x="550" y="606" fill="#aab5cf" font-family="Arial, sans-serif" font-size="20">um encontro curto para votar.</text>
+
+  <rect x="928" y="394" width="364" height="230" rx="26" fill="#171d35" stroke="#7583a8" stroke-width="2"/>
+  <rect x="952" y="418" width="72" height="34" rx="17" fill="#283149"/>
+  <text x="988" y="442" text-anchor="middle" fill="#c8d0e5" font-family="Arial, sans-serif" font-size="17" font-weight="700">NÃO</text>
+  <text x="960" y="500" fill="#f8faff" font-family="Arial, sans-serif" font-size="27" font-weight="700">Fluxo assíncrono</text>
+  <text x="960" y="540" fill="#aab5cf" font-family="Arial, sans-serif" font-size="20">Use uma ferramenta com</text>
+  <text x="960" y="573" fill="#aab5cf" font-family="Arial, sans-serif" font-size="20">prazo, comentários e regras</text>
+  <text x="960" y="606" fill="#aab5cf" font-family="Arial, sans-serif" font-size="20">claras de encerramento.</text>
+
+  <rect x="270" y="674" width="860" height="62" rx="18" fill="#0c1329" stroke="#273454"/>
+  <text x="700" y="713" text-anchor="middle" fill="#aab5cf" font-family="Arial, sans-serif" font-size="20">O Battle Poker é síncrono: use-o quando a equipe puder votar e revelar ao mesmo tempo.</text>
+</svg>

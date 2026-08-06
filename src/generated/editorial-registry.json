@@ -23,6 +23,31 @@
     ]
   },
   {
+    "id": "planning-poker-remoto",
+    "locale": "pt-BR",
+    "slug": "planning-poker-remoto",
+    "title": "Planning Poker remoto: roteiro para uma sessão produtiva",
+    "primaryKeyword": "planning poker remoto",
+    "secondaryKeywords": [
+      "planning poker online",
+      "como fazer planning poker remoto",
+      "scrum poker remoto",
+      "estimativa ágil à distância",
+      "planning poker para times distribuídos"
+    ],
+    "searchIntent": "Conduzir uma sessão síncrona de Planning Poker com uma equipe remota, incluindo preparação, facilitação, contingências e registro da decisão.",
+    "summary": "Um roteiro de facilitação para preparar, conduzir e encerrar uma sessão remota sem perder contexto, participação ou qualidade da decisão.",
+    "publishedAt": "2026-08-06",
+    "updatedAt": "2026-08-06",
+    "author": "Equipe Battle Poker",
+    "relatedContent": [
+      "/o-que-e-planning-poker",
+      "/artigos/como-estimar-story-points",
+      "/artigos/divergencia-votos-planning-poker",
+      "/faq"
+    ]
+  },
+  {
     "id": "como-estimar-story-points",
     "locale": "pt-BR",
     "slug": "como-estimar-story-points",
@@ -38,13 +63,13 @@
     "searchIntent": "Aprender, com um exemplo completo, a calibrar uma escala e estimar histórias de usuário em story points de forma relativa.",
     "summary": "Um método reproduzível para calibrar story points, comparar histórias e conduzir a votação com critérios explícitos de trabalho, complexidade e incerteza.",
     "publishedAt": "2026-08-05",
-    "updatedAt": "2026-08-05",
+    "updatedAt": "2026-08-06",
     "author": "Equipe Battle Poker",
     "relatedContent": [
       "/o-que-e-planning-poker",
       "/artigos/divergencia-votos-planning-poker",
-      "/faq",
-      "/"
+      "/artigos/planning-poker-remoto",
+      "/faq"
     ]
   },
   {
@@ -62,10 +87,11 @@
     "searchIntent": "Resolver, passo a passo, o que fazer depois que uma rodada de Planning Poker revela estimativas muito diferentes.",
     "summary": "Um roteiro prático para transformar cartas distantes em perguntas úteis, esclarecer a história e encerrar a rodada sem forçar consenso.",
     "publishedAt": "2026-08-04",
-    "updatedAt": "2026-08-04",
+    "updatedAt": "2026-08-06",
     "author": "Equipe Battle Poker",
     "relatedContent": [
       "/o-que-e-planning-poker",
+      "/artigos/planning-poker-remoto",
       "/faq",
       "/"
     ]

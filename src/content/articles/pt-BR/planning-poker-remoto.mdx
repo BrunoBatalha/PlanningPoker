@@ -1,0 +1,241 @@
+---
+status: "published"
+slug: "planning-poker-remoto"
+title: "Planning Poker remoto: roteiro para uma sessão produtiva"
+description: "Aprenda a conduzir Planning Poker remoto com preparação, votação secreta, plano para falhas de conexão e um roteiro prático para times distribuídos."
+summary: "Um roteiro de facilitação para preparar, conduzir e encerrar uma sessão remota sem perder contexto, participação ou qualidade da decisão."
+author: "Equipe Battle Poker"
+primaryKeyword: "planning poker remoto"
+secondaryKeywords:
+  - "planning poker online"
+  - "como fazer planning poker remoto"
+  - "scrum poker remoto"
+  - "estimativa ágil à distância"
+  - "planning poker para times distribuídos"
+searchIntent: "Conduzir uma sessão síncrona de Planning Poker com uma equipe remota, incluindo preparação, facilitação, contingências e registro da decisão."
+relatedContent:
+  - "/o-que-e-planning-poker"
+  - "/artigos/como-estimar-story-points"
+  - "/artigos/divergencia-votos-planning-poker"
+  - "/faq"
+publishedAt: "2026-08-06"
+updatedAt: "2026-08-06"
+coverImage: "/blog/planning-poker-remoto/planning-poker-remoto-capa.webp"
+coverAlt: "Quatro profissionais remotos conectados, cada um com uma carta de estimativa, e cartas 3, 5, 8 e 13 em primeiro plano"
+socialImage: "/blog/planning-poker-remoto/planning-poker-remoto-linkedin.webp"
+ctaTitle: "Conduza a próxima rodada com um link"
+ctaDescription: "Crie uma sala, envie o convite antes da chamada e use o roteiro deste guia para votar, revelar e registrar a decisão com o time."
+ctaButton: "Criar sala remota"
+---
+
+Para fazer Planning Poker remoto, **envie a história e os critérios de aceite antes da chamada, reserve um intervalo síncrono curto e use uma sala em que os votos permaneçam ocultos até a revelação**. Durante a sessão, confirme o entendimento do item, espere todas as pessoas votarem, revele as cartas juntas, ouça os extremos e registre uma decisão explícita: estimativa acordada, sem consenso ou item adiado.
+
+O trabalho remoto não muda o propósito da dinâmica. Ele muda os riscos da facilitação: contexto espalhado em várias abas, silêncio difícil de interpretar, atraso de conexão e pessoas em fusos diferentes. Este guia traz um roteiro para reduzir esses problemas sem exigir câmera ligada nem transformar a reunião em uma sequência de apresentações.
+
+## O que muda no Planning Poker remoto
+
+Planning Poker é uma técnica de estimativa colaborativa em que cada participante escolhe uma carta sem ver as escolhas das outras pessoas e todas as cartas são reveladas ao mesmo tempo. A [Agile Alliance descreve a dinâmica](https://agilealliance.org/glossary/planning-poker/) como uma oportunidade para comparar raciocínios, especialmente entre as estimativas mais alta e mais baixa, antes de uma nova rodada.
+
+Em uma sala física, o facilitador percebe rapidamente quem não ouviu a história ou quem está tentando falar. À distância, esses sinais ficam menos visíveis. **Recomendação prática:** torne o estado da rodada explícito. Diga qual item está sendo estimado, qual pergunta precisa ser respondida e o que acontecerá depois da revelação.
+
+Também vale separar três formatos que costumam ser chamados de “Planning Poker online”:
+
+| Formato | Como funciona | Quando faz sentido | Principal risco |
+| --- | --- | --- | --- |
+| Síncrono | Todas as pessoas votam e revelam na mesma janela de tempo | O item exige perguntas e conversa imediata | A reunião se alongar por falta de preparação |
+| Híbrido | A equipe lê e comenta antes; a votação acontece em um encontro curto | Há pouco horário em comum, mas a discussão ao vivo ainda é possível | A pré-leitura não acontecer e o encontro virar refinamento |
+| Assíncrono | Votos e comentários são enviados até um prazo | Não existe sobreposição de agenda suficiente | Pessoas votarem sobre versões diferentes do item |
+
+O Battle Poker opera de forma **síncrona**: participantes entram pelo link, votam em tempo real e revelam as cartas juntos. Ele pode ser usado depois de uma preparação assíncrona, mas não possui um fluxo de votação assíncrona com prazo e comentários.
+
+<ArticleImage
+  src="/blog/planning-poker-remoto/fluxo-planning-poker-remoto.svg"
+  mobileSrc="/blog/planning-poker-remoto/fluxo-planning-poker-remoto-mobile.svg"
+  alt="Diagrama para escolher entre sessão síncrona, preparação assíncrona com encontro curto e fluxo totalmente assíncrono"
+  width={1400}
+  height={788}
+  mobileWidth={768}
+  mobileHeight={1120}
+  caption="A preparação pode ser assíncrona; a votação no Battle Poker acontece ao vivo."
+/>
+
+## Quem participa e quem decide o tamanho
+
+O [Scrum Guide oficial em português](https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-PortugueseBR-3.0.pdf) atribui aos Developers que realizarão o trabalho a responsabilidade pelo dimensionamento dos itens do Product Backlog. O Product Owner pode ajudar a esclarecer o item e seus trade-offs, mas não escolhe a estimativa em nome de quem vai executar o trabalho.
+
+Uma divisão prática para a sessão remota é:
+
+- **Developers envolvidos na entrega:** escolhem as cartas e explicam premissas técnicas, riscos e quantidade de trabalho.
+- **Product Owner:** apresenta o objetivo, responde dúvidas de escopo e ajusta critérios de aceite quando necessário.
+- **Facilitador:** protege o voto secreto, organiza as falas e encerra cada item com uma decisão. Pode ser Scrum Master ou outra pessoa combinada pelo time.
+- **Observadores:** acompanham sem votar, a menos que também participem da entrega daquele item.
+
+**Recomendação:** o facilitador só deve votar se também contribuir para a entrega. Misturar facilitação com autoridade sobre o número aumenta a chance de o time seguir a opinião mais influente.
+
+## Prepare a sessão antes de abrir a sala
+
+Uma rodada remota produtiva começa fora da ferramenta. O [guia de reuniões remotas do GitLab](https://handbook.gitlab.com/handbook/company/culture/all-remote/meetings/) recomenda verificar se a reunião é necessária, considerar comunicação assíncrona e compartilhar agenda e materiais antecipadamente. Aplicado ao Planning Poker, isso significa não usar o encontro ao vivo para descobrir pela primeira vez o que a história pede.
+
+### Checklist de preparação
+
+- [ ] O item tem objetivo e critérios de aceite acessíveis por link.
+- [ ] Dependências conhecidas e decisões já tomadas estão registradas.
+- [ ] Está claro quem precisa votar e quem participa apenas para esclarecer.
+- [ ] O convite contém o link da chamada e o link da sala de Planning Poker.
+- [ ] Existe um canal de texto para avisar sobre queda de conexão.
+- [ ] A equipe sabe qual escala será usada e possui histórias de referência.
+- [ ] Há um limite de tempo para o item e uma saída caso ainda falte informação.
+- [ ] O facilitador sabe onde registrar a estimativa e os aprendizados.
+
+Não é necessário exigir câmera ligada. Voz, chat e indicação explícita do estado de votação podem ser suficientes. Se alguém não puder usar áudio, combine antes como essa pessoa fará perguntas e explicará seu voto.
+
+## Como conduzir Planning Poker remoto em seis passos
+
+### 1. Abra a sala e nomeie o item
+
+Crie a sala antes da reunião, entre com um nome reconhecível e compartilhe o link no convite ou no canal do time. No Battle Poker, a entrada não exige cadastro. Dê à rodada o mesmo nome ou identificador usado no backlog para evitar que pessoas estimem itens diferentes.
+
+Comece com uma frase de objetivo: “Vamos estimar o esforço relativo para validar o webhook de pagamento, considerando reprocessamento e observabilidade.”
+
+### 2. Faça uma leitura silenciosa curta
+
+Reserve um ou dois minutos para que todos revisem história, critérios e referências. Depois, abra espaço para perguntas de esclarecimento. Uma leitura silenciosa reduz a vantagem de quem já conhecia o item e ajuda participantes com ritmos diferentes de processamento.
+
+Se uma dúvida muda o escopo, atualize a fonte oficial antes de votar. Não confie apenas em uma resposta falada que parte da equipe pode não ter ouvido.
+
+### 3. Peça o voto individual e secreto
+
+Cada pessoa que participa da entrega escolhe uma carta. Evite anunciar números no áudio ou sugerir uma faixa antes da votação. No Battle Poker, as outras pessoas veem que alguém votou, mas não veem o valor antes da revelação.
+
+Use `?` quando falta informação decisiva e `☕` quando é necessária uma pausa. Esses sinais não são estimativas numéricas e não entram na média.
+
+### 4. Confirme presença antes de revelar
+
+Observe quantas pessoas estão ativas, quantas votaram e quantas ainda estão pendentes. Se alguém cair da chamada ou da sala, pare e confirme pelo canal de apoio se a pessoa voltará. Revelar sem perceber uma queda pode transformar ausência técnica em falso consenso.
+
+**Regra útil:** não revele apenas porque passou o tempo. Pergunte se quem ainda não votou precisa de informação, acessibilidade ou reconexão.
+
+### 5. Revele e organize a conversa
+
+Quando todos os participantes necessários tiverem votado, revele as cartas. Se houver diferença relevante, ouça primeiro quem escolheu o menor e o maior valor. Dê a cada pessoa uma fala curta, sem interrupção, antes do debate coletivo.
+
+Peça premissas concretas:
+
+1. O que você incluiu no escopo?
+2. Que dependência ou cenário de falha influenciou sua carta?
+3. Com qual história de referência você comparou este item?
+4. Qual informação faria sua estimativa mudar?
+
+Se as cartas continuarem distantes, use o roteiro específico para [resolver divergência de votos no Planning Poker](/artigos/divergencia-votos-planning-poker) em vez de escolher a média automaticamente.
+
+### 6. Encerre com uma decisão observável
+
+Depois do esclarecimento, escolha uma das saídas:
+
+- votar novamente porque a equipe aprendeu algo novo;
+- registrar a estimativa acordada;
+- dividir a história;
+- marcar “sem consenso”;
+- adiar o item até responder uma dúvida objetiva.
+
+No Battle Poker, a revelação mostra média e distribuição, mas a média não decide pelo time. A rodada pode ser confirmada com uma estimativa acordada, registrada como sem consenso ou adiada; também é possível refazer a rodada. Ao confirmar, a decisão fica no histórico da sala.
+
+## Exemplo: webhook de pagamento em um time distribuído
+
+Uma equipe precisa estimar: “Como operação, quero reprocessar notificações de pagamento que falharam para manter o status do pedido consistente.” O Product Owner envia a história no dia anterior com três critérios: retentativa limitada, idempotência e alerta depois da última falha.
+
+Na chamada, quatro Developers entram na sala. Depois da leitura e das perguntas, os votos são `3`, `5`, `8` e `13`.
+
+- Quem votou 3 assumiu que o provedor já oferece retentativa automática.
+- Quem votou 13 incluiu fila de mensagens, tela operacional e migração de eventos antigos.
+- O Product Owner esclarece que a primeira versão não terá tela nem migração, mas a equipe confirma que precisa garantir idempotência no próprio sistema.
+
+A história é atualizada durante a conversa. Na segunda rodada, os votos ficam em `5`, `5`, `8` e `8`. A equipe compara o item com uma integração concluída recentemente, acorda 8 e registra como aprendizado a necessidade de documentar a política de retentativa.
+
+O resultado útil não é apenas o número. A sessão tornou duas premissas incompatíveis visíveis antes do desenvolvimento.
+
+## Três cenários remotos e como agir
+
+### Cenário feliz: pré-leitura e encontro curto
+
+Todos já leram o item, entram pelo link, fazem duas perguntas, votam e encerram a rodada em poucos minutos. O facilitador registra a estimativa e passa ao próximo item. A velocidade veio da preparação, não de cortar a conversa.
+
+### Cenário de falha: uma pessoa perde a conexão
+
+O status mostra uma pessoa pendente e ela desaparece da chamada. O facilitador não revela. Primeiro envia uma mensagem no canal de apoio e combina esperar alguns minutos. Se a pessoa não voltar, o grupo decide explicitamente adiar o item ou seguir conforme uma regra de participação já acordada; não presume que o voto ausente seria igual aos demais.
+
+### Cenário alternativo: não existe horário em comum
+
+O time distribui história, critérios e perguntas com prazo para leitura. Se conseguir criar uma pequena janela de sobreposição, usa esse intervalo para votar e discutir os extremos no Battle Poker. Se não houver nenhuma janela compartilhada, escolhe uma ferramenta realmente assíncrona e define prazo, versão do item e regra de encerramento. Enviar números sequencialmente em um chat não preserva voto secreto nem revelação simultânea.
+
+## Problemas comuns em sessões remotas
+
+| Sinal observado | Causa provável | Ação do facilitador |
+| --- | --- | --- |
+| Todos votam rápido demais | O primeiro número foi dito no áudio ou no chat | Recomece a rodada e proteja a escolha individual |
+| Muitas cartas `?` | História ou critérios insuficientes | Pare a votação e esclareça a lacuna |
+| A mesma pessoa domina a conversa | Ordem de fala indefinida | Ouça extremos em rodadas curtas, sem interrupção |
+| Participante fica pendente | Dúvida, distração, acessibilidade ou conexão | Pergunte o que bloqueia; não revele automaticamente |
+| Rodadas repetem os mesmos votos | Nenhuma informação nova foi adicionada | Divida, investigue ou adie o item |
+| A reunião ocupa todo o refinamento | Itens chegaram sem pré-leitura | Mova contexto e perguntas iniciais para antes da chamada |
+
+### Confundir presença com participação
+
+Estar conectado não significa ter entendido o item. Faça uma pergunta aberta antes da votação e ofereça mais de um canal para dúvidas. Não use câmera ligada como prova de atenção.
+
+### Tratar a média como consenso
+
+Uma média de 8 entre cartas 3 e 13 não responde quais partes do trabalho cada pessoa considerou. Use a distribuição para orientar a conversa e registre uma estimativa final apenas depois que o time compreender as premissas.
+
+### Usar a chamada para ler um backlog inteiro
+
+Compartilhar a tela e ler cada história do zero torna a sessão cansativa e reduz o tempo para discutir incertezas. Envie poucos itens prontos para estimar e deixe os demais no refinamento.
+
+## Checklist para o facilitador
+
+- [ ] Enviei história, critérios e referências antes da sessão.
+- [ ] Defini participantes necessários e um canal de contingência.
+- [ ] Nomeei o item na sala com o mesmo identificador do backlog.
+- [ ] Dei tempo para leitura e perguntas antes do primeiro voto.
+- [ ] Evitei anunciar números ou faixas antes da escolha individual.
+- [ ] Confirmei presença e votos necessários antes da revelação.
+- [ ] Ouvi os extremos quando houve divergência.
+- [ ] Atualizei o item quando uma premissa mudou.
+- [ ] Limitei revotações sem informação nova.
+- [ ] Registrei estimativa acordada, sem consenso ou adiamento.
+
+Se a equipe ainda não definiu sua régua, comece pelo guia de [como estimar story points com referências](/artigos/como-estimar-story-points). Para revisar a dinâmica completa, consulte [O que é Planning Poker](/o-que-e-planning-poker).
+
+## Perguntas frequentes
+
+### Planning Poker remoto precisa de câmera ligada?
+
+Não. Câmera pode ajudar algumas equipes, mas não é requisito da técnica. O essencial é que todos acessem o mesmo contexto, consigam sinalizar dúvidas, votem sem influência e participem da conversa depois da revelação.
+
+### Quanto tempo deve durar a sessão?
+
+Não existe duração universal. Prefira poucos itens preparados e use limites por item. Se o tempo acabar sem reduzir a incerteza, registre a pergunta pendente e adie a estimativa em vez de acelerar uma decisão frágil.
+
+### Product Owner e Scrum Master votam?
+
+O dimensionamento pertence aos Developers que realizarão o trabalho. Product Owner esclarece escopo e trade-offs; Scrum Master ou facilitador protege o processo. Uma dessas pessoas vota quando também participa da entrega do item, não apenas por causa do cargo.
+
+### O Battle Poker funciona de forma assíncrona?
+
+Não. A ferramenta foi criada para votação em tempo real e revelação simultânea. A equipe pode fazer pré-leitura e perguntas antes, mas precisa de uma janela síncrona para a rodada no Battle Poker.
+
+### O que fazer se alguém cair depois de votar?
+
+Pause e tente contato pelo canal combinado. Se a pessoa voltar, confirme que o voto ainda representa seu entendimento. Se não voltar, aplique uma regra de participação acordada ou adie o item; não transforme a ausência em concordância.
+
+## Conclusão: remoto exige estado explícito
+
+Uma boa sessão remota deixa visíveis o item, as pessoas necessárias, o estado dos votos e a decisão final. Prepare o contexto antes, proteja a escolha secreta, trate conexão e silêncio como sinais a investigar e use o encontro ao vivo para a parte que realmente exige interação: comparar premissas.
+
+Quando a equipe tiver uma janela em comum, [crie uma sala no Battle Poker](/), compartilhe o link e conduza a próxima estimativa com o roteiro deste guia, sem cadastro e sem revelar cartas antes da hora.
+
+## Referências
+
+- [Scrum Guide 2020 em português — responsabilidades e dimensionamento do Product Backlog](https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-PortugueseBR-3.0.pdf)
+- [Agile Alliance — definição e dinâmica do Planning Poker](https://agilealliance.org/glossary/planning-poker/)
+- [GitLab Handbook — preparação, agenda e equilíbrio entre comunicação síncrona e assíncrona](https://handbook.gitlab.com/handbook/company/culture/all-remote/meetings/)

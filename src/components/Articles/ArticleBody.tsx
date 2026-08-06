@@ -6,15 +6,21 @@ import styles from "./ArticleBody.module.css";
 
 function ArticleImage({
   src,
+  mobileSrc,
   alt,
   width = 1400,
   height = 788,
+  mobileWidth = 768,
+  mobileHeight = 1120,
   caption,
 }: {
   src: string;
+  mobileSrc?: string;
   alt: string;
   width?: number;
   height?: number;
+  mobileWidth?: number;
+  mobileHeight?: number;
   caption?: string;
 }) {
   return (
@@ -25,7 +31,18 @@ function ArticleImage({
         width={width}
         height={height}
         sizes="(max-width: 768px) 100vw, 768px"
+        className={mobileSrc ? styles.desktopImage : undefined}
       />
+      {mobileSrc ? (
+        <Image
+          src={mobileSrc}
+          alt={alt}
+          width={mobileWidth}
+          height={mobileHeight}
+          sizes="100vw"
+          className={styles.mobileImage}
+        />
+      ) : null}
       {caption ? <figcaption>{caption}</figcaption> : null}
     </figure>
   );

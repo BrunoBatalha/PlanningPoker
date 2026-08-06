@@ -127,11 +127,14 @@ function readLocaleArticles(
 
       const bodyImages = [...parsed.content.matchAll(/<ArticleImage\s+[\s\S]*?src=["']([^"']+)["'][\s\S]*?\/>/g)]
         .map((match) => match[1]);
+      const mobileBodyImages = [...parsed.content.matchAll(/<ArticleImage\s+[\s\S]*?mobileSrc=["']([^"']+)["'][\s\S]*?\/>/g)]
+        .map((match) => match[1]);
 
       for (const [label, imagePath] of [
         ["capa", frontmatter.coverImage],
         ["imagem social", frontmatter.socialImage],
         ...bodyImages.map((imagePath, index) => [`imagem do corpo ${index + 1}`, imagePath] as const),
+        ...mobileBodyImages.map((imagePath, index) => [`imagem mobile do corpo ${index + 1}`, imagePath] as const),
       ] as const) {
         if (!imagePath.startsWith("/")) {
           errors.push(`${locale}/${entry.name}: ${label} deve usar caminho absoluto em public`);
