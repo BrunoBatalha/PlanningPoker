@@ -1,5 +1,7 @@
 {
-  "en": [],
+  "en": [
+    "planning-poker-vote-disagreement"
+  ],
   "pt-BR": [
     "como-estimar-story-points",
     "divergencia-votos-planning-poker"

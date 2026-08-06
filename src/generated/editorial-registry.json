@@ -1,5 +1,28 @@
 [
   {
+    "id": "divergencia-votos-planning-poker",
+    "locale": "en",
+    "slug": "planning-poker-vote-disagreement",
+    "title": "Planning Poker vote disagreement: how to resolve it",
+    "primaryKeyword": "planning poker vote disagreement",
+    "secondaryKeywords": [
+      "divergent planning poker votes",
+      "planning poker consensus",
+      "how to resolve different estimates",
+      "agile estimation facilitation"
+    ],
+    "searchIntent": "Resolve, step by step, what to do after a Planning Poker round reveals widely different estimates.",
+    "summary": "A practical guide to turning widely different cards into useful questions, clarifying the story, and closing the round without forcing consensus.",
+    "publishedAt": "2026-08-04",
+    "updatedAt": "2026-08-06",
+    "author": "Equipe Battle Poker",
+    "relatedContent": [
+      "/en/what-is-planning-poker",
+      "/en/faq",
+      "/en"
+    ]
+  },
+  {
     "id": "como-estimar-story-points",
     "locale": "pt-BR",
     "slug": "como-estimar-story-points",
