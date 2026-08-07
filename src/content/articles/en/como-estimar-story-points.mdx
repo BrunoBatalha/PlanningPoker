@@ -1,0 +1,214 @@
+---
+status: "published"
+slug: "how-to-estimate-story-points"
+title: "How to estimate story points: a practical step-by-step guide"
+description: "Learn how to estimate story points with reference stories, clear criteria, and a complete example—without converting points to hours or chasing false precision."
+summary: "A repeatable method for calibrating story points, comparing stories, and facilitating voting with explicit criteria for work, complexity, and uncertainty."
+author: "Equipe Battle Poker"
+primaryKeyword: "how to estimate story points"
+secondaryKeywords:
+  - "story point estimation examples"
+  - "story points reference table"
+  - "story points vs hours"
+  - "Fibonacci story points"
+  - "relative estimation in agile"
+searchIntent: "Learn, through a complete example, how to calibrate a scale and estimate user stories relatively with story points."
+relatedContent:
+  - "/en/what-is-planning-poker"
+  - "/en/articles/planning-poker-vote-disagreement"
+  - "/en/faq"
+  - "/en"
+publishedAt: "2026-08-05"
+updatedAt: "2026-08-07"
+coverImage: "/blog/como-estimar-story-points/como-estimar-story-points-capa.webp"
+coverAlt: "Cards numbered 1, 2, 3, 5, and 8 arranged by size beside a reference card"
+socialImage: "/blog/como-estimar-story-points/how-to-estimate-story-points-social-en.webp"
+ctaTitle: "Calibrate the next story with your team"
+ctaDescription: "Create a room, present a reference story, and compare the cards together. Votes stay hidden until the reveal, with no sign-up required."
+ctaButton: "Create an estimation room"
+---
+
+To estimate story points, **start by choosing a reference story the team knows**, assign it a value, and compare each new item through three lenses: amount of work, complexity, and uncertainty. Then each person chooses a card without seeing anyone else’s choice; the team reveals all votes at the same time, discusses meaningful differences, and records an estimate it can explain.
+
+The number is not a conversion of days or a performance score. It expresses an item’s relative size within that team’s context. By the end of this guide, you will be able to build reference points, facilitate a round, and recognize when a story is not yet ready to estimate.
+
+## What story points measure—and what they do not
+
+Story points are an abstract unit for comparing the relative effort of backlog items. One practical recommendation, described by [Mike Cohn in his guide to relative estimation](https://www.mountaingoatsoftware.com/agile/agile-estimation-estimating-with-story-points), is to consider three factors together:
+
+1. **Amount of work:** how many parts need to be built, tested, reviewed, and integrated?
+2. **Complexity:** how difficult is it to complete the work correctly?
+3. **Risk and uncertainty:** how much remains unknown about requirements, technology, or dependencies?
+
+The official [Scrum Guide](https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-PortugueseBR-3.0.pdf) says that Product Backlog items acquire attributes such as description, order, and size, and assigns sizing to the Developers who will do the work. **Practical interpretation:** Scrum requires enough transparency about size, but it does not require your team to use story points, Fibonacci, or Planning Poker.
+
+### Story points are not hours in disguise
+
+If a team defines “1 point = 1 day,” the point stops being relative and inherits every problem of a delivery-time promise. Different people may spend different amounts of time on the same story and still agree that it is approximately twice as large as another one.
+
+| Story points | Hours or days |
+| --- | --- |
+| Compare the size of items within the same context | Estimate calendar duration |
+| Combine work, complexity, and uncertainty | Depend more directly on capacity and availability |
+| Work with reference stories | Require an explicit time assumption |
+| Should not be converted at a fixed rate | Can be useful for short, well-understood tasks |
+
+Both formats can coexist in the same process as long as they answer different questions. Points help compare Product Backlog items; hours can help organize detailed work once the team already understands the solution.
+
+## Prepare the scale before voting
+
+A universal story point table does not work because 5 points do not represent the same work for every team. The scale needs **local reference points**, preferably recently completed stories understood by the people doing the estimating.
+
+Start with three anchors:
+
+| Reference | Relative meaning | Example from the same product |
+| --- | --- | --- |
+| 2 points | Small, familiar, and low in uncertainty | Change copy and verify it in two existing states |
+| 5 points | Medium, with more than one layer or meaningful scenario | Add an optional field using existing validation and persistence |
+| 8 points | Large or uncertain enough to require discussion | Integrate a new provider with failures, retries, and observability |
+
+These examples **are not an industry standard**. They show how a hypothetical team might build its scale. If the situation changes—a new architecture, a different team, or outdated references—recalibrate the anchors.
+
+## How to estimate story points in five steps
+
+### 1. Present an estimable story
+
+Explain the user’s goal, the acceptance criteria, the constraints, and the relevant definition of done. Do not prescribe a solution to steer the team toward a number. If essential information is missing, use `?`, record the question, and close the gap before asking for precision.
+
+A story that is ready for discussion does not need every technical decision settled, but the team should understand the expected outcome and be able to identify the main work involved.
+
+### 2. Compare it with the reference points
+
+Ask, in this order:
+
+- Is there more or less work than in the 5-point story?
+- Is the solution more complex, or simply larger?
+- Is there a dependency, risk, or unknown area that changes the comparison?
+- Does the story fit as one coherent unit, or should it be split?
+
+Avoid starting with “how many days will this take?” A relative question reduces pressure to produce accuracy that does not yet exist.
+
+### 3. Choose a card individually
+
+Each person involved in delivery selects the card that best represents their comparison. In Planning Poker, that choice stays private until everyone is ready. Revealing all cards at the same time reduces anchoring on the first number or the most influential opinion.
+
+### 4. Reveal, investigate, and vote again when needed
+
+The [Agile Alliance describes Planning Poker](https://agilealliance.org/glossary/planning-poker/) as an activity in which the people with the high and low estimates explain their reasoning before additional rounds. The goal is not to defend cards; it is to share assumptions.
+
+If the votes are `3`, `5`, `5`, and `8`, ask what the person who chose 3 left out and which risk led someone to choose 8. Update the story when the conversation uncovers new information. Only then should the team hold another round.
+
+### 5. Record the decision and calibrate later
+
+Record the agreed estimate with the story, but preserve the learning as well: a dependency discovered, an acceptance criterion added, or a reason to split the item. Once the work is complete, compare the story with the reference points—without turning the review into an assessment of individuals.
+
+[Atlassian recommends calibrating estimates regularly](https://www.atlassian.com/br/agile/project-management/estimation), using past stories and retrospectives to maintain consistency. The useful practice here is to review the scale, not to change points after delivery just to make the history look precise.
+
+<ArticleImage
+  src="/blog/como-estimar-story-points/story-point-calibration-method-en.webp"
+  alt="Flow for estimating story points: prepare the story, compare three factors, vote, discuss, and record"
+  width={1400}
+  height={788}
+  caption="The card comes after the comparison; calibration continues after delivery."
+/>
+
+## Complete example: apply a coupon in the cart
+
+An e-commerce team estimates this story: “As a customer, I want to apply a coupon in my cart so I can see the discount before I pay.”
+
+The acceptance criteria say that the coupon may be valid, expired, already used, or incompatible with the product category. The promotions API already exists and is documented. The cart summary component already exists as well.
+
+The team uses two recent reference stories:
+
+- **3 points:** add an optional tax ID field using existing patterns;
+- **8 points:** integrate a new payment method, including a webhook, retries, and reconciliation.
+
+By comparison, the coupon story has more scenarios and integration work than the 3-point reference, but it does not introduce a provider or an asynchronous flow like the 8-point reference. The initial votes are `3`, `5`, `5`, and `8`.
+
+The person who chose 3 considered only the happy path. The person who chose 8 included a rule allowing several coupons to be combined, but the Product Owner clarifies that only one coupon will be accepted. The team adds a criterion to remove the discount when the cart items change and votes again: `5`, `5`, `5`, `5`.
+
+The value 5 did not come from a formula. It came from an explainable comparison with shared reference points and a conversation that corrected two interpretations of scope.
+
+## Three scenarios for making a responsible decision
+
+### Happy path: the reference points still represent the work
+
+The baseline stories are recent, everyone knows the definition of done, and the first round produces nearby votes. The team clears up one small difference, records 5, and moves on. Estimation was quick because calibration happened before the meeting.
+
+### Failure scenario: the company requires “one point per day”
+
+A manager compares one team’s 20 points with another team’s 35 and concludes that the second team delivers more. The comparison is invalid: each group has its own reference points, context, and composition. Separate delivery forecasting from performance evaluation, and do not normalize scales to create a ranking.
+
+### Alternative scenario: the story depends on an unknown API
+
+No one knows whether the vendor supports the required operation. Instead of choosing 13 “to be safe,” the team uses `?`, records the uncertainty, and creates a time-boxed investigation. Estimation happens after the decisive uncertainty is reduced; if the item is still large, the team splits it.
+
+## Common mistakes when estimating story points
+
+### Copying a ready-made table from the internet
+
+A list that says “login = 3” and “report = 8” ignores architecture, required quality, and the team’s knowledge. Use tables to document local reference points, not to import universal values.
+
+### Estimating people instead of work
+
+“It is a 3 for a senior developer and an 8 for a junior developer” turns the conversation into individual assignment. Compare the item with other stories in the context of the team that normally delivers the product.
+
+### Adding complexity, effort, and risk as a formula
+
+Scoring each factor separately and adding `2 + 3 + 3 = 8` creates the appearance of science without removing judgment. Use the three factors as comparison questions, not mandatory terms in an equation.
+
+### Accepting the average automatically
+
+Cards `3` and `13` produce an average of 8, but they may hide incompatible scopes. Before recording any value, find out why people saw different work. The guide to [Planning Poker vote disagreement](/en/articles/planning-poker-vote-disagreement) offers a specific approach for that conversation.
+
+### Keeping outdated reference points
+
+A two-year-old story may have been completed with a different architecture or team composition. Review your anchors when the context changes, and prefer completed examples that everyone can explain.
+
+## Checklist before estimating
+
+- [ ] The user goal and acceptance criteria are clear.
+- [ ] Everyone is working from the same definition of done.
+- [ ] The team knows at least one reference story.
+- [ ] The comparison includes work, complexity, and uncertainty.
+- [ ] Cards will be chosen without revealing votes early.
+- [ ] The facilitator knows how to handle disagreement without automatically calculating an average.
+- [ ] The team is allowed to use `?`, split, or defer an incomplete item.
+- [ ] The estimate and insights from the conversation will be recorded.
+
+If the team still needs to learn the complete activity, start with [What is Planning Poker?](/en/what-is-planning-poker). For quick questions about cards, participants, and the reveal, visit the [Battle Poker FAQ](/en/faq).
+
+## Frequently asked questions
+
+### What value should the first reference story have?
+
+There is no required value. `2`, `3`, or `5` can all work if they leave room for smaller and larger stories. What matters is that the team knows the reference and can explain why other items are smaller, similar, or larger.
+
+### How much time is one story point worth?
+
+There is no fixed conversion. Observed time can help forecast delivery within the same team’s context, but turning points into a universal rate removes the relative comparison and creates an artificial promise.
+
+### Is Fibonacci better than T-shirt sizing?
+
+Fibonacci supports decisions on a numerical scale with widening intervals. Sizes such as S, M, and L can be faster for grouping many items that are still lightly detailed. Choose the scale that fits the decision you need to make, and keep the reference points clear.
+
+### Do the Product Owner and Scrum Master vote?
+
+The people who will do the work are responsible for sizing it. The Product Owner contributes by clarifying value, scope, and trade-offs; the Scrum Master may facilitate the process. The exact group should preserve the autonomy of those delivering the work and avoid votes that merely represent schedule pressure.
+
+### Does the team need to choose the same number on every card?
+
+No. The goal is a decision everyone understands, not visual unanimity at any cost. A difference may lead to another round, splitting the story, an investigation, or deferral.
+
+## Conclusion: useful points are explainable comparisons
+
+A good estimate does not come from a universal table. It comes from reference stories, shared criteria, and a conversation that makes work and uncertainty visible. Prepare the item, compare it, vote without anchoring, investigate differences, and update the scale responsibly.
+
+In [Battle Poker](/en), you can create a room without signing up, share the link, and keep the cards hidden until the simultaneous reveal. Then review the vote distribution, record the agreed estimate, and preserve the round history.
+
+## References
+
+- [Scrum Guide 2020—Product Backlog and accountability for sizing](https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-PortugueseBR-3.0.pdf)
+- [Agile Alliance—how Planning Poker works, its benefits, and its risks](https://agilealliance.org/glossary/planning-poker/)
+- [Mountain Goat Software—relative estimation with story points](https://www.mountaingoatsoftware.com/agile/agile-estimation-estimating-with-story-points)
+- [Atlassian—story points and estimate calibration](https://www.atlassian.com/br/agile/project-management/estimation)
