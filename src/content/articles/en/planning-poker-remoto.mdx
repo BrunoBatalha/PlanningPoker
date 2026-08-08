@@ -1,0 +1,241 @@
+---
+status: "published"
+slug: "remote-planning-poker"
+title: "Remote Planning Poker: a practical guide for productive sessions"
+description: "Learn how to run remote Planning Poker with preparation, secret voting, a connection-failure plan, and a practical agenda for distributed teams."
+summary: "A facilitation guide for preparing, running, and closing a remote session without losing context, participation, or decision quality."
+author: "Equipe Battle Poker"
+primaryKeyword: "remote planning poker"
+secondaryKeywords:
+  - "online planning poker"
+  - "how to run remote planning poker"
+  - "remote scrum poker"
+  - "remote agile estimation"
+  - "planning poker for distributed teams"
+searchIntent: "Run a synchronous Planning Poker session with a remote team, including preparation, facilitation, contingencies, and a recorded decision."
+relatedContent:
+  - "/en/what-is-planning-poker"
+  - "/en/articles/how-to-estimate-story-points"
+  - "/en/articles/planning-poker-vote-disagreement"
+  - "/en/faq"
+publishedAt: "2026-08-06"
+updatedAt: "2026-08-08"
+coverImage: "/blog/planning-poker-remoto/planning-poker-remoto-capa.webp"
+coverAlt: "Four remote professionals connected online, each holding an estimation card, with cards 3, 5, 8, and 13 in the foreground"
+socialImage: "/blog/planning-poker-remoto/remote-planning-poker-social-en.webp"
+ctaTitle: "Run your next round with one link"
+ctaDescription: "Create a room, share the invitation before the call, and use this guide to vote, reveal, and record the decision with your team."
+ctaButton: "Create a remote room"
+---
+
+To run remote Planning Poker, **share the story and acceptance criteria before the call, reserve a short synchronous time window, and use a room where votes stay hidden until the reveal**. During the session, confirm that everyone understands the item, wait for every participant to vote, reveal the cards together, hear from the highest and lowest estimators, and record an explicit decision: agreed estimate, no consensus, or deferred item.
+
+Remote work does not change the purpose of the exercise. It changes the facilitation risks: context spread across several tabs, silence that is hard to interpret, connection delays, and people working across time zones. This guide provides a practical agenda for reducing those problems without requiring cameras or turning the meeting into a series of presentations.
+
+## What changes in remote Planning Poker
+
+Planning Poker is a collaborative estimation technique in which each participant chooses a card without seeing anyone else's choice, and all cards are revealed at the same time. The [Agile Alliance describes the exercise](https://agilealliance.org/glossary/planning-poker/) as an opportunity to compare reasoning, especially between the highest and lowest estimates, before another round.
+
+In a physical room, the facilitator quickly notices who did not hear the story or who is trying to speak. At a distance, those signals are less visible. **Practical recommendation:** make the round's state explicit. State which item is being estimated, which question needs an answer, and what will happen after the reveal.
+
+It also helps to distinguish three formats that are often grouped under “online Planning Poker”:
+
+| Format | How it works | When it makes sense | Main risk |
+| --- | --- | --- | --- |
+| Synchronous | Everyone votes and reveals within the same time window | The item requires questions and immediate discussion | The meeting runs long because the item was not prepared |
+| Hybrid | The team reads and comments beforehand; voting happens in a short meeting | There is little schedule overlap, but live discussion is still possible | The pre-read does not happen and the meeting becomes refinement |
+| Asynchronous | Votes and comments are submitted by a deadline | There is not enough schedule overlap | People vote on different versions of the item |
+
+Battle Poker is **synchronous**: participants join through a link, vote in real time, and reveal their cards together. It can be used after asynchronous preparation, but it does not provide an asynchronous voting flow with deadlines and comments.
+
+<ArticleImage
+  src="/blog/planning-poker-remoto/remote-planning-poker-flow-en.svg"
+  mobileSrc="/blog/planning-poker-remoto/remote-planning-poker-flow-mobile-en.svg"
+  alt="Decision diagram for choosing among a synchronous session, asynchronous preparation with a short meeting, and a fully asynchronous workflow"
+  width={1400}
+  height={788}
+  mobileWidth={768}
+  mobileHeight={1120}
+  caption="Preparation can be asynchronous; voting in Battle Poker happens live."
+/>
+
+## Who participates and who decides the size
+
+The [official Scrum Guide in Portuguese](https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-PortugueseBR-3.0.pdf) assigns responsibility for sizing Product Backlog items to the Developers who will perform the work. The Product Owner can help clarify the item and its trade-offs, but does not choose the estimate on behalf of the people doing the work.
+
+A practical division of responsibilities for a remote session is:
+
+- **Developers involved in delivery:** choose the cards and explain technical assumptions, risks, and the amount of work.
+- **Product Owner:** presents the objective, answers scope questions, and adjusts acceptance criteria when needed.
+- **Facilitator:** protects secret voting, organizes speaking turns, and closes each item with a decision. This can be the Scrum Master or another person chosen by the team.
+- **Observers:** follow the discussion without voting unless they also contribute to delivering that item.
+
+**Recommendation:** the facilitator should vote only when they also contribute to delivery. Combining facilitation with authority over the number makes the team more likely to follow the most influential opinion.
+
+## Prepare the session before opening the room
+
+A productive remote round starts outside the tool. The [GitLab guide to remote meetings](https://handbook.gitlab.com/handbook/company/culture/all-remote/meetings/) recommends checking whether a meeting is necessary, considering asynchronous communication, and sharing the agenda and materials in advance. Applied to Planning Poker, that means not using the live session to discover what the story asks for the first time.
+
+### Preparation checklist
+
+- [ ] The item's objective and acceptance criteria are accessible through a link.
+- [ ] Known dependencies and decisions already made are documented.
+- [ ] It is clear who needs to vote and who is attending only to clarify the item.
+- [ ] The invitation includes both the call link and the Planning Poker room link.
+- [ ] There is a text channel for reporting connection problems.
+- [ ] The team knows which scale to use and has reference stories.
+- [ ] There is a time limit for the item and an exit path if information is still missing.
+- [ ] The facilitator knows where to record the estimate and the lessons learned.
+
+There is no need to require cameras. Voice, chat, and an explicit voting-status indicator can be enough. If someone cannot use audio, agree beforehand on how that person will ask questions and explain their vote.
+
+## How to run remote Planning Poker in six steps
+
+### 1. Open the room and name the item
+
+Create the room before the meeting, join with a recognizable name, and share the link in the invitation or team channel. Joining Battle Poker does not require an account. Give the round the same name or identifier used in the backlog so that people do not estimate different items.
+
+Start with an objective statement: “We are estimating the relative effort to validate the payment webhook, including reprocessing and observability.”
+
+### 2. Allow a short silent reading period
+
+Give everyone one or two minutes to review the story, criteria, and references. Then open the floor to clarification questions. Silent reading reduces the advantage of people who already knew the item and supports participants with different processing speeds.
+
+If a question changes the scope, update the official source before voting. Do not rely only on a spoken answer that part of the team may not have heard.
+
+### 3. Ask for an individual, secret vote
+
+Each person involved in delivery chooses a card. Avoid announcing numbers aloud or suggesting a range before voting. In Battle Poker, other participants can see that someone has voted, but they cannot see the card's value before the reveal.
+
+Use `?` when decisive information is missing and `☕` when a break is needed. These signals are not numerical estimates and do not count toward the average.
+
+### 4. Confirm attendance before revealing
+
+Check how many people are active, how many have voted, and how many are still pending. If someone drops from the call or the room, pause and use the backup channel to confirm whether the person will return. Revealing without noticing a disconnection can turn a technical absence into false consensus.
+
+**Useful rule:** do not reveal only because time has elapsed. Ask whether anyone who has not voted needs information, an accessibility accommodation, or time to reconnect.
+
+### 5. Reveal and organize the discussion
+
+Once every required participant has voted, reveal the cards. If there is a meaningful difference, first hear from the people who chose the lowest and highest values. Give each person a short, uninterrupted turn before opening the group discussion.
+
+Ask for concrete assumptions:
+
+1. What did you include in the scope?
+2. Which dependency or failure scenario influenced your card?
+3. Which reference story did you compare this item with?
+4. What information would change your estimate?
+
+If the cards remain far apart, use the dedicated guide to [resolve Planning Poker vote disagreement](/en/articles/planning-poker-vote-disagreement) instead of automatically choosing the average.
+
+### 6. Close with an observable decision
+
+After clarification, choose one of these outcomes:
+
+- vote again because the team learned something new;
+- record the agreed estimate;
+- split the story;
+- mark the round as “no consensus”;
+- defer the item until an objective question is answered.
+
+In Battle Poker, the reveal shows the average and vote distribution, but the average does not decide for the team. The round can be confirmed with an agreed estimate, recorded as no consensus, or deferred; the team can also redo the round. When confirmed, the decision remains in the room history.
+
+## Example: a payment webhook in a distributed team
+
+A team needs to estimate: “As an operations team member, I want to reprocess failed payment notifications so that the order status remains consistent.” The Product Owner shares the story the day before with three criteria: limited retries, idempotency, and an alert after the final failure.
+
+During the call, four Developers join the room. After reading and asking questions, they vote `3`, `5`, `8`, and `13`.
+
+- The person who voted 3 assumed the provider already offered automatic retries.
+- The person who voted 13 included a message queue, an operations screen, and migration of old events.
+- The Product Owner clarifies that the first version will not include the screen or migration, but the team confirms that its own system still needs to guarantee idempotency.
+
+The story is updated during the discussion. In the second round, the votes are `5`, `5`, `8`, and `8`. The team compares the item with a recently completed integration, agrees on 8, and records the need to document the retry policy as a lesson learned.
+
+The useful outcome is not only the number. The session made two incompatible assumptions visible before development began.
+
+## Three remote scenarios and how to respond
+
+### Happy path: pre-reading and a short meeting
+
+Everyone has already read the item, joins through the link, asks two questions, votes, and closes the round within a few minutes. The facilitator records the estimate and moves to the next item. The speed came from preparation, not from cutting the discussion short.
+
+### Failure scenario: someone loses their connection
+
+The status shows one person as pending, and they disappear from the call. The facilitator does not reveal. They first send a message in the backup channel and agree to wait a few minutes. If the person does not return, the group explicitly decides to defer the item or proceed according to a previously agreed participation rule; they do not assume the missing vote would match the others.
+
+### Alternative scenario: there is no shared time window
+
+The team distributes the story, criteria, and questions with a reading deadline. If it can create a small window of overlap, it uses that time to vote and discuss the extremes in Battle Poker. If there is no shared window at all, it chooses a truly asynchronous tool and defines a deadline, item version, and closing rule. Sending numbers one after another in a chat does not preserve secret voting or simultaneous reveal.
+
+## Common problems in remote sessions
+
+| Signal | Likely cause | Facilitator action |
+| --- | --- | --- |
+| Everyone votes too quickly | The first number was said aloud or posted in chat | Restart the round and protect individual choice |
+| Many `?` cards | The story or criteria are insufficient | Pause voting and clarify the gap |
+| The same person dominates the discussion | Speaking order is undefined | Hear from the extremes in short, uninterrupted turns |
+| A participant remains pending | A question, distraction, accessibility issue, or connection problem | Ask what is blocking them; do not reveal automatically |
+| Repeated rounds produce the same votes | No new information was added | Split, investigate, or defer the item |
+| The meeting consumes the entire refinement session | Items arrived without pre-reading | Move context and initial questions ahead of the call |
+
+### Confusing attendance with participation
+
+Being connected does not mean someone understood the item. Ask an open question before voting and offer more than one channel for questions. Do not use an active camera as proof of attention.
+
+### Treating the average as consensus
+
+An average of 8 between cards 3 and 13 does not explain which parts of the work each person considered. Use the distribution to guide the discussion, and record a final estimate only after the team understands the assumptions.
+
+### Using the call to read an entire backlog
+
+Sharing a screen and reading every story from scratch makes the session tiring and leaves less time to discuss uncertainty. Send a small set of items that are ready to estimate and leave the rest in refinement.
+
+## Facilitator checklist
+
+- [ ] I shared the story, criteria, and references before the session.
+- [ ] I identified the required participants and a backup channel.
+- [ ] I named the item in the room with the same backlog identifier.
+- [ ] I allowed time for reading and questions before the first vote.
+- [ ] I avoided announcing numbers or ranges before individual choices.
+- [ ] I confirmed attendance and required votes before the reveal.
+- [ ] I heard from the extremes when estimates diverged.
+- [ ] I updated the item when an assumption changed.
+- [ ] I limited revotes that had no new information.
+- [ ] I recorded an agreed estimate, no consensus, or a deferral.
+
+If the team has not defined its scale yet, start with the guide to [estimating story points with reference stories](/en/articles/how-to-estimate-story-points). To review the complete exercise, see [What is Planning Poker?](/en/what-is-planning-poker).
+
+## Frequently asked questions
+
+### Does remote Planning Poker require cameras?
+
+No. Cameras can help some teams, but they are not required for the technique. What matters is that everyone can access the same context, signal questions, vote without influence, and take part in the discussion after the reveal.
+
+### How long should the session last?
+
+There is no universal duration. Prefer a small number of prepared items and set limits per item. If time runs out without reducing uncertainty, record the open question and defer the estimate instead of rushing a fragile decision.
+
+### Do the Product Owner and Scrum Master vote?
+
+Sizing belongs to the Developers who will perform the work. The Product Owner clarifies scope and trade-offs; the Scrum Master or facilitator protects the process. Either person votes when they also contribute to delivering the item, not simply because of their role.
+
+### Does Battle Poker work asynchronously?
+
+No. The tool was designed for real-time voting and simultaneous reveal. The team can read and ask questions beforehand, but it needs a synchronous time window for the Battle Poker round.
+
+### What should we do if someone disconnects after voting?
+
+Pause and try to reach them through the agreed channel. If the person returns, confirm that the vote still represents their understanding. If they do not return, apply an agreed participation rule or defer the item; do not treat absence as agreement.
+
+## Conclusion: remote sessions require explicit state
+
+A good remote session makes the item, the required participants, the voting state, and the final decision visible. Prepare the context in advance, protect secret choices, treat connection problems and silence as signals to investigate, and use the live meeting for the part that truly requires interaction: comparing assumptions.
+
+When the team has a shared time window, [create a room in Battle Poker](/en), share the link, and run the next estimation with this guide—without registration and without revealing cards early.
+
+## References
+
+- [Scrum Guide 2020 in Portuguese—Product Backlog sizing responsibility](https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-PortugueseBR-3.0.pdf)
+- [Agile Alliance—Planning Poker definition and exercise](https://agilealliance.org/glossary/planning-poker/)
+- [GitLab Handbook—preparation, agendas, and balancing synchronous and asynchronous communication](https://handbook.gitlab.com/handbook/company/culture/all-remote/meetings/)

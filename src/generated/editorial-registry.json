@@ -1,5 +1,30 @@
 [
   {
+    "id": "planning-poker-remoto",
+    "locale": "en",
+    "slug": "remote-planning-poker",
+    "title": "Remote Planning Poker: a practical guide for productive sessions",
+    "primaryKeyword": "remote planning poker",
+    "secondaryKeywords": [
+      "online planning poker",
+      "how to run remote planning poker",
+      "remote scrum poker",
+      "remote agile estimation",
+      "planning poker for distributed teams"
+    ],
+    "searchIntent": "Run a synchronous Planning Poker session with a remote team, including preparation, facilitation, contingencies, and a recorded decision.",
+    "summary": "A facilitation guide for preparing, running, and closing a remote session without losing context, participation, or decision quality.",
+    "publishedAt": "2026-08-06",
+    "updatedAt": "2026-08-08",
+    "author": "Equipe Battle Poker",
+    "relatedContent": [
+      "/en/what-is-planning-poker",
+      "/en/articles/how-to-estimate-story-points",
+      "/en/articles/planning-poker-vote-disagreement",
+      "/en/faq"
+    ]
+  },
+  {
     "id": "como-estimar-story-points",
     "locale": "en",
     "slug": "how-to-estimate-story-points",
