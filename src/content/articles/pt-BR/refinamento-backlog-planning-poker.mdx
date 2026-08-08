@@ -1,0 +1,248 @@
+---
+status: "published"
+slug: "refinamento-backlog-planning-poker"
+title: "Refinamento de backlog com Planning Poker: checklist prático"
+description: "Veja como preparar histórias para estimar, usar um checklist de refinamento e decidir quando votar, esclarecer, dividir ou investigar o item."
+summary: "Um roteiro prático para verificar se um item do backlog está claro o suficiente para o Planning Poker, sem transformar prontidão em burocracia."
+author: "Equipe Battle Poker"
+primaryKeyword: "refinamento de backlog com Planning Poker"
+secondaryKeywords:
+  - "Planning Poker no refinamento"
+  - "história pronta para estimar"
+  - "checklist de refinamento de backlog"
+  - "critérios de aceitação Planning Poker"
+  - "Definition of Ready Scrum"
+searchIntent: "Preparar itens do Product Backlog para uma estimativa responsável e decidir, durante o refinamento, quando votar, esclarecer, dividir ou investigar antes do Planning Poker."
+relatedContent:
+  - "/artigos/como-estimar-story-points"
+  - "/artigos/divergencia-votos-planning-poker"
+  - "/artigos/fibonacci-planning-poker"
+  - "/artigos/planning-poker-remoto"
+publishedAt: "2026-08-08"
+updatedAt: "2026-08-08"
+coverImage: "/blog/refinamento-backlog-planning-poker/refinamento-backlog-planning-poker-capa.webp"
+coverAlt: "Itens ambíguos do backlog passando por um funil de refinamento até uma história pronta para receber votos 3, 5 e 8"
+socialImage: "/blog/refinamento-backlog-planning-poker/refinamento-backlog-planning-poker-linkedin.webp"
+ctaTitle: "Leve uma história refinada para a votação"
+ctaDescription: "Crie uma sala sem cadastro, nomeie a rodada e compartilhe o link. No Battle Poker, os votos ficam ocultos até a revelação simultânea para a equipe discutir as premissas."
+ctaButton: "Criar sala para estimar"
+---
+
+No **refinamento de backlog com Planning Poker**, a votação deve começar somente quando a equipe entende o resultado esperado, os limites do item, os principais critérios de aceitação e as incertezas relevantes. “Pronto para estimar” não significa especificação completa: significa clareza suficiente para comparar o item com referências e sustentar uma conversa responsável sobre tamanho.
+
+Use esta regra prática: **se uma pergunta pode mudar radicalmente o trabalho, esclareça antes de votar**. Se o item é grande demais, divida. Se existe uma incerteza técnica dominante, investigue. Quando as dúvidas restantes fazem parte normal da execução, vote e registre as premissas.
+
+## Refinamento de backlog e Planning Poker não são a mesma coisa
+
+O refinamento melhora itens do Product Backlog continuamente. O Planning Poker é uma técnica opcional de estimativa que pode ser usada dentro dessa atividade. Uma equipe pode refinar sem votar e pode dimensionar de outras formas; misturar os dois conceitos costuma transformar a sessão em uma corrida por números.
+
+O [Scrum Guide 2020](https://scrumguides.org/scrum-guide.html) define refinamento como decompor e detalhar itens em unidades menores e mais precisas, adicionando atributos como descrição, ordem e tamanho. O guia também afirma que itens considerados prontos para a Sprint Planning conseguem ser concluídos dentro de uma Sprint e que os Developers responsáveis pelo trabalho respondem pelo dimensionamento.
+
+**Fato:** Scrum não exige Planning Poker, story points nem uma reunião fixa de refinamento. **Interpretação:** uma votação é útil quando ajuda a equipe a construir entendimento e comparar tamanho. **Recomendação:** não use a carta para compensar uma história que ainda representa resultados diferentes na cabeça das pessoas.
+
+| Atividade | Pergunta principal | Saída útil |
+| --- | --- | --- |
+| Refinar | O que precisa ser entendido ou dividido para este item ficar acionável? | Item mais claro, menor e ordenado |
+| Estimar | Qual é o tamanho relativo deste trabalho no contexto do time? | Tamanho explicado por referências e premissas |
+| Planejar a Sprint | O que faz sentido selecionar para avançar o Sprint Goal? | Previsão de trabalho para a Sprint |
+
+## Quando uma história está pronta para estimar
+
+Um item está pronto para o Planning Poker quando a equipe consegue responder **o suficiente** para comparar o trabalho, sem precisar decidir cada detalhe de implementação. O nível adequado depende do risco, da proximidade do item e do conhecimento disponível.
+
+A chamada Definition of Ready pode servir como acordo de trabalho, mas não é uma exigência do Scrum. A [Scrum.org explica que ela é uma prática complementar](https://www.scrum.org/resources/blog/ready-or-not-demystifying-definition-ready-scrum) e alerta contra usá-la como uma barreira rígida, uma fonte de culpa ou uma desculpa para impedir aprendizado. Prefira chamar a lista abaixo de **perguntas de refinamento**.
+
+### 1. O resultado e o usuário estão claros?
+
+Todos devem conseguir explicar quem se beneficia, qual problema será resolvido e qual mudança observável indica sucesso. A fórmula “Como pessoa, quero algo para obter um benefício” pode ajudar, mas não substitui a conversa.
+
+Se duas pessoas descrevem resultados diferentes, pare. Reescreva o objetivo antes de discutir pontos.
+
+### 2. Os limites do item estão explícitos?
+
+Registre o que entra agora e o que fica de fora. Inclua regras de negócio, permissões, canais, plataformas e volumes que alteram significativamente o trabalho. “Exportar relatório” pode significar baixar a tela atual ou construir uma geração assíncrona para milhões de linhas.
+
+### 3. Existem critérios de aceitação verificáveis?
+
+Critérios de aceitação descrevem condições observáveis para considerar o resultado correto. A [Atlassian relaciona esses critérios ao entendimento de sucesso e à verificabilidade da história](https://www.atlassian.com/br/agile/project-management/user-stories). Eles não precisam antecipar todos os testes, mas devem cobrir comportamento principal, limites importantes e falhas relevantes.
+
+Troque “deve funcionar corretamente” por exemplos concretos: dado um usuário sem permissão, quando tentar exportar, então a ação não fica disponível e o acesso não é concedido.
+
+### 4. Dependências, restrições e riscos conhecidos apareceram?
+
+Pergunte por APIs externas, dados, decisões de outra equipe, migrações, segurança, acessibilidade e restrições não funcionais. Nem toda dependência precisa estar resolvida. Ela precisa estar visível o bastante para a equipe decidir se entra na estimativa, exige investigação ou bloqueia o item.
+
+### 5. Há conhecimento suficiente para comparar o item?
+
+Incerteza normal faz parte da estimativa. Incerteza dominante impede uma comparação honesta. Se ninguém sabe se a API suporta a operação essencial, uma carta alta não cria conhecimento. Registre a pergunta e faça uma investigação curta antes da próxima rodada.
+
+### 6. O item cabe como unidade coerente dentro de uma Sprint?
+
+O Scrum Guide usa a possibilidade de concluir dentro de uma Sprint como sinal de prontidão para seleção. Isso não impõe um número universal de story points. Se o item reúne fluxos independentes ou não pode chegar a Done no período, procure divisões verticais que preservem valor.
+
+<ArticleImage
+  src="/blog/refinamento-backlog-planning-poker/decisao-historia-pronta.svg"
+  mobileSrc="/blog/refinamento-backlog-planning-poker/decisao-historia-pronta-mobile.svg"
+  alt="Diagrama para decidir entre estimar, esclarecer, dividir ou investigar uma história durante o refinamento"
+  width={1400}
+  height={788}
+  mobileWidth={768}
+  mobileHeight={1120}
+  caption="Use as perguntas como guia de conversa. Prontidão suficiente não é uma barreira burocrática nem uma promessa de que nada mudará."
+/>
+
+## Como conduzir o refinamento com Planning Poker
+
+### 1. Selecione poucos itens próximos do topo
+
+Refine primeiro o que tem chance real de ser trabalhado em breve. Preparar detalhadamente um backlog distante cria estoque de decisões que pode perder validade.
+
+### 2. Apresente o problema antes da solução
+
+O Product Owner contextualiza objetivo, usuário, valor e restrições conhecidas. A equipe lê o item e marca perguntas sem começar pela arquitetura favorita ou pelo número desejado.
+
+### 3. Passe pelas seis perguntas de prontidão
+
+Não transforme a lista em aprovação documental. Use-a para localizar a dúvida que mais pode mudar o tamanho. Atualize o item durante a conversa: exemplos e decisões precisam sobreviver à reunião.
+
+### 4. Escolha a saída antes de abrir a votação
+
+Há quatro saídas honestas:
+
+- **estimar agora:** entendimento suficiente e tamanho comparável;
+- **esclarecer:** falta uma decisão de produto ou regra de negócio;
+- **dividir:** o item combina resultados independentes ou não cabe como unidade;
+- **investigar:** uma dúvida técnica dominante precisa de evidência.
+
+### 5. Nomeie a rodada e vote em segredo
+
+Para os itens estimáveis, crie uma sala no Battle Poker, nomeie a rodada com o item e compartilhe o link. Cada participante escolhe uma carta sem ver os votos das outras pessoas. Essa independência preserva sinais que poderiam desaparecer depois da primeira opinião falada.
+
+A página [O que é Planning Poker](/o-que-e-planning-poker) apresenta a dinâmica completa. Se o time ainda precisa calibrar referências, siga o guia [como estimar story points](/artigos/como-estimar-story-points).
+
+### 6. Revele e classifique a divergência
+
+Depois da revelação simultânea, observe a distribuição. Votos próximos podem exigir apenas uma confirmação. Extremos podem indicar limites, dependências ou critérios interpretados de formas diferentes. Escute as premissas antes de calcular qualquer média.
+
+O roteiro de [divergência de votos no Planning Poker](/artigos/divergencia-votos-planning-poker) mostra como conduzir essa conversa sem pressionar quem ficou isolado.
+
+### 7. Registre a decisão — inclusive quando não há número
+
+No Battle Poker, a equipe pode revisar o resultado, definir a estimativa acordada, confirmar a rodada no histórico ou refazer a votação. Se o item voltou para esclarecimento, divisão ou investigação, registre essa saída no backlog e não force uma estimativa apenas para encerrar a reunião.
+
+## Exemplo: exportar pedidos em CSV
+
+Uma equipe recebe o item: “Como gerente, quero exportar pedidos para analisar os resultados”. Parece pequeno, mas as seis perguntas revelam interpretações incompatíveis.
+
+- uma pessoa imaginou exportar a tabela filtrada que já aparece na tela;
+- outra incluiu todos os pedidos da empresa, sem limite de período;
+- o QA perguntou sobre fuso horário e caracteres especiais;
+- segurança lembrou que filiais só podem ver os próprios pedidos;
+- o Product Owner ainda não decidiu se o arquivo deve ser imediato ou enviado por e-mail.
+
+O time não vota. Primeiro define a entrega mais próxima: exportar em CSV os mesmos pedidos visíveis na tela, respeitando filtros, permissão da filial, fuso do usuário e limite de 10 mil linhas. A exportação histórica de alto volume vira outro item para descoberta.
+
+Na primeira votação do item reduzido aparecem `3`, `5`, `5`, `8` e `8`. A pessoa do `3` acreditava que a biblioteca atual já tratava separador e codificação. Quem votou `8` sabia que o serviço reutilizado ignorava o fuso do usuário. Após confirmar a correção necessária e comparar com uma referência recente, o time vota novamente e acorda `8`.
+
+O número passou a representar um mesmo item. O refinamento não removeu toda incerteza; removeu as interpretações que fariam cada carta estimar um produto diferente.
+
+## Quatro decisões possíveis durante a sessão
+
+| Sinal observado | Decisão | Próximo passo |
+| --- | --- | --- |
+| Resultado, limites e riscos são compreendidos | Estimar | Comparar com referências e votar |
+| Falta regra de negócio decisiva | Esclarecer | Identificar responsável e pergunta específica |
+| Item reúne vários resultados | Dividir | Criar fatias verticais e reavaliar cada uma |
+| Desconhecimento técnico domina o tamanho | Investigar | Fazer experimento curto com pergunta e limite claros |
+
+**Recomendação prática:** uma sessão produtiva não é a que atribui mais pontos. É a que toma a decisão correta para cada item.
+
+## Três cenários e como agir
+
+### Cenário feliz: a conversa confirma o mesmo escopo
+
+Os critérios cobrem fluxo principal, permissão e erro conhecido. As cartas ficam entre `5` e `8`, e a diferença corresponde a uma premissa simples de teste. O time registra a decisão e segue.
+
+### Cenário de falha: o checklist vira contrato de handoff
+
+Uma analista precisa preencher todos os campos sozinha antes de “entregar” o item aos desenvolvedores. Qualquer mudança reprova a história. A prática cria silos e reduz colaboração. Reconstrua as perguntas com toda a equipe e aceite que detalhes continuarão emergindo.
+
+### Cenário alternativo: existe urgência, mas falta conhecimento
+
+Um incidente regulatório exige resposta rápida e a integração externa é desconhecida. A equipe não inventa `21` para absorver tudo. Ela separa a mitigação imediata, cria uma investigação curta para a integração e volta a estimar a entrega permanente com evidência nova.
+
+## Erros comuns no refinamento com Planning Poker
+
+### Votar cedo para “destravar” a conversa
+
+O número passa a ancorar a discussão antes de todos entenderem o problema. Comece com perguntas; abra as cartas quando o mesmo item estiver sendo comparado.
+
+### Exigir especificação completa
+
+Prontidão não significa prever cada decisão de implementação. Detalhe o suficiente para reduzir ambiguidade relevante e preserve espaço para aprendizado durante o desenvolvimento.
+
+### Transformar `?` em uma carta alta
+
+No Battle Poker, `?` sinaliza falta de informação e não entra na média numérica. Responda com uma pergunta registrada, não com um tamanho inflado.
+
+### Aceitar a média como consenso
+
+As cartas `3` e `13` produzem média `8`, mas podem descrever escopos opostos. Investigue as razões. O artigo sobre [escala Fibonacci no Planning Poker](/artigos/fibonacci-planning-poker) explica por que números altos e intervalos pedem interpretação.
+
+### Refinar todo o backlog com o mesmo detalhe
+
+Itens distantes mudam. Invista mais clareza nos candidatos próximos e mantenha o restante leve até que a prioridade justifique aprofundamento.
+
+## Checklist antes de votar
+
+- [ ] O resultado esperado pode ser explicado em uma frase?
+- [ ] Usuário ou pessoa beneficiada está identificado?
+- [ ] Escopo incluído e principais exclusões estão visíveis?
+- [ ] Critérios de aceitação cobrem sucesso, limite e falha relevante?
+- [ ] Dependências e restrições que mudam o tamanho apareceram?
+- [ ] A incerteza restante é normal, não dominante?
+- [ ] O item pode chegar a Done dentro de uma Sprint?
+- [ ] Existem referências do próprio time para comparar?
+- [ ] Todos estimam o mesmo recorte?
+- [ ] A equipe aceita sair sem número quando precisa esclarecer, dividir ou investigar?
+
+Para equipes distribuídas, combine também tempo de leitura, canal de conversa e como tratar quedas de conexão. O guia de [Planning Poker remoto](/artigos/planning-poker-remoto) cobre essas contingências.
+
+## Perguntas frequentes
+
+### Refinamento de backlog é uma reunião obrigatória do Scrum?
+
+Não. O Scrum Guide descreve o refinamento como uma atividade contínua, não como um evento formal com duração prescrita. A equipe pode realizá-lo em sessões recorrentes e também ao longo do trabalho, conforme o contexto.
+
+### Planning Poker deve acontecer no refinamento ou na Sprint Planning?
+
+Pode acontecer nos dois momentos, mas estimar itens candidatos durante o refinamento costuma deixar a Sprint Planning mais focada na meta e na seleção do trabalho. A técnica é opcional; escolha o momento que produz informação útil sem votação prematura.
+
+### Uma história precisa ter critérios de aceitação antes de ser estimada?
+
+Precisa de condições claras o suficiente para que todos comparem o mesmo resultado. Isso não exige uma especificação exaustiva. Se a ausência de um critério pode mudar substancialmente o trabalho, defina-o ou registre uma premissa antes da votação.
+
+### Definition of Ready faz parte do Scrum?
+
+Não como elemento obrigatório. Pode ser uma prática complementar e adaptável. Use perguntas que apoiem transparência e colaboração; evite uma barreira fixa controlada por uma função isolada.
+
+### Quem deve dimensionar o item?
+
+Segundo o Scrum Guide, os Developers que realizarão o trabalho são responsáveis pelo dimensionamento. O Product Owner ajuda a esclarecer objetivos e trade-offs. Outras pessoas podem contribuir com contexto, mas não devem impor o tamanho ao time.
+
+### Quantos itens devem ser refinados por sessão?
+
+Não há número universal. Selecione um conjunto pequeno de itens próximos do topo e encerre quando houver clareza suficiente para as próximas decisões. Medir sucesso pela quantidade estimada incentiva números superficiais.
+
+## Conclusão: clareza suficiente, não certeza total
+
+Um bom refinamento prepara a conversa de estimativa sem tentar congelar o futuro. Verifique resultado, limites, critérios, dependências, conhecimento e tamanho. Em seguida, escolha conscientemente entre estimar, esclarecer, dividir ou investigar.
+
+Quando o item estiver pronto, [crie uma sala no Battle Poker](/), compartilhe o link e deixe cada pessoa votar sem ancoragem. Use a revelação e a distribuição para validar premissas; confirme a estimativa acordada somente depois que todos estiverem falando sobre o mesmo trabalho.
+
+## Referências
+
+- [Scrum Guide 2020 — refinamento, prontidão para Sprint Planning e responsabilidade pelo dimensionamento](https://scrumguides.org/scrum-guide.html)
+- [Scrum.org — benefícios e riscos da Definition of Ready como prática complementar](https://www.scrum.org/resources/blog/ready-or-not-demystifying-definition-ready-scrum)
+- [Atlassian — histórias de usuário, conversa e critérios de aceitação verificáveis](https://www.atlassian.com/br/agile/project-management/user-stories)
+- [Mountain Goat Software — funcionamento e momento de uso do Planning Poker](https://www.mountaingoatsoftware.com/agile/planning-poker)

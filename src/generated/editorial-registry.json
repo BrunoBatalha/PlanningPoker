@@ -73,6 +73,31 @@
     ]
   },
   {
+    "id": "refinamento-backlog-planning-poker",
+    "locale": "pt-BR",
+    "slug": "refinamento-backlog-planning-poker",
+    "title": "Refinamento de backlog com Planning Poker: checklist prático",
+    "primaryKeyword": "refinamento de backlog com Planning Poker",
+    "secondaryKeywords": [
+      "Planning Poker no refinamento",
+      "história pronta para estimar",
+      "checklist de refinamento de backlog",
+      "critérios de aceitação Planning Poker",
+      "Definition of Ready Scrum"
+    ],
+    "searchIntent": "Preparar itens do Product Backlog para uma estimativa responsável e decidir, durante o refinamento, quando votar, esclarecer, dividir ou investigar antes do Planning Poker.",
+    "summary": "Um roteiro prático para verificar se um item do backlog está claro o suficiente para o Planning Poker, sem transformar prontidão em burocracia.",
+    "publishedAt": "2026-08-08",
+    "updatedAt": "2026-08-08",
+    "author": "Equipe Battle Poker",
+    "relatedContent": [
+      "/artigos/como-estimar-story-points",
+      "/artigos/divergencia-votos-planning-poker",
+      "/artigos/fibonacci-planning-poker",
+      "/artigos/planning-poker-remoto"
+    ]
+  },
+  {
     "id": "fibonacci-planning-poker",
     "locale": "pt-BR",
     "slug": "fibonacci-planning-poker",
@@ -113,7 +138,7 @@
     "searchIntent": "Conduzir uma sessão síncrona de Planning Poker com uma equipe remota, incluindo preparação, facilitação, contingências e registro da decisão.",
     "summary": "Um roteiro de facilitação para preparar, conduzir e encerrar uma sessão remota sem perder contexto, participação ou qualidade da decisão.",
     "publishedAt": "2026-08-06",
-    "updatedAt": "2026-08-06",
+    "updatedAt": "2026-08-08",
     "author": "Equipe Battle Poker",
     "relatedContent": [
       "/o-que-e-planning-poker",
@@ -138,7 +163,7 @@
     "searchIntent": "Aprender, com um exemplo completo, a calibrar uma escala e estimar histórias de usuário em story points de forma relativa.",
     "summary": "Um método reproduzível para calibrar story points, comparar histórias e conduzir a votação com critérios explícitos de trabalho, complexidade e incerteza.",
     "publishedAt": "2026-08-05",
-    "updatedAt": "2026-08-07",
+    "updatedAt": "2026-08-08",
     "author": "Equipe Battle Poker",
     "relatedContent": [
       "/o-que-e-planning-poker",

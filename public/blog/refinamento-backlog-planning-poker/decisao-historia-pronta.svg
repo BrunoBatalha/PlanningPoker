@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="788" viewBox="0 0 1400 788" role="img" aria-labelledby="title desc">
+  <title id="title">Decisão para estimar uma história no refinamento</title>
+  <desc id="desc">Fluxo com seis perguntas que encaminha a história para estimar, esclarecer, dividir ou investigar.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#090A16"/><stop offset="1" stop-color="#15102C"/></linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8B5CF6"/><stop offset="1" stop-color="#5B21B6"/></linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#67E8F9"/><stop offset="1" stop-color="#2563EB"/></linearGradient>
+  </defs>
+  <rect width="1400" height="788" rx="40" fill="url(#bg)"/>
+  <path d="M40 120H1360M40 250H1360M40 380H1360M40 510H1360M40 640H1360" stroke="#8B5CF6" stroke-opacity=".08"/>
+  <text x="70" y="78" fill="#F8FAFC" font-family="Segoe UI,Arial,sans-serif" font-size="34" font-weight="700">História pronta para estimar?</text>
+  <text x="70" y="112" fill="#AEB7CF" font-family="Segoe UI,Arial,sans-serif" font-size="18">Seis perguntas para uma decisão explícita — não uma barreira burocrática</text>
+  <rect x="70" y="155" width="650" height="520" rx="28" fill="#111226" stroke="#8B5CF6" stroke-opacity=".55"/>
+  <g font-family="Segoe UI,Arial,sans-serif">
+    <g transform="translate(105 200)"><circle cx="18" cy="18" r="18" fill="#34235F"/><text x="18" y="25" text-anchor="middle" fill="#C4B5FD" font-size="20" font-weight="700">1</text><text x="55" y="14" fill="#F8FAFC" font-size="22" font-weight="600">Resultado e usuário estão claros?</text><text x="55" y="42" fill="#9BA6C1" font-size="17">A equipe explica o mesmo problema e benefício.</text></g>
+    <g transform="translate(105 275)"><circle cx="18" cy="18" r="18" fill="#34235F"/><text x="18" y="25" text-anchor="middle" fill="#C4B5FD" font-size="20" font-weight="700">2</text><text x="55" y="14" fill="#F8FAFC" font-size="22" font-weight="600">Limites do item estão explícitos?</text><text x="55" y="42" fill="#9BA6C1" font-size="17">Entradas, exclusões, permissões e volumes.</text></g>
+    <g transform="translate(105 350)"><circle cx="18" cy="18" r="18" fill="#34235F"/><text x="18" y="25" text-anchor="middle" fill="#C4B5FD" font-size="20" font-weight="700">3</text><text x="55" y="14" fill="#F8FAFC" font-size="22" font-weight="600">Critérios são verificáveis?</text><text x="55" y="42" fill="#9BA6C1" font-size="17">Sucesso, limite e falha podem ser observados.</text></g>
+    <g transform="translate(105 425)"><circle cx="18" cy="18" r="18" fill="#34235F"/><text x="18" y="25" text-anchor="middle" fill="#C4B5FD" font-size="20" font-weight="700">4</text><text x="55" y="14" fill="#F8FAFC" font-size="22" font-weight="600">Dependências e riscos apareceram?</text><text x="55" y="42" fill="#9BA6C1" font-size="17">O que altera o tamanho está visível.</text></g>
+    <g transform="translate(105 500)"><circle cx="18" cy="18" r="18" fill="#34235F"/><text x="18" y="25" text-anchor="middle" fill="#C4B5FD" font-size="20" font-weight="700">5</text><text x="55" y="14" fill="#F8FAFC" font-size="22" font-weight="600">Conhecimento permite comparar?</text><text x="55" y="42" fill="#9BA6C1" font-size="17">A incerteza restante é normal, não dominante.</text></g>
+    <g transform="translate(105 575)"><circle cx="18" cy="18" r="18" fill="#34235F"/><text x="18" y="25" text-anchor="middle" fill="#C4B5FD" font-size="20" font-weight="700">6</text><text x="55" y="14" fill="#F8FAFC" font-size="22" font-weight="600">Cabe como unidade em uma Sprint?</text><text x="55" y="42" fill="#9BA6C1" font-size="17">Existe caminho realista para chegar a Done.</text></g>
+  </g>
+  <path d="M720 415H790" stroke="#7DD3FC" stroke-width="4" stroke-linecap="round"/><path d="M780 405L792 415 780 425" fill="none" stroke="#7DD3FC" stroke-width="4"/>
+  <g font-family="Segoe UI,Arial,sans-serif">
+    <rect x="820" y="155" width="510" height="125" rx="24" fill="url(#cyan)"/>
+    <text x="850" y="198" fill="#06111E" font-size="17" font-weight="700" letter-spacing="2">CLAREZA SUFICIENTE</text><text x="850" y="242" fill="#FFFFFF" font-size="30" font-weight="700">ESTIMAR</text>
+    <g transform="translate(1120 182)"><rect width="48" height="68" rx="10" fill="#101426"/><text x="24" y="46" text-anchor="middle" fill="#fff" font-size="28" font-weight="700">3</text><rect x="58" width="48" height="68" rx="10" fill="#101426"/><text x="82" y="46" text-anchor="middle" fill="#fff" font-size="28" font-weight="700">5</text><rect x="116" width="48" height="68" rx="10" fill="#101426"/><text x="140" y="46" text-anchor="middle" fill="#fff" font-size="28" font-weight="700">8</text></g>
+    <rect x="820" y="310" width="245" height="150" rx="22" fill="#231A42" stroke="#8B5CF6"/><text x="850" y="350" fill="#C4B5FD" font-size="16" font-weight="700">REGRA INDEFINIDA</text><text x="850" y="392" fill="#FFFFFF" font-size="25" font-weight="700">ESCLARECER</text><text x="850" y="425" fill="#AEB7CF" font-size="16">Pergunta + responsável</text>
+    <rect x="1085" y="310" width="245" height="150" rx="22" fill="#231A42" stroke="#8B5CF6"/><text x="1115" y="350" fill="#C4B5FD" font-size="16" font-weight="700">ITEM GRANDE</text><text x="1115" y="392" fill="#FFFFFF" font-size="25" font-weight="700">DIVIDIR</text><text x="1115" y="425" fill="#AEB7CF" font-size="16">Fatias com valor</text>
+    <rect x="820" y="485" width="510" height="150" rx="22" fill="url(#violet)"/><text x="850" y="528" fill="#DDD6FE" font-size="16" font-weight="700">DÚVIDA TÉCNICA DOMINANTE</text><text x="850" y="573" fill="#FFFFFF" font-size="28" font-weight="700">INVESTIGAR</text><text x="850" y="607" fill="#E9E4FF" font-size="17">Experimento curto, pergunta e limite claros</text>
+  </g>
+  <text x="70" y="735" fill="#7DD3FC" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700">BATTLE POKER</text><text x="1330" y="735" text-anchor="end" fill="#8792AE" font-family="Segoe UI,Arial,sans-serif" font-size="16">Refinamento orienta a próxima decisão.</text>
+</svg>
