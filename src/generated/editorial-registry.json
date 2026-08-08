@@ -48,6 +48,31 @@
     ]
   },
   {
+    "id": "fibonacci-planning-poker",
+    "locale": "pt-BR",
+    "slug": "fibonacci-planning-poker",
+    "title": "Escala Fibonacci no Planning Poker: como usar",
+    "primaryKeyword": "escala Fibonacci no Planning Poker",
+    "secondaryKeywords": [
+      "Planning Poker Fibonacci",
+      "sequência Fibonacci Scrum",
+      "story points Fibonacci",
+      "Planning Poker Fibonacci em horas",
+      "escala de story points"
+    ],
+    "searchIntent": "Entender por que a escala Fibonacci é usada no Planning Poker e aplicá-la com critérios claros, inclusive diante de cartas altas, incerteza e escalas alternativas.",
+    "summary": "Um guia prático para escolher, calibrar e usar a escala Fibonacci no Planning Poker sem criar precisão falsa nem transformar pontos em prazo.",
+    "publishedAt": "2026-08-07",
+    "updatedAt": "2026-08-07",
+    "author": "Equipe Battle Poker",
+    "relatedContent": [
+      "/artigos/como-estimar-story-points",
+      "/artigos/divergencia-votos-planning-poker",
+      "/o-que-e-planning-poker",
+      "/artigos/planning-poker-remoto"
+    ]
+  },
+  {
     "id": "planning-poker-remoto",
     "locale": "pt-BR",
     "slug": "planning-poker-remoto",
@@ -88,13 +113,13 @@
     "searchIntent": "Aprender, com um exemplo completo, a calibrar uma escala e estimar histórias de usuário em story points de forma relativa.",
     "summary": "Um método reproduzível para calibrar story points, comparar histórias e conduzir a votação com critérios explícitos de trabalho, complexidade e incerteza.",
     "publishedAt": "2026-08-05",
-    "updatedAt": "2026-08-06",
+    "updatedAt": "2026-08-07",
     "author": "Equipe Battle Poker",
     "relatedContent": [
       "/o-que-e-planning-poker",
+      "/artigos/fibonacci-planning-poker",
       "/artigos/divergencia-votos-planning-poker",
-      "/artigos/planning-poker-remoto",
-      "/faq"
+      "/artigos/planning-poker-remoto"
     ]
   },
   {

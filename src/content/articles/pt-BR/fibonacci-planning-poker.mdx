@@ -1,0 +1,247 @@
+---
+status: "published"
+slug: "fibonacci-planning-poker"
+title: "Escala Fibonacci no Planning Poker: como usar"
+description: "Entenda por que o Planning Poker usa Fibonacci, como interpretar os saltos da escala, tratar cartas altas e evitar converter story points em horas."
+summary: "Um guia prático para escolher, calibrar e usar a escala Fibonacci no Planning Poker sem criar precisão falsa nem transformar pontos em prazo."
+author: "Equipe Battle Poker"
+primaryKeyword: "escala Fibonacci no Planning Poker"
+secondaryKeywords:
+  - "Planning Poker Fibonacci"
+  - "sequência Fibonacci Scrum"
+  - "story points Fibonacci"
+  - "Planning Poker Fibonacci em horas"
+  - "escala de story points"
+searchIntent: "Entender por que a escala Fibonacci é usada no Planning Poker e aplicá-la com critérios claros, inclusive diante de cartas altas, incerteza e escalas alternativas."
+relatedContent:
+  - "/artigos/como-estimar-story-points"
+  - "/artigos/divergencia-votos-planning-poker"
+  - "/o-que-e-planning-poker"
+  - "/artigos/planning-poker-remoto"
+publishedAt: "2026-08-07"
+updatedAt: "2026-08-07"
+coverImage: "/blog/fibonacci-planning-poker/fibonacci-planning-poker-capa.webp"
+coverAlt: "Cartas de estimativa 1, 2, 3, 5, 8 e 13 crescendo em uma sequência sobre fundo escuro"
+socialImage: "/blog/fibonacci-planning-poker/fibonacci-planning-poker-linkedin.webp"
+ctaTitle: "Teste a escala com uma história real"
+ctaDescription: "Crie uma sala, compartilhe o link e compare as cartas sem influência do primeiro voto. No Battle Poker, elas ficam ocultas até a revelação simultânea."
+ctaButton: "Criar sala com Fibonacci"
+---
+
+A escala Fibonacci no Planning Poker usa intervalos crescentes — como `0`, `1`, `2`, `3`, `5`, `8`, `13` e `21` — para **comparar o tamanho relativo do trabalho sem fingir uma precisão que o time não possui**. Quanto maior e mais incerto o item, maior fica a distância entre as opções disponíveis.
+
+Na prática, a equipe não precisa descobrir uma resposta matemática escondida. Ela escolhe referências conhecidas, compara cada novo item com essas âncoras, vota individualmente e usa as diferenças para revelar premissas. Uma carta alta não significa automaticamente “muitos dias”: pode indicar escopo grande, complexidade, dependência, incerteza ou uma história que precisa ser dividida.
+
+## O que é a escala Fibonacci no Planning Poker
+
+A sequência matemática de Fibonacci começa com valores em que cada novo número é a soma dos dois anteriores. Em estimativas ágeis, costuma-se usar uma versão reduzida ou modificada, não a sequência infinita completa.
+
+| Escala | Exemplo | Uso prático |
+| --- | --- | --- |
+| Fibonacci clássica | `1, 2, 3, 5, 8, 13, 21, 34...` | Mantém os saltos da sequência original |
+| Fibonacci modificada | `1, 2, 3, 5, 8, 13, 20, 40, 100` | Arredonda valores altos para explicitar baixa precisão |
+| Battle Poker | `0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ?, ☕` | Acrescenta zero, dúvida e pausa ao baralho numérico |
+
+O [Scrum Guide](https://scrumguides.org/scrum-guide.html) afirma que os Developers que realizarão o trabalho são responsáveis pelo dimensionamento do Product Backlog. O guia não exige story points, Fibonacci nem Planning Poker. **Fato:** o tamanho é um atributo possível do item e a responsabilidade fica com quem executa. **Interpretação:** Fibonacci é uma prática opcional que pode apoiar essa responsabilidade, não uma regra do Scrum.
+
+A [Scrum Alliance também apresenta Fibonacci como uma opção](https://resources.scrumalliance.org/Article/guide-using-fibonacci-sequence-scrum) e distingue tamanho de duração individual. Isso importa porque `8` não quer dizer oito horas ou oito dias. O número só ganha significado quando comparado com referências do mesmo time.
+
+## Por que a escala pula números
+
+Entre `1` e `2`, a equipe pode perceber uma diferença relevante. Entre `20` e `21`, a distinção costuma ser difícil de sustentar em um trabalho complexo. Oferecer todas as opções de `1` a `100` convidaria a discussões como “é 36 ou 37?” sem informação suficiente para justificar esse grau de precisão.
+
+[Mike Cohn relaciona os intervalos da escala à percepção de diferenças relativas](https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating) e explica por que passou a arredondar os valores altos. Essa é uma justificativa para o desenho da escala, não uma garantia de que Fibonacci produzirá estimativas exatas.
+
+Os saltos ajudam de três formas:
+
+1. **limitam escolhas sem diferença prática:** o time decide entre categorias suficientemente distintas;
+2. **tornam a incerteza visível:** números maiores oferecem menos granularidade;
+3. **provocam uma decisão:** quando `13` parece pequeno e `21` parece grande, a conversa deve buscar o motivo — não inventar a carta `17`.
+
+**Recomendação prática:** se o time sente falta de muitos valores intermediários, revise primeiro as histórias de referência. A escala pode estar mal calibrada ou os itens podem estar grandes demais.
+
+## Como calibrar Fibonacci antes da primeira rodada
+
+Fibonacci não resolve sozinha o significado de cada carta. Uma equipe precisa criar uma régua local com itens concluídos e compreendidos.
+
+### 1. Escolha de duas a quatro referências
+
+Use histórias recentes que representem tamanhos diferentes e cuja entrega todos consigam explicar. Evite escolher um incidente atípico ou uma história que mudou completamente de escopo.
+
+Um time de e-commerce poderia adotar:
+
+- **2 pontos:** alterar uma mensagem existente e testar dois estados já suportados;
+- **5 pontos:** adicionar um campo validado no checkout, persistindo pelo fluxo atual;
+- **8 pontos:** integrar uma nova regra de frete com falhas e cenários de elegibilidade.
+
+Esses valores são um exemplo fictício, não uma tabela universal.
+
+### 2. Defina o que entra na comparação
+
+Combine quais dimensões o time considera: quantidade de trabalho, complexidade, risco, dependências e incerteza. Não atribua uma nota a cada dimensão para somá-las depois. Use-as como perguntas que explicam por que um item parece maior ou menor que a referência.
+
+### 3. Combine o significado das cartas especiais
+
+- `?`: não há informação suficiente para uma estimativa responsável;
+- `☕`: a pessoa precisa de uma pausa, não está votando no tamanho;
+- `0`: trabalho desprezível dentro da escala atual — não significa ausência de validação ou qualidade.
+
+No Battle Poker, `?` e `☕` não entram na média numérica. Ainda assim, precisam de uma resposta humana: esclarecer a dúvida ou pausar a sessão.
+
+### 4. Decida um limite para itens grandes
+
+Não existe um corte universal, mas o time pode combinar que toda carta `13` ou superior aciona uma verificação: o item cabe como unidade coerente? Há incerteza removível? Faz sentido dividir antes de estimar novamente?
+
+## Como usar a escala em uma rodada
+
+### 1. Apresente o resultado esperado
+
+O Product Owner explica objetivo, critérios de aceite e restrições. Quem estima confirma o que precisa estar pronto para considerar o item concluído.
+
+### 2. Compare com as referências
+
+Pergunte: este item é menor, semelhante ou maior que a história de 5 pontos? Qual diferença de trabalho, complexidade ou incerteza sustenta essa leitura?
+
+### 3. Escolha a carta sem ancoragem
+
+Cada pessoa seleciona sua estimativa sem ver a escolha das demais. A revelação simultânea preserva perspectivas independentes até o momento da conversa.
+
+### 4. Investigue o intervalo, não a média
+
+Se surgirem `3`, `5`, `8` e `13`, a informação importante é a distância entre as premissas. Ouça as pessoas nos extremos, atualize a história se algo novo apareceu e só então decida se vale votar novamente.
+
+O artigo sobre [divergência de votos no Planning Poker](/artigos/divergencia-votos-planning-poker) apresenta um roteiro completo para essa etapa.
+
+### 5. Registre uma saída explícita
+
+A rodada pode terminar com uma estimativa acordada, sem consenso ou adiada. Também pode gerar uma divisão do item ou uma investigação curta. Não force um número apenas para preencher o backlog.
+
+<ArticleImage
+  src="/blog/fibonacci-planning-poker/decisao-carta-alta-fibonacci.svg"
+  mobileSrc="/blog/fibonacci-planning-poker/decisao-carta-alta-fibonacci-mobile.svg"
+  alt="Fluxo de decisão para tratar uma carta Fibonacci alta: esclarecer, dividir ou comparar novamente"
+  width={1400}
+  height={788}
+  mobileWidth={768}
+  mobileHeight={1120}
+  caption="Carta alta é um sinal para investigar o item, não uma conversão automática em prazo."
+/>
+
+## Exemplo: recuperação de carrinho abandonado
+
+Uma equipe estima a história: “Como cliente, quero recuperar meu carrinho em outro dispositivo para continuar a compra.”
+
+O time usa como referências uma alteração pequena de sessão com `3` pontos e uma integração conhecida de preferências com `8`. Na primeira votação aparecem `5`, `8`, `13` e `13`.
+
+A pessoa que votou `5` imaginou apenas clientes autenticados. Uma pessoa do `13` incluiu carrinhos anônimos, conciliação depois do login e conflito entre dispositivos. O Product Owner confirma que a primeira entrega aceitará somente clientes autenticados e que o carrinho mais recente substituirá o anterior.
+
+Com o escopo corrigido, o time ainda identifica duas partes coerentes:
+
+1. persistir e recuperar o carrinho do usuário autenticado;
+2. tratar o conflito quando houver carrinhos diferentes.
+
+O primeiro item recebe `8` após nova votação. O segundo volta ao refinamento porque a regra de negócio ainda não está decidida. Fibonacci ajudou a tornar a diferença grande demais para ser ignorada; não calculou a resposta pelo time.
+
+## Três cenários e a decisão adequada
+
+### Cenário feliz: votos próximos e referências claras
+
+As cartas são `5`, `5`, `5` e `8`. A pessoa do `8` lembra um cenário de acessibilidade que já faz parte da definição de pronto. Todos confirmam que ele foi considerado e registram `5`. A conversa é curta porque a régua está calibrada.
+
+### Cenário de falha: “13 pontos são duas semanas”
+
+Uma liderança converte a carta em prazo fixo e cobra a mesma relação de equipes diferentes. A escala perde seu caráter relativo e vira uma promessa de calendário disfarçada. Separe dimensionamento de previsão: use o histórico e a capacidade do próprio time para planejar, sem declarar uma taxa universal entre pontos e horas.
+
+### Cenário alternativo: todo item recebe 8 ou 13
+
+A escala está oferecendo pouca informação. Talvez as histórias cheguem grandes demais, as referências não representem mais a arquitetura ou a equipe esteja usando números altos como margem de segurança. Revise o refinamento, divida os itens e recalibre as âncoras antes de trocar de escala.
+
+## Fibonacci, tamanhos de camiseta ou sequência linear?
+
+| Opção | Quando ajuda | Limite principal |
+| --- | --- | --- |
+| Fibonacci | Comparar itens já refinados com incerteza crescente | Pode parecer científica se as referências não forem explícitas |
+| Tamanhos P, M, G | Agrupar rapidamente épicos ou muitos itens ainda imprecisos | Oferece menos granularidade para planejamento próximo |
+| Sequência linear `1–10` | Contextos pequenos em que o time distingue bem as categorias | Convida a precisão excessiva nos valores altos |
+| Potências de dois | Times que preferem saltos mais agressivos | Pode tornar divergências pequenas demais ou grandes demais |
+
+A [Atlassian lista Fibonacci, tamanhos de camiseta e outras abordagens](https://www.atlassian.com/br/agile/project-management/fibonacci-story-points). **Recomendação:** escolha a menor escala que apoie a decisão atual. Para triagem ampla, tamanhos de camiseta podem bastar. Para uma votação com referências calibradas, Fibonacci tende a oferecer categorias mais úteis.
+
+Se a dúvida for sobre como criar referências e comparar itens, consulte o guia [como estimar story points](/artigos/como-estimar-story-points). Para aprender o fluxo completo da dinâmica, comece por [O que é Planning Poker](/o-que-e-planning-poker).
+
+## Erros comuns com Fibonacci
+
+### Tratar o próximo número como multiplicador exato
+
+Uma história de `8` não precisa ter exatamente 60% mais trabalho que uma de `5`. Os intervalos organizam categorias relativas; não são uma fórmula de engenharia.
+
+### Criar uma tabela universal de funcionalidades
+
+“Login vale 5” ignora arquitetura, segurança, critérios de aceite e conhecimento da equipe. Documente referências locais, não preços fixos para tipos de tela.
+
+### Escolher 21 apenas para absorver risco
+
+Se uma dúvida específica domina a estimativa, use `?`, investigue ou divida. Uma carta alta não resolve a incerteza; só registra que ela existe.
+
+### Comparar velocidade entre equipes
+
+Cada time constrói sua própria régua. Somar mais pontos não prova maior produtividade, e normalizar escalas apenas para ranking destrói o contexto das referências.
+
+### Aceitar a média como estimativa final
+
+Os votos `3` e `13` têm média `8`, mas podem representar histórias diferentes na cabeça de cada pessoa. Primeiro resolva a diferença de entendimento.
+
+## Checklist para adotar a escala
+
+- [ ] Quem realiza o trabalho participa do dimensionamento.
+- [ ] O time tem de duas a quatro histórias de referência recentes.
+- [ ] Todos sabem quais dimensões entram na comparação.
+- [ ] `?`, `☕` e `0` têm significados combinados.
+- [ ] Existe um gatilho para investigar cartas altas.
+- [ ] As escolhas ficam ocultas até a revelação simultânea.
+- [ ] Divergências geram perguntas antes de qualquer média.
+- [ ] A rodada pode terminar sem consenso ou ser adiada.
+- [ ] Pontos não são convertidos por uma taxa fixa em horas.
+- [ ] As referências serão revistas quando o contexto mudar.
+
+Em equipes distribuídas, combine também presença, canal de áudio e plano para queda de conexão. O roteiro de [Planning Poker remoto](/artigos/planning-poker-remoto) cobre essas contingências.
+
+## Perguntas frequentes
+
+### Por que a sequência começa em 0 ou 1?
+
+A sequência matemática costuma ser apresentada a partir de 0 ou 1, mas os baralhos variam. Em estimativa, `0` pode representar um trabalho desprezível dentro da régua. O importante é o time combinar o significado e não usar zero para eliminar atividades necessárias.
+
+### Planning Poker Fibonacci pode ser convertido em horas?
+
+Não por uma taxa fixa. Pontos comparam tamanho relativo; horas estimam duração. O histórico da equipe pode apoiar previsões, mas “1 ponto = 4 horas” transforma a escala em tempo disfarçado e perde o contexto das referências.
+
+### Qual é a melhor sequência para Planning Poker?
+
+Não existe uma sequência obrigatória. Comece com uma escala curta, como `0, 1, 2, 3, 5, 8, 13, 21`, e ajuste apenas quando houver um problema observado. O [guia prático da Scrum.org](https://www.scrum.org/resources/blog/practical-fibonacci-beginners-guide-relative-sizing) também trata Fibonacci como uma base para comparação relativa, não como resposta absoluta.
+
+### O que significa uma carta 13 ou 21?
+
+Significa que o item está em uma categoria maior dentro da régua daquele time. Pode refletir mais trabalho, complexidade ou incerteza. Verifique se cabe como unidade coerente e se existe uma divisão que preserve valor.
+
+### Quando usar a carta de interrogação?
+
+Use `?` quando falta informação decisiva ou a pessoa não consegue sustentar uma comparação. A resposta adequada é registrar a pergunta e buscar clareza, não substituir a carta por um número alto.
+
+### É preciso votar novamente até todos escolherem a mesma carta?
+
+Não. A equipe precisa de uma decisão compreendida, não de unanimidade visual obrigatória. Depois da conversa, ela pode acordar um valor, dividir o item, registrar ausência de consenso ou adiar a estimativa.
+
+## Conclusão: a escala organiza incerteza, não elimina julgamento
+
+Fibonacci funciona quando os saltos impedem precisão falsa e direcionam a conversa para diferenças relevantes. Escolha referências locais, combine o significado das cartas, trate números altos como sinais de investigação e preserve a separação entre tamanho e prazo.
+
+No [Battle Poker](/), a equipe pode criar uma sala sem cadastro, compartilhar o link, votar com as cartas Fibonacci e manter os votos ocultos até a revelação. Depois, use a distribuição para discutir premissas e registre uma estimativa acordada — ou uma saída honesta quando o item ainda não está pronto.
+
+## Referências
+
+- [Scrum Guide 2020 — responsabilidade dos Developers pelo dimensionamento](https://scrumguides.org/scrum-guide.html)
+- [Scrum Alliance — uso opcional da sequência Fibonacci e alternativas](https://resources.scrumalliance.org/Article/guide-using-fibonacci-sequence-scrum)
+- [Mountain Goat Software — por que os intervalos Fibonacci apoiam estimativas relativas](https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating)
+- [Atlassian — pontos Fibonacci, aplicação e escalas alternativas](https://www.atlassian.com/br/agile/project-management/fibonacci-story-points)
+- [Scrum.org — guia de dimensionamento relativo com Fibonacci](https://www.scrum.org/resources/blog/practical-fibonacci-beginners-guide-relative-sizing)
