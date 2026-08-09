@@ -202,6 +202,9 @@ export default function HomePage() {
               <Text color="ink.300" mt={4} maxW="3xl" textStyle="body">
                 {t("learnDescription")}
               </Text>
+              <Text color="ink.300" mt={4} maxW="3xl" textStyle="body">
+                {t("learnDescriptionSecond")}
+              </Text>
             </Box>
             <Stack direction={{ base: "column", sm: "row" }} spacing={3}>
               <Button as={Link} href={getLocalizedHref(locale, "guide")} variant="glass" size="lg">{t("completeGuide")}</Button>

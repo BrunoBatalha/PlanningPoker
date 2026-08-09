@@ -2,15 +2,16 @@
 
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Button, type ButtonProps, useToast } from "@chakra-ui/react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import ModalCreateRoom, {
-  type CreateRoomFormValues,
-} from "@/components/ModalCreateRoom";
+import type { CreateRoomFormValues } from "@/components/ModalCreateRoom";
 import { useTranslations } from "@/i18n";
-import { roomService } from "@/services/RoomService";
-import { userService } from "@/services/UserService";
+
+const ModalCreateRoom = dynamic(() => import("@/components/ModalCreateRoom"), {
+  ssr: false,
+});
 
 interface CreateRoomButtonProps extends Omit<ButtonProps, "onSubmit"> {
   label?: string;
@@ -32,6 +33,10 @@ export default function CreateRoomButton({
   }: CreateRoomFormValues) {
     setIsLoading(true);
     try {
+      const [{ roomService }, { userService }] = await Promise.all([
+        import("@/services/RoomService"),
+        import("@/services/UserService"),
+      ]);
       const roomKey = await roomService.createRoom({ isWaitingGameAllowed });
       const userKey = await userService.addUserToRoom(roomKey, username);
       userService.setCurrentUser({ key: userKey, username });
@@ -54,14 +59,16 @@ export default function CreateRoomButton({
       >
         {label ?? t("defaultLabel")}
       </Button>
-      <ModalCreateRoom
-        isOpen={isModalOpen}
-        onSubmit={handleSubmit}
-        isLoading={isLoading}
-        onClose={() => setIsModalOpen(false)}
-        title={t("title")}
-        submitLabel={t("submit")}
-      />
+      {isModalOpen ? (
+        <ModalCreateRoom
+          isOpen
+          onSubmit={handleSubmit}
+          isLoading={isLoading}
+          onClose={() => setIsModalOpen(false)}
+          title={t("title")}
+          submitLabel={t("submit")}
+        />
+      ) : null}
     </>
   );
 }

@@ -15,14 +15,16 @@
   },
   "seo": {
     "home": {
-      "title": "Battle Poker | Planning Poker Online Gratuito",
-      "description": "Planning Poker online e gratuito para equipes ágeis. Crie uma sala, compartilhe o link e revele estimativas simultaneamente, sem cadastro.",
+      "title": "Planning Poker Online Grátis e Sem Cadastro | Battle Poker",
+      "description": "Crie uma sala de Planning Poker grátis, compartilhe o link e estime story points em tempo real com votos secretos e revelação simultânea. Sem cadastro.",
       "priceCurrency": "BRL",
       "featureList": [
         "Salas compartilháveis por link",
         "Votação em tempo real",
         "Revelação simultânea das cartas",
         "Média e distribuição dos votos",
+        "Histórico de rodadas e estimativa acordada",
+        "Cartas Fibonacci, ? e ☕",
         "Sem cadastro"
       ]
     },
@@ -429,10 +431,10 @@
       "faqButton": "FAQ — Perguntas frequentes"
     },
     "landing": {
-      "tagline": "Planning Poker online e gratuito",
-      "heroTitle": "Estimativas mais honestas.",
+      "tagline": "Grátis, sem cadastro e em tempo real",
+      "heroTitle": "Planning Poker online para estimativas mais honestas.",
       "heroHighlight": "Conversas melhores.",
-      "heroDescription": "Reúna seu time, vote com cartas Fibonacci ou especiais e revele todas as estimativas ao mesmo tempo. Sem cadastro e sem distrações.",
+      "heroDescription": "Crie uma sala grátis, compartilhe o link e estime story points em tempo real com cartas Fibonacci, votos secretos e revelação simultânea. Sem cadastro.",
       "learnHow": "Entender como funciona",
       "proofNoSignup": "Sem cadastro",
       "proofRealtime": "Tempo real",
@@ -444,7 +446,7 @@
       "previewSecret": "Votos secretos",
       "benefitsEyebrow": "Feito para o ritmo do time",
       "benefitsTitle": "Planning Poker sem atrito",
-      "benefitsDescription": "Uma experiência leve para sprint planning, refinamentos e estimativas remotas.",
+      "benefitsDescription": "Do voto secreto ao histórico da decisão, tudo o que o time precisa para estimar sem perder o contexto da conversa.",
       "benefit1Title": "Colaboração em tempo real",
       "benefit1Description": "Acompanhe quem já votou e mantenha o time sincronizado sem atualizar a página.",
       "benefit2Title": "Estimativas sem influência",
@@ -467,8 +469,9 @@
       "ctaDescription": "Crie uma sala, envie o link e deixe o Battle Poker cuidar da votação e da revelação simultânea.",
       "ctaButton": "Começar gratuitamente",
       "learnEyebrow": "Aprenda mais",
-      "learnTitle": "Planning Poker para equipes ágeis",
-      "learnDescription": "Planning Poker é uma técnica de estimativa baseada em consenso. Cada pessoa escolhe uma carta em segredo e todas são reveladas ao mesmo tempo, reduzindo o viés de ancoragem.",
+      "learnTitle": "O que é Planning Poker e como funciona?",
+      "learnDescription": "Planning Poker é uma técnica de estimativa ágil baseada em consenso. Cada pessoa escolhe em segredo uma carta que representa o esforço ou a complexidade de uma história, e todos os votos são revelados ao mesmo tempo. A revelação simultânea reduz o viés de ancoragem e transforma diferenças de estimativa em uma conversa objetiva sobre riscos e entendimento.",
+      "learnDescriptionSecond": "No Battle Poker, o time pode usar cartas Fibonacci, ? para pedir mais informações e ☕ para sugerir uma pausa. Depois da revelação, é possível comparar a média e a distribuição, votar novamente ou confirmar a estimativa acordada e manter a decisão no histórico da sala.",
       "completeGuide": "Guia completo",
       "faq": "Perguntas frequentes",
       "footer": "Battle Poker — Planning Poker online gratuito.",

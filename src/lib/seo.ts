@@ -94,19 +94,29 @@ export function createPublicPageSchemas(locale: Locale, page: Exclude<PublicPage
   const homeUrl = absoluteUrl(getLocalizedPath(locale, "home"));
 
   if (page === "home") {
-    return [{
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      name: "Battle Poker",
-      url: canonical,
-      description: catalog.seo.home.description,
-      inLanguage: definition.languageTag,
-      applicationCategory: "BusinessApplication",
-      operatingSystem: "Web Browser",
-      isAccessibleForFree: true,
-      offers: { "@type": "Offer", price: "0", priceCurrency: catalog.seo.home.priceCurrency },
-      featureList: catalog.seo.home.featureList,
-    }];
+    return [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        name: "Battle Poker",
+        alternateName: "Planning Poker Online",
+        url: SITE_URL,
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        name: "Battle Poker",
+        url: canonical,
+        description: catalog.seo.home.description,
+        inLanguage: definition.languageTag,
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Web Browser",
+        isAccessibleForFree: true,
+        offers: { "@type": "Offer", price: "0", priceCurrency: catalog.seo.home.priceCurrency },
+        featureList: catalog.seo.home.featureList,
+      },
+    ];
   }
 
   const pageSeo = catalog.seo[page];

@@ -15,14 +15,16 @@
   },
   "seo": {
     "home": {
-      "title": "Battle Poker | Free Online Planning Poker",
-      "description": "Free online Planning Poker for agile teams. Create a room, share the link and reveal estimates simultaneously, with no sign-up.",
+      "title": "Free Online Planning Poker, No Sign-up | Battle Poker",
+      "description": "Create a free Planning Poker room, share the link and estimate story points in real time with secret votes and simultaneous reveal. No sign-up.",
       "priceCurrency": "USD",
       "featureList": [
         "Shareable rooms",
         "Real-time voting",
         "Simultaneous card reveal",
         "Vote average and distribution",
+        "Round history and agreed estimate",
+        "Fibonacci, ? and ☕ cards",
         "No sign-up"
       ]
     },
@@ -429,10 +431,10 @@
       "faqButton": "FAQ — Frequently asked questions"
     },
     "landing": {
-      "tagline": "Free online Planning Poker",
-      "heroTitle": "More honest estimates.",
+      "tagline": "Free, no sign-up and real time",
+      "heroTitle": "Online Planning Poker for more honest estimates.",
       "heroHighlight": "Better conversations.",
-      "heroDescription": "Bring your team together, vote with Fibonacci or special cards and reveal every estimate at the same time. No sign-up and no distractions.",
+      "heroDescription": "Create a free room, share the link and estimate story points in real time with Fibonacci cards, secret votes and simultaneous reveal. No sign-up.",
       "learnHow": "Learn how it works",
       "proofNoSignup": "No sign-up",
       "proofRealtime": "Real time",
@@ -444,7 +446,7 @@
       "previewSecret": "Secret votes",
       "benefitsEyebrow": "Built for your team's pace",
       "benefitsTitle": "Planning Poker without friction",
-      "benefitsDescription": "A lightweight experience for sprint planning, refinement and remote estimation.",
+      "benefitsDescription": "From secret voting to decision history, everything the team needs to estimate without losing the context of the conversation.",
       "benefit1Title": "Real-time collaboration",
       "benefit1Description": "See who has voted and keep the team synchronized without refreshing the page.",
       "benefit2Title": "Independent estimates",
@@ -467,8 +469,9 @@
       "ctaDescription": "Create a room, send the link and let Battle Poker handle voting and the simultaneous reveal.",
       "ctaButton": "Start for free",
       "learnEyebrow": "Learn more",
-      "learnTitle": "Planning Poker for agile teams",
-      "learnDescription": "Planning Poker is a consensus-based estimation technique. Each person selects a card privately and all cards are revealed together, reducing anchoring bias.",
+      "learnTitle": "What is Planning Poker and how does it work?",
+      "learnDescription": "Planning Poker is a consensus-based agile estimation technique. Each person privately selects a card representing the effort or complexity of a story, and all votes are revealed at the same time. Simultaneous reveal reduces anchoring bias and turns different estimates into a focused conversation about risks and shared understanding.",
+      "learnDescriptionSecond": "In Battle Poker, the team can use Fibonacci cards, ? to request more information and ☕ to suggest a break. After the reveal, participants can compare the average and distribution, vote again or confirm the agreed estimate and keep the decision in the room history.",
       "completeGuide": "Complete guide",
       "faq": "Frequently asked questions",
       "footer": "Battle Poker — Free online Planning Poker.",
