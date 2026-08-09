@@ -73,6 +73,31 @@
     ]
   },
   {
+    "id": "cartas-especiais-planning-poker",
+    "locale": "pt-BR",
+    "slug": "cartas-especiais-planning-poker",
+    "title": "Cartas ? e ☕ no Planning Poker: o que significam",
+    "primaryKeyword": "cartas Planning Poker",
+    "secondaryKeywords": [
+      "carta interrogação Planning Poker",
+      "carta café Planning Poker",
+      "significado das cartas Planning Poker",
+      "cartas especiais Scrum Poker",
+      "quando usar interrogação no Planning Poker"
+    ],
+    "searchIntent": "Entender o significado das cartas especiais do Planning Poker e saber exatamente como a equipe deve agir quando alguém escolhe interrogação ou café.",
+    "summary": "Um guia para distinguir dúvida, pausa, ausência de voto e estimativa alta — e transformar cada carta especial em uma próxima ação clara.",
+    "publishedAt": "2026-08-09",
+    "updatedAt": "2026-08-09",
+    "author": "Equipe Battle Poker",
+    "relatedContent": [
+      "/artigos/fibonacci-planning-poker",
+      "/artigos/refinamento-backlog-planning-poker",
+      "/artigos/divergencia-votos-planning-poker",
+      "/o-que-e-planning-poker"
+    ]
+  },
+  {
     "id": "refinamento-backlog-planning-poker",
     "locale": "pt-BR",
     "slug": "refinamento-backlog-planning-poker",

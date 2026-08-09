@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="768" height="1120" viewBox="0 0 768 1120" role="img" aria-labelledby="title desc">
+  <title id="title">Fluxo móvel para tratar cartas especiais</title>
+  <desc id="desc">Interrogação pede clareza; café pede pausa e retorno combinado.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#070b19"/><stop offset="1" stop-color="#111b36"/></linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9b7bff"/><stop offset="1" stop-color="#6d4df5"/></linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#55e6f2"/><stop offset="1" stop-color="#219bd8"/></linearGradient>
+  </defs>
+  <rect width="768" height="1120" rx="28" fill="url(#bg)"/>
+  <text x="384" y="54" text-anchor="middle" fill="#f7f8ff" font-family="Arial, sans-serif" font-size="29" font-weight="700">A carta foi revelada</text>
+  <rect x="38" y="84" width="692" height="460" rx="26" fill="#15152e" stroke="#8f70ff" stroke-width="2"/>
+  <rect x="72" y="116" width="96" height="124" rx="18" fill="url(#violet)"/>
+  <text x="120" y="204" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="76" font-weight="800">?</text>
+  <text x="192" y="158" fill="#f4f0ff" font-family="Arial, sans-serif" font-size="29" font-weight="700">Falta informação</text>
+  <text x="192" y="197" fill="#bbb5d9" font-family="Arial, sans-serif" font-size="21">Não force um número.</text>
+  <rect x="72" y="276" width="624" height="64" rx="16" fill="#211f43"/>
+  <text x="384" y="316" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="23" font-weight="700">1. Complete: “Falta saber...”</text>
+  <rect x="72" y="360" width="296" height="98" rx="16" fill="#211f43"/>
+  <text x="220" y="399" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="20" font-weight="700">Resposta disponível?</text>
+  <text x="220" y="431" text-anchor="middle" fill="#bdb7dc" font-family="Arial, sans-serif" font-size="18">Esclareça e revote</text>
+  <rect x="400" y="360" width="296" height="98" rx="16" fill="#211f43"/>
+  <text x="548" y="399" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="20" font-weight="700">Depende de alguém?</text>
+  <text x="548" y="431" text-anchor="middle" fill="#bdb7dc" font-family="Arial, sans-serif" font-size="18">Registre e adie</text>
+  <rect x="72" y="478" width="624" height="42" rx="14" fill="#2b245b"/>
+  <text x="384" y="506" text-anchor="middle" fill="#ded8ff" font-family="Arial, sans-serif" font-size="18" font-weight="700">Saída: nova votação ou investigação</text>
+  <rect x="38" y="576" width="692" height="506" rx="26" fill="#0d2034" stroke="#47d9ee" stroke-width="2"/>
+  <rect x="72" y="608" width="96" height="124" rx="18" fill="url(#cyan)"/>
+  <path d="M88 665h56v29c0 16-13 28-28 28s-28-12-28-28v-29zm56 7h12c16 0 16 24 0 24h-12M99 649c-8-11 8-15 0-27M116 649c-8-11 8-15 0-27M133 649c-8-11 8-15 0-27" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+  <text x="192" y="650" fill="#e9fbff" font-family="Arial, sans-serif" font-size="29" font-weight="700">É hora de pausar</text>
+  <text x="192" y="689" fill="#a9cad7" font-family="Arial, sans-serif" font-size="21">Não avance sem o grupo.</text>
+  <rect x="72" y="768" width="624" height="64" rx="16" fill="#12304a"/>
+  <text x="384" y="808" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="23" font-weight="700">1. Reconheça e interrompa</text>
+  <rect x="72" y="852" width="296" height="98" rx="16" fill="#12304a"/>
+  <text x="220" y="891" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="20" font-weight="700">Combine a duração</text>
+  <text x="220" y="923" text-anchor="middle" fill="#aed2de" font-family="Arial, sans-serif" font-size="18">E o horário de retorno</text>
+  <rect x="400" y="852" width="296" height="98" rx="16" fill="#12304a"/>
+  <text x="548" y="891" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="20" font-weight="700">Retome o contexto</text>
+  <text x="548" y="923" text-anchor="middle" fill="#aed2de" font-family="Arial, sans-serif" font-size="18">Reinicie a rodada</text>
+  <rect x="72" y="982" width="624" height="58" rx="14" fill="#10435b"/>
+  <text x="384" y="1019" text-anchor="middle" fill="#c9f7ff" font-family="Arial, sans-serif" font-size="18" font-weight="700">Saída: grupo completo e atenção recuperada</text>
+</svg>
