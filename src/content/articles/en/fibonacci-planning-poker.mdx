@@ -1,0 +1,249 @@
+---
+status: "published"
+slug: "fibonacci-planning-poker-scale"
+title: "Fibonacci scale in Planning Poker: how to use it"
+description: "Learn why Planning Poker uses Fibonacci, how to interpret the scale's gaps and high cards, and why story points should not be converted to hours."
+summary: "A practical guide to choosing, calibrating, and using the Fibonacci scale in Planning Poker without creating false precision or turning points into deadlines."
+author: "Equipe Battle Poker"
+primaryKeyword: "Fibonacci scale in Planning Poker"
+secondaryKeywords:
+  - "Planning Poker Fibonacci sequence"
+  - "Fibonacci story points"
+  - "Scrum Fibonacci scale"
+  - "Planning Poker points to hours"
+  - "story point scale"
+searchIntent: "Understand why Planning Poker uses the Fibonacci scale and apply it with clear criteria, including how to handle high cards, uncertainty, and alternative scales."
+relatedContent:
+  - "/en/articles/how-to-estimate-story-points"
+  - "/en/articles/planning-poker-vote-disagreement"
+  - "/en/what-is-planning-poker"
+  - "/en/articles/remote-planning-poker"
+publishedAt: "2026-08-07"
+updatedAt: "2026-08-09"
+coverImage: "/blog/fibonacci-planning-poker/fibonacci-planning-poker-capa.webp"
+coverAlt: "Estimation cards numbered 1, 2, 3, 5, 8, and 13 increasing in size against a dark background"
+socialImage: "/blog/fibonacci-planning-poker/fibonacci-planning-poker-social-en.webp"
+ctaTitle: "Try the scale with a real story"
+ctaDescription: "Create a room, share the link, and compare cards without being influenced by the first vote. In Battle Poker, votes stay hidden until everyone reveals at the same time."
+ctaButton: "Create a Fibonacci room"
+---
+
+The Fibonacci scale in Planning Poker uses widening gaps—such as `0`, `1`, `2`, `3`, `5`, `8`, `13`, and `21`—to **compare the relative size of work without pretending the team has more precision than it actually does**. The larger and more uncertain an item becomes, the wider the distance between the available choices.
+
+In practice, the team is not trying to uncover a hidden mathematical answer. It chooses familiar references, compares each new item with those anchors, votes independently, and uses differences to uncover assumptions. A high card does not automatically mean “many days”: it may indicate broad scope, complexity, a dependency, uncertainty, or a story that should be split.
+
+## What is the Fibonacci scale in Planning Poker?
+
+The mathematical Fibonacci sequence starts with values in which each new number is the sum of the previous two. Agile estimation usually uses a shortened or modified version, not the complete infinite sequence.
+
+| Scale | Example | Practical use |
+| --- | --- | --- |
+| Classic Fibonacci | `1, 2, 3, 5, 8, 13, 21, 34...` | Keeps the gaps from the original sequence |
+| Modified Fibonacci | `1, 2, 3, 5, 8, 13, 20, 40, 100` | Rounds high values to make low precision explicit |
+| Battle Poker | `0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ?, ☕` | Adds zero, uncertainty, and a break to the numeric deck |
+
+The [Scrum Guide](https://scrumguides.org/scrum-guide.html) states that the Developers who will do the work are responsible for sizing Product Backlog items. It does not require story points, Fibonacci, or Planning Poker. **Fact:** size is one possible attribute of an item, and responsibility belongs to the people doing the work. **Interpretation:** Fibonacci is an optional practice that can support that responsibility, not a Scrum rule.
+
+The [Scrum Alliance also presents Fibonacci as an option](https://resources.scrumalliance.org/Article/guide-using-fibonacci-sequence-scrum) and distinguishes size from an individual's duration. That matters because `8` does not mean eight hours or eight days. A number only gains meaning when it is compared with references from the same team.
+
+## Why the scale skips numbers
+
+Between `1` and `2`, a team may recognize a meaningful difference. Between `20` and `21`, that distinction is usually difficult to defend for complex work. Offering every number from `1` to `100` would invite debates such as “is it 36 or 37?” without enough information to justify that level of precision.
+
+[Mike Cohn connects the scale's gaps with how people perceive relative differences](https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating) and explains why he began rounding higher values. This supports the design of the scale; it does not guarantee that Fibonacci will produce exact estimates.
+
+The gaps help in three ways:
+
+1. **They limit choices that have no practical difference:** the team chooses among sufficiently distinct categories.
+2. **They make uncertainty visible:** larger numbers offer less granularity.
+3. **They force a decision:** when `13` feels too small and `21` feels too large, the discussion should find out why—not invent a `17` card.
+
+**Practical recommendation:** if the team frequently misses intermediate values, review the reference stories first. The scale may be poorly calibrated, or the items may be too large.
+
+## How to calibrate Fibonacci before the first round
+
+Fibonacci does not define what each card means by itself. A team needs to create a local yardstick from completed, well-understood items.
+
+### 1. Choose two to four references
+
+Use recent stories that represent different sizes and whose delivery everyone can explain. Avoid an unusual incident or a story whose scope changed completely during implementation.
+
+An e-commerce team might choose:
+
+- **2 points:** change an existing message and test two already-supported states;
+- **5 points:** add a validated checkout field and persist it through the current flow;
+- **8 points:** integrate a new shipping rule with failure and eligibility scenarios.
+
+These values are a fictional example, not a universal table.
+
+### 2. Define what the comparison includes
+
+Agree on the dimensions the team considers: amount of work, complexity, risk, dependencies, and uncertainty. Do not score each dimension and add the scores afterward. Use them as questions that explain why an item feels larger or smaller than a reference.
+
+### 3. Agree on what the special cards mean
+
+- `?`: there is not enough information for a responsible estimate;
+- `☕`: the person needs a break and is not voting on size;
+- `0`: negligible work within the current scale—it does not mean validation or quality can be skipped.
+
+In Battle Poker, `?` and `☕` are excluded from the numerical average. They still need a human response: clarify the uncertainty or pause the session.
+
+Treat each special card as a clear next action: name the missing information, agree on the break, and decide whether to vote again or postpone the item.
+
+### 4. Set a threshold for large items
+
+There is no universal cutoff, but a team may agree that every `13` or higher triggers a check: does this item work as a coherent unit? Can some uncertainty be removed? Should it be split before the team estimates again?
+
+## How to use the scale in a round
+
+### 1. Present the expected outcome
+
+The Product Owner explains the objective, acceptance criteria, and constraints. The people estimating confirm what must be complete for the item to be considered done.
+
+### 2. Compare it with the references
+
+Ask: is this item smaller than, similar to, or larger than the 5-point story? What difference in work, complexity, or uncertainty supports that view?
+
+### 3. Choose a card without anchoring
+
+Each person selects an estimate without seeing anyone else's choice. Simultaneous reveal preserves independent perspectives until the discussion begins.
+
+### 4. Investigate the range, not the average
+
+If the votes are `3`, `5`, `8`, and `13`, the important information is the gap between the assumptions. Listen to the people at the extremes, update the story if new information emerged, and only then decide whether another vote would help.
+
+The guide to [Planning Poker vote disagreement](/en/articles/planning-poker-vote-disagreement) provides a complete facilitation flow for this step.
+
+### 5. Record an explicit outcome
+
+A round can end with an agreed estimate, no consensus, or a postponed decision. It may also lead to splitting the item or running a short investigation. Do not force a number just to fill the backlog.
+
+<ArticleImage
+  src="/blog/fibonacci-planning-poker/high-fibonacci-card-decision-en.svg"
+  mobileSrc="/blog/fibonacci-planning-poker/high-fibonacci-card-decision-mobile-en.svg"
+  alt="Decision flow for handling a high Fibonacci card by clarifying, splitting, or comparing the item again"
+  width={1400}
+  height={788}
+  mobileWidth={768}
+  mobileHeight={1120}
+  caption="A high card is a signal to investigate the item, not an automatic conversion into a deadline."
+/>
+
+## Example: abandoned cart recovery
+
+A team estimates the story: “As a customer, I want to recover my cart on another device so I can continue shopping.”
+
+The team uses a small session change at `3` points and a familiar preferences integration at `8` as references. The first vote produces `5`, `8`, `13`, and `13`.
+
+The person who voted `5` assumed only authenticated customers. One of the people who voted `13` included anonymous carts, reconciliation after sign-in, and conflicts between devices. The Product Owner confirms that the first release will support authenticated customers only and that the most recent cart will replace the previous one.
+
+With the scope corrected, the team still identifies two coherent parts:
+
+1. persist and recover the authenticated user's cart;
+2. handle conflicts when different carts exist.
+
+The first item receives `8` after another vote. The second returns to refinement because the business rule is still undecided. Fibonacci made the difference too large to ignore; it did not calculate the answer for the team.
+
+## Three scenarios and the right decision
+
+### Happy path: close votes and clear references
+
+The cards are `5`, `5`, `5`, and `8`. The person who chose `8` mentions an accessibility scenario that is already part of the Definition of Done. Everyone confirms it was considered and records `5`. The discussion is short because the yardstick is calibrated.
+
+### Failure scenario: “13 points means two weeks”
+
+A manager converts the card into a fixed duration and expects the same ratio from different teams. The scale loses its relative nature and becomes a disguised calendar commitment. Keep sizing separate from forecasting: use the team's own history and capacity for planning without declaring a universal conversion between points and hours.
+
+### Alternative scenario: every item receives 8 or 13
+
+The scale is providing little information. Stories may be arriving too large, the references may no longer represent the architecture, or the team may be using high numbers as a safety margin. Review refinement, split the items, and recalibrate the anchors before changing scales.
+
+## Fibonacci, T-shirt sizes, or a linear sequence?
+
+| Option | When it helps | Main limitation |
+| --- | --- | --- |
+| Fibonacci | Comparing refined items with increasing uncertainty | Can appear scientific when references are not explicit |
+| S, M, L T-shirt sizes | Quickly grouping epics or many imprecise items | Offers less granularity for near-term planning |
+| Linear `1–10` sequence | Small contexts in which the team clearly distinguishes the categories | Encourages excessive precision at higher values |
+| Powers of two | Teams that prefer more aggressive gaps | Can make differences feel either too small or too large |
+
+[Atlassian lists Fibonacci, T-shirt sizes, and other approaches](https://www.atlassian.com/br/agile/project-management/fibonacci-story-points). **Recommendation:** choose the smallest scale that supports the current decision. T-shirt sizes may be enough for broad triage. For voting with calibrated references, Fibonacci often provides more useful categories.
+
+If you need to create references and compare items, read [how to estimate story points](/en/articles/how-to-estimate-story-points). To learn the complete activity, start with [What is Planning Poker?](/en/what-is-planning-poker).
+
+## Common Fibonacci mistakes
+
+### Treating the next number as an exact multiplier
+
+An `8`-point story does not need to contain exactly 60% more work than a `5`. The gaps organize relative categories; they are not an engineering formula.
+
+### Creating a universal feature table
+
+“Login is worth 5” ignores architecture, security, acceptance criteria, and team knowledge. Document local references, not fixed prices for types of screens.
+
+### Choosing 21 only to absorb risk
+
+If one specific unknown dominates the estimate, use `?`, investigate it, or split the item. A high card does not resolve uncertainty; it only records that uncertainty exists.
+
+### Comparing velocity across teams
+
+Each team builds its own yardstick. Completing more points does not prove higher productivity, and normalizing scales for ranking destroys the context behind the references.
+
+### Accepting the average as the final estimate
+
+Votes of `3` and `13` average to `8`, but they may represent different stories in each person's mind. Resolve the difference in understanding first.
+
+## Checklist for adopting the scale
+
+- [ ] The people doing the work participate in sizing it.
+- [ ] The team has two to four recent reference stories.
+- [ ] Everyone knows which dimensions are part of the comparison.
+- [ ] `?`, `☕`, and `0` have agreed meanings.
+- [ ] A trigger exists for investigating high cards.
+- [ ] Choices stay hidden until the simultaneous reveal.
+- [ ] Disagreement produces questions before any average is considered.
+- [ ] A round can end without consensus or be postponed.
+- [ ] Points are not converted into hours at a fixed rate.
+- [ ] References will be reviewed when the context changes.
+
+For distributed teams, also agree on attendance, an audio channel, and a contingency for connection problems. The [remote Planning Poker guide](/en/articles/remote-planning-poker) covers those situations.
+
+## Frequently asked questions
+
+### Why does the sequence start at 0 or 1?
+
+The mathematical sequence is commonly presented from either 0 or 1, but decks vary. In estimation, `0` can represent negligible work within the team's yardstick. What matters is agreeing on its meaning and not using zero to eliminate necessary activities.
+
+### Can Fibonacci Planning Poker be converted to hours?
+
+Not at a fixed rate. Points compare relative size; hours estimate duration. Team history can support forecasting, but “1 point = 4 hours” turns the scale into disguised time and removes the context provided by reference stories.
+
+### What is the best Planning Poker sequence?
+
+There is no mandatory sequence. Start with a short scale such as `0, 1, 2, 3, 5, 8, 13, 21`, and adjust it only when the team observes a real problem. The [Scrum.org practical guide](https://www.scrum.org/resources/blog/practical-fibonacci-beginners-guide-relative-sizing) also presents Fibonacci as a basis for relative comparison, not an absolute answer.
+
+### What does a 13 or 21 card mean?
+
+It means the item belongs to a larger category within that team's yardstick. It may reflect more work, complexity, or uncertainty. Check whether it still works as a coherent unit and whether it can be split while preserving value.
+
+### When should I use the question-mark card?
+
+Use `?` when decisive information is missing or you cannot support a comparison. The right response is to record the question and seek clarity, not replace the card with a high number.
+
+### Must the team vote again until everyone chooses the same card?
+
+No. The team needs a decision it understands, not mandatory visual unanimity. After the discussion, it may agree on a value, split the item, record no consensus, or postpone the estimate.
+
+## Conclusion: the scale organizes uncertainty; it does not eliminate judgment
+
+Fibonacci works when the gaps prevent false precision and direct the conversation toward meaningful differences. Choose local references, agree on the meaning of the cards, treat high numbers as signals to investigate, and keep size separate from deadlines.
+
+In [Battle Poker](/en), the team can create a room without signing up, share the link, vote with Fibonacci cards, and keep choices hidden until the reveal. Then use the distribution to discuss assumptions and record an agreed estimate—or an honest outcome when the item is not ready.
+
+## References
+
+- [Scrum Guide 2020—Developers' responsibility for sizing](https://scrumguides.org/scrum-guide.html)
+- [Scrum Alliance—optional use of the Fibonacci sequence and alternatives](https://resources.scrumalliance.org/Article/guide-using-fibonacci-sequence-scrum)
+- [Mountain Goat Software—why Fibonacci gaps support relative estimation](https://www.mountaingoatsoftware.com/blog/why-the-fibonacci-sequence-works-well-for-estimating)
+- [Atlassian—Fibonacci story points, application, and alternative scales](https://www.atlassian.com/br/agile/project-management/fibonacci-story-points)
+- [Scrum.org—practical guide to relative sizing with Fibonacci](https://www.scrum.org/resources/blog/practical-fibonacci-beginners-guide-relative-sizing)

@@ -1,5 +1,30 @@
 [
   {
+    "id": "fibonacci-planning-poker",
+    "locale": "en",
+    "slug": "fibonacci-planning-poker-scale",
+    "title": "Fibonacci scale in Planning Poker: how to use it",
+    "primaryKeyword": "Fibonacci scale in Planning Poker",
+    "secondaryKeywords": [
+      "Planning Poker Fibonacci sequence",
+      "Fibonacci story points",
+      "Scrum Fibonacci scale",
+      "Planning Poker points to hours",
+      "story point scale"
+    ],
+    "searchIntent": "Understand why Planning Poker uses the Fibonacci scale and apply it with clear criteria, including how to handle high cards, uncertainty, and alternative scales.",
+    "summary": "A practical guide to choosing, calibrating, and using the Fibonacci scale in Planning Poker without creating false precision or turning points into deadlines.",
+    "publishedAt": "2026-08-07",
+    "updatedAt": "2026-08-09",
+    "author": "Equipe Battle Poker",
+    "relatedContent": [
+      "/en/articles/how-to-estimate-story-points",
+      "/en/articles/planning-poker-vote-disagreement",
+      "/en/what-is-planning-poker",
+      "/en/articles/remote-planning-poker"
+    ]
+  },
+  {
     "id": "planning-poker-remoto",
     "locale": "en",
     "slug": "remote-planning-poker",
