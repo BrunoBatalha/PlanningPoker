@@ -98,6 +98,31 @@
     ]
   },
   {
+    "id": "vantagens-desvantagens-planning-poker",
+    "locale": "pt-BR",
+    "slug": "vantagens-desvantagens-planning-poker",
+    "title": "Planning Poker: vantagens, desvantagens e quando usar",
+    "primaryKeyword": "vantagens e desvantagens do Planning Poker",
+    "secondaryKeywords": [
+      "benefícios do Planning Poker",
+      "limitações do Planning Poker",
+      "quando usar Planning Poker",
+      "quando não usar Planning Poker",
+      "alternativas ao Planning Poker"
+    ],
+    "searchIntent": "Decidir de forma prática quando o Planning Poker é adequado, reconhecer seus limites e escolher uma alternativa quando a votação não melhora a compreensão do trabalho.",
+    "summary": "Um guia de decisão para usar Planning Poker quando a conversa melhora a estimativa — e trocar de abordagem quando a técnica só adiciona ritual, pressão ou falsa precisão.",
+    "publishedAt": "2026-08-11",
+    "updatedAt": "2026-08-11",
+    "author": "Equipe Battle Poker",
+    "relatedContent": [
+      "/artigos/refinamento-backlog-planning-poker",
+      "/artigos/como-estimar-story-points",
+      "/artigos/divergencia-votos-planning-poker",
+      "/o-que-e-planning-poker"
+    ]
+  },
+  {
     "id": "cartas-especiais-planning-poker",
     "locale": "pt-BR",
     "slug": "cartas-especiais-planning-poker",
