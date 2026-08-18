@@ -90,13 +90,13 @@
     "searchIntent": "Learn, through a complete example, how to calibrate a scale and estimate user stories relatively with story points.",
     "summary": "A repeatable method for calibrating story points, comparing stories, and facilitating voting with explicit criteria for work, complexity, and uncertainty.",
     "publishedAt": "2026-08-05",
-    "updatedAt": "2026-08-07",
+    "updatedAt": "2026-08-11",
     "author": "Equipe Battle Poker",
     "relatedContent": [
       "/en/what-is-planning-poker",
+      "/en/articles/fibonacci-planning-poker-scale",
       "/en/articles/planning-poker-vote-disagreement",
-      "/en/faq",
-      "/en"
+      "/en/articles/remote-planning-poker"
     ]
   },
   {
@@ -120,6 +120,31 @@
       "/en/what-is-planning-poker",
       "/en/faq",
       "/en"
+    ]
+  },
+  {
+    "id": "estimar-bugs-planning-poker",
+    "locale": "pt-BR",
+    "slug": "estimar-bugs-planning-poker",
+    "title": "Estimativa de bugs com Planning Poker: quando pontuar",
+    "primaryKeyword": "estimar bugs com story points",
+    "secondaryKeywords": [
+      "bugs devem ter story points",
+      "estimativa de bugs no Scrum",
+      "Planning Poker para bugs",
+      "story points em bugs",
+      "como estimar defeitos de software"
+    ],
+    "searchIntent": "Decidir se um bug deve receber story points e aplicar Planning Poker somente quando a correção estiver compreendida o suficiente para uma comparação responsável.",
+    "summary": "Um guia para separar incidente, investigação e correção estimável antes de atribuir story points a bugs — com critérios, exemplo e roteiro de votação.",
+    "publishedAt": "2026-08-18",
+    "updatedAt": "2026-08-18",
+    "author": "Equipe Battle Poker",
+    "relatedContent": [
+      "/artigos/refinamento-backlog-planning-poker",
+      "/artigos/como-estimar-story-points",
+      "/artigos/cartas-especiais-planning-poker",
+      "/artigos/divergencia-votos-planning-poker"
     ]
   },
   {
@@ -188,7 +213,7 @@
     "searchIntent": "Preparar itens do Product Backlog para uma estimativa responsável e decidir, durante o refinamento, quando votar, esclarecer, dividir ou investigar antes do Planning Poker.",
     "summary": "Um roteiro prático para verificar se um item do backlog está claro o suficiente para o Planning Poker, sem transformar prontidão em burocracia.",
     "publishedAt": "2026-08-08",
-    "updatedAt": "2026-08-08",
+    "updatedAt": "2026-08-18",
     "author": "Equipe Battle Poker",
     "relatedContent": [
       "/artigos/como-estimar-story-points",
@@ -263,7 +288,7 @@
     "searchIntent": "Aprender, com um exemplo completo, a calibrar uma escala e estimar histórias de usuário em story points de forma relativa.",
     "summary": "Um método reproduzível para calibrar story points, comparar histórias e conduzir a votação com critérios explícitos de trabalho, complexidade e incerteza.",
     "publishedAt": "2026-08-05",
-    "updatedAt": "2026-08-08",
+    "updatedAt": "2026-08-18",
     "author": "Equipe Battle Poker",
     "relatedContent": [
       "/o-que-e-planning-poker",

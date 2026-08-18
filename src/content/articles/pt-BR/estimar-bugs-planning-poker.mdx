@@ -1,0 +1,249 @@
+---
+status: "published"
+slug: "estimar-bugs-planning-poker"
+title: "Estimativa de bugs com Planning Poker: quando pontuar"
+description: "Aprenda quando estimar bugs com story points, quando investigar primeiro e como usar Planning Poker sem confundir severidade, urgência e tamanho."
+summary: "Um guia para separar incidente, investigação e correção estimável antes de atribuir story points a bugs — com critérios, exemplo e roteiro de votação."
+author: "Equipe Battle Poker"
+primaryKeyword: "estimar bugs com story points"
+secondaryKeywords:
+  - "bugs devem ter story points"
+  - "estimativa de bugs no Scrum"
+  - "Planning Poker para bugs"
+  - "story points em bugs"
+  - "como estimar defeitos de software"
+searchIntent: "Decidir se um bug deve receber story points e aplicar Planning Poker somente quando a correção estiver compreendida o suficiente para uma comparação responsável."
+relatedContent:
+  - "/artigos/refinamento-backlog-planning-poker"
+  - "/artigos/como-estimar-story-points"
+  - "/artigos/cartas-especiais-planning-poker"
+  - "/artigos/divergencia-votos-planning-poker"
+publishedAt: "2026-08-18"
+updatedAt: "2026-08-18"
+coverImage: "/blog/estimar-bugs-planning-poker/estimativa-bugs-planning-poker-capa.webp"
+coverAlt: "Cartas de estimativa 1, 3, 5 e interrogação ao redor de um defeito de software destacado por uma análise tecnológica"
+socialImage: "/blog/estimar-bugs-planning-poker/estimativa-bugs-planning-poker-linkedin.webp"
+ctaTitle: "Leve um bug estimável para a próxima rodada"
+ctaDescription: "Reúna evidências, delimite a correção e crie uma sala sem cadastro. Se ainda faltar informação, use a interrogação como sinal para investigar antes de escolher um número."
+ctaButton: "Criar sala para estimar um bug"
+---
+
+Bugs **podem** receber story points, mas não existe uma regra universal dizendo que todo defeito deve ser pontuado. Use Planning Poker quando o problema já pode ser reproduzido ou delimitado, a correção tem uma fronteira compreensível e a equipe consegue comparar o trabalho completo com suas referências. Se existe impacto crítico em andamento, aja primeiro. Se a causa e o alcance ainda são desconhecidos, investigue com limite de tempo e estime a correção depois.
+
+A pergunta útil não é apenas “quantos pontos tem este bug?”. É: **precisamos mitigar, investigar ou já conseguimos estimar uma correção?** Essa ordem evita transformar urgência em carta alta e desconhecimento em falsa precisão.
+
+## Resposta direta: quando estimar um bug
+
+| Situação | Próxima decisão | Story points agora? |
+| --- | --- | --- |
+| Usuários, dados ou operação estão sob impacto ativo | Mitigar, conter ou restaurar o serviço; registrar o que ficou pendente | Não antes da ação urgente |
+| O sintoma é intermitente e a equipe não consegue reproduzir ou delimitar | Abrir uma investigação com objetivo e limite de tempo | Não para a correção ainda desconhecida |
+| O bug é reproduzível, o resultado esperado está claro e o escopo do conserto é comparável | Estimar implementação, testes, regressão e entrega como um conjunto | Sim, se a equipe usa pontos para esse tipo de trabalho |
+| O defeito foi encontrado antes de o item original cumprir a Definition of Done | Tratar a correção como trabalho restante do item | Evite pontuar a mesma entrega duas vezes |
+| Existe um backlog de defeitos legados com correções delimitadas | Aplicar uma política consistente para comparar e selecionar trabalho | Pode ajudar, desde que a regra seja estável |
+
+O [Scrum Guide](https://scrumguides.org/scrum-guide.html) não exige story points, velocidade nem Planning Poker. Ele atribui o dimensionamento aos Developers que farão o trabalho e deixa as técnicas a cargo de quem usa o framework. Portanto, “pontuar todos” e “nunca pontuar” são políticas de equipe, não regras do Scrum.
+
+## Separe urgência, prontidão e tamanho
+
+Essas três decisões respondem a perguntas diferentes:
+
+1. **Urgência:** precisamos agir agora para reduzir impacto?
+2. **Prontidão:** sabemos o suficiente para descrever o trabalho que será comparado?
+3. **Tamanho:** em relação às referências da equipe, quanto esforço, complexidade e incerteza existem na correção completa?
+
+Gravidade não é tamanho. Um erro crítico pode ser corrigido por uma alteração pequena de configuração; um defeito visual de baixa prioridade pode atravessar vários componentes e exigir regressão ampla. A prioridade ajuda o Product Owner a ordenar o Product Backlog. A estimativa ajuda a equipe a compreender e comparar o trabalho.
+
+A [Agile Alliance descreve story points](https://agilealliance.org/glossary/points-estimates-in/) como unidades relativas, não como duração absoluta. Isso continua válido para bugs: não converta automaticamente severidade alta em `13`, nem uma correção aparentemente rápida em `1` antes de considerar diagnóstico, implementação, testes e entrega.
+
+## O bug está pronto para estimar?
+
+Antes da votação, procure evidência suficiente — não certeza total.
+
+### 1. Resultado esperado e resultado atual
+
+Escreva o comportamento que deveria ocorrer e o que ocorre de fato. “Checkout quebrado” é um alerta; “ao reenviar o webhook com o mesmo identificador, um segundo pedido é criado” já descreve uma diferença observável.
+
+### 2. Reprodução ou fronteira verificável
+
+Inclua passos, ambiente, versão, frequência e evidências disponíveis. Se a equipe ainda não consegue reproduzir, pode delimitar o problema por logs, rastros, usuários afetados ou uma janela de tempo? Se nem isso existe, a próxima entrega é investigação, não uma correção estimável.
+
+### 3. Impacto e prioridade separados do esforço
+
+Registre quem ou o que é afetado e se há contorno. Use essa informação para priorizar. Não a some à carta como se pontos fossem uma fórmula de risco de negócio.
+
+### 4. Critérios para considerar a correção concluída
+
+Defina como provar que o comportamento esperado voltou e quais áreas precisam de regressão. O trabalho estimado deve incluir o necessário para chegar ao padrão de qualidade da equipe, não apenas editar o trecho suspeito.
+
+### 5. Limites, dependências e desconhecidos
+
+Nomeie integrações, migrações de dados, observabilidade, publicação e coordenação externa que fazem parte do conserto. Para uma preparação mais ampla, use o [checklist de refinamento antes do Planning Poker](/artigos/refinamento-backlog-planning-poker).
+
+## Fluxo: corrigir agora, investigar ou estimar
+
+<ArticleImage
+  src="/blog/estimar-bugs-planning-poker/decisao-estimar-bug.svg"
+  mobileSrc="/blog/estimar-bugs-planning-poker/decisao-estimar-bug-mobile.svg"
+  alt="Fluxo de decisão que separa impacto ativo, investigação de causa desconhecida e correção de bug pronta para Planning Poker"
+  width={1400}
+  height={788}
+  mobileWidth={768}
+  mobileHeight={1120}
+  caption="A carta só entra depois da decisão operacional e da verificação de que existe trabalho comparável."
+/>
+
+O fluxo protege duas coisas: a resposta a incidentes não espera uma cerimônia, e a votação não tenta adivinhar um conserto que ainda não foi descoberto. Quando uma investigação reduz o desconhecido, crie ou atualize o item de correção com as novas evidências e só então compare-o com as referências da equipe.
+
+## Como usar Planning Poker para estimar um bug
+
+### 1. Nomeie a rodada pelo comportamento, não pela culpa
+
+Use algo como “Impedir pedido duplicado no reenvio do webhook”. Evite títulos vagos (“corrigir bug do pagamento”) e nomes de pessoas ou equipes. O foco é o resultado verificável.
+
+### 2. Apresente evidências e limites
+
+Mostre resultado esperado, resultado atual, reprodução, impacto, contorno, causa conhecida ou hipótese e critérios de conclusão. A pessoa responsável por produto esclarece prioridade e resultado; quem fará o trabalho dimensiona, como orienta o [Scrum Guide](https://scrumguides.org/scrum-guide.html).
+
+### 3. Compare o trabalho completo com referências
+
+Inclua diagnóstico restante, alteração, testes automatizados e manuais, regressão, dados e entrega quando fizerem parte da Definition of Done. Use histórias já concluídas como referência; o guia de [como estimar story points](/artigos/como-estimar-story-points) mostra como calibrar essa comparação.
+
+### 4. Vote individualmente e revele ao mesmo tempo
+
+No Battle Poker, você pode criar uma sala sem cadastro, compartilhar o link e nomear a rodada. Cada participante escolhe uma carta numérica ou `?`; os votos ficam ocultos até a revelação simultânea. Isso preserva a primeira leitura de quem enxerga código, testes, dados, infraestrutura ou experiência do usuário.
+
+### 5. Investigue a distribuição, não calcule uma resposta
+
+Depois da revelação, compare extremos e pergunte o que cada pessoa incluiu. `3`, `5` e `8` podem esconder diferenças sobre migração, regressão ou monitoramento. A média descreve votos numéricos; ela não escolhe a estimativa acordada. Se apareceu `?`, siga o protocolo das [cartas especiais do Planning Poker](/artigos/cartas-especiais-planning-poker).
+
+### 6. Atualize o item e escolha uma saída explícita
+
+Há três finais responsáveis:
+
+- registrar uma estimativa acordada quando a conversa convergiu sobre o mesmo trabalho;
+- refazer a rodada depois que critérios ou escopo mudaram;
+- encerrar sem número e abrir uma investigação quando surgiu um desconhecido decisivo.
+
+O Battle Poker permite confirmar a estimativa acordada, manter a rodada no histórico ou refazer o item. A ferramenta registra a decisão; a equipe continua responsável por explicar o que o número representa.
+
+## Exemplo: pedidos duplicados após reenvio de webhook
+
+Uma loja recebe dois pedidos para o mesmo pagamento quando o provedor reenvia um webhook. O problema afeta clientes e conciliação financeira. A frase “é um bug crítico” ainda não diz quanto trabalho existe.
+
+### Cenário feliz: o conserto está delimitado
+
+Os logs confirmam o mesmo identificador processado duas vezes. A equipe reproduz o comportamento em teste, define idempotência por evento, inclui migração para registros inconsistentes e lista cenários de regressão. Na primeira rodada aparecem `3`, `5` e `8`.
+
+Quem votou `8` lembra que o consumidor roda em paralelo e que o teste precisa simular concorrência. A informação muda o escopo. O item é atualizado, a equipe vota novamente e registra uma estimativa acordada. O Planning Poker revelou trabalho que já existia, mas ainda não estava visível.
+
+### Cenário de falha: a cerimônia atrasa a contenção
+
+Novos pedidos continuam duplicando, mas o time abre uma votação para “descobrir o tamanho do incidente”. Esse número não reduz o impacto. Primeiro a equipe desativa o reprocessamento automático ou aplica outro contorno seguro; depois registra correções permanentes e decide quais já podem ser estimadas.
+
+### Cenário alternativo: ainda não existe correção comparável
+
+Os relatos não têm padrão comum e os logs disponíveis não permitem ligar as duplicidades ao webhook. Votar `13` apenas renomearia o desconhecido. A equipe usa `?`, define uma investigação timeboxed com saída clara — reproduzir, delimitar ou descartar hipóteses — e volta ao Planning Poker quando houver um item de correção.
+
+## Bugs devem contar na velocidade?
+
+Não há uma resposta universal. Escolha uma política que preserve consistência e ajude a planejar, sem usar velocidade como nota.
+
+| Contexto | Política possível | Cuidado principal |
+| --- | --- | --- |
+| Defeito encontrado antes de a entrega original ficar pronta | Corrigir dentro do item original | Não contar pontos duas vezes |
+| Correção delimitada em backlog legado | Estimar e incluir o trabalho concluído no sinal de capacidade | Manter a mesma regra ao longo do histórico analisado |
+| Incidente inesperado durante a Sprint | Registrar trabalho não planejado e inspecionar seu impacto | Não atribuir pontos retroativamente só para “proteger” a velocidade |
+| Fluxo contínuo de pequenos defeitos | Reservar capacidade observada ou agrupar por uma política explícita | Não esconder tendência de qualidade em um balde permanente |
+
+[Mike Cohn apresenta duas leituras legítimas](https://www.mountaingoatsoftware.com/blog/should-story-points-be-assigned-to-a-bug-fixing-story/1000) para bugs legados: excluir pontos destaca quanto avanço novo diminuiu; incluir pontos mostra a capacidade total de trabalho. A recomendação dele é pontuar a correção quando isso ajuda a tornar a capacidade e o investimento visíveis. Trate isso como uma escolha de gestão do sinal, não como lei do Scrum.
+
+## Erros comuns na estimativa de bugs
+
+### Transformar severidade em carta
+
+`P0` ou “crítico” orienta resposta e prioridade. Não significa automaticamente que o conserto seja grande.
+
+### Estimar o sintoma em vez do trabalho
+
+“Tela branca às vezes” não delimita diagnóstico, correção ou validação. Abra investigação quando o item ainda descreve apenas uma manifestação.
+
+### Pontuar antes de conter um incidente
+
+Se existe dano ativo, a prioridade é reduzir impacto. A estimativa serve ao trabalho planejável que permanece.
+
+### Esquecer testes, regressão e entrega
+
+Uma alteração de uma linha pode exigir validação ampla. Compare o caminho até “concluído”, não o tamanho do diff.
+
+### Ganhar pontos duas vezes pela mesma entrega
+
+Se o defeito impede o item original de cumprir a Definition of Done, concluir a correção normalmente faz parte daquele item. Criar uma segunda pontuação infla o sinal sem representar nova entrega.
+
+### Pontuar depois que o trabalho terminou
+
+Story points retroativos não ajudam a escolher ou prever trabalho. Registre o ocorrido como dado de aprendizado e ajuste a política futura.
+
+### Transformar a rodada em busca por culpado
+
+Planning Poker compara perspectivas sobre trabalho. Ele não é análise de desempenho individual nem retrospectiva de causa organizacional.
+
+## Checklist antes de votar em um bug
+
+- [ ] O impacto ativo já foi contido ou existe uma decisão explícita de resposta.
+- [ ] Resultado esperado e comportamento atual estão escritos.
+- [ ] Há reprodução ou fronteira observável suficiente.
+- [ ] Gravidade e prioridade não estão sendo usadas como tamanho.
+- [ ] A correção não é apenas trabalho restante de um item ainda não concluído.
+- [ ] Critérios de conclusão e regressão estão claros.
+- [ ] Diagnóstico restante, testes, dados e entrega entram na comparação.
+- [ ] Quem fará o trabalho participa da estimativa.
+- [ ] A equipe usa referências próprias e uma política consistente para bugs.
+- [ ] A votação será individual e revelada simultaneamente.
+- [ ] O facilitador vai investigar premissas, não tirar média automática.
+- [ ] A equipe pode terminar com `?` e uma investigação timeboxed.
+
+## Perguntas frequentes
+
+### Todo bug deve ter story points?
+
+Não. Um bug pode ser trabalho restante da entrega original, um incidente que precisa de ação imediata, uma investigação ainda sem correção conhecida ou um item delimitado que a equipe decide estimar. Classifique antes de pontuar.
+
+### Um bug de produção deve ser estimado?
+
+Não antes de conter um impacto urgente. Depois da estabilização, correções permanentes e delimitadas podem ser estimadas se isso ajudar a equipe a selecionar e planejar trabalho.
+
+### Severidade alta significa mais pontos?
+
+Não. Severidade descreve impacto e ajuda a priorizar; story points comparam o tamanho relativo do trabalho. Um bug crítico pode ter correção pequena, e um defeito de baixa prioridade pode exigir mudança ampla.
+
+### O que fazer quando a causa é desconhecida?
+
+Defina uma investigação com limite de tempo e uma saída verificável, como reproduzir o problema, reduzir hipóteses ou mapear a área afetada. Estime a correção quando houver trabalho comparável. Não use uma carta alta como substituto para descoberta.
+
+### A carta `?` entra na média do Battle Poker?
+
+Não. Somente valores numéricos entram na média. A interrogação sinaliza que falta informação; trate-a como uma próxima ação, não como um voto a ser ignorado.
+
+### Quem deve votar na estimativa do bug?
+
+Quem realizará o trabalho de correção deve dimensioná-lo. Produto esclarece impacto e trade-offs; facilitação protege a conversa; especialistas podem fornecer contexto. Se desenvolvimento, qualidade, dados ou operações participam da entrega, suas perspectivas precisam aparecer.
+
+### Bugs estimados devem contar na velocidade?
+
+Depende da política da equipe. O importante é não misturar regras dentro do mesmo histórico, não pontuar retroativamente e não usar velocidade para comparar equipes ou avaliar pessoas.
+
+## Conclusão: descubra o trabalho antes de escolher a carta
+
+Estimar bugs com story points pode tornar capacidade, risco técnico e trabalho de qualidade mais visíveis. Também pode criar um número enganoso quando a equipe confunde urgência, gravidade e desconhecimento com tamanho.
+
+Use a sequência responsável: **mitigue quando necessário, investigue quando o conserto ainda não existe e vote quando houver trabalho comparável**. Então crie uma sala no Battle Poker, nomeie o bug, compartilhe o link e revele as cartas ao mesmo tempo. Registre uma estimativa acordada somente depois que todos estiverem falando da mesma correção.
+
+## Referências
+
+- [Scrum Guide — dimensionamento pelos Developers e adaptação do Sprint Backlog](https://scrumguides.org/scrum-guide.html)
+- [Agile Alliance — Product Backlog inclui correções de bugs e outros trabalhos](https://agilealliance.org/agile101/agile-glossary/)
+- [Agile Alliance — story points como estimativa relativa, não compromisso de duração](https://agilealliance.org/glossary/points-estimates-in/)
+- [Scrum.org — “Should Bugs Have Points?”, por David Sabine](https://www.scrum.org/resources/blog/should-bugs-have-points)
+- [Mountain Goat Software — story points em correções de bugs legados, por Mike Cohn](https://www.mountaingoatsoftware.com/blog/should-story-points-be-assigned-to-a-bug-fixing-story/1000)
+- [Atlassian — fatores considerados em story points e estimativa coletiva](https://www.atlassian.com/agile/project-management/estimation)
