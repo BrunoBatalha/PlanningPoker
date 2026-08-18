@@ -1,5 +1,30 @@
 [
   {
+    "id": "refinamento-backlog-planning-poker",
+    "locale": "en",
+    "slug": "backlog-refinement-planning-poker",
+    "title": "Backlog refinement with Planning Poker: a practical checklist",
+    "primaryKeyword": "backlog refinement with Planning Poker",
+    "secondaryKeywords": [
+      "Planning Poker in backlog refinement",
+      "story ready for estimation",
+      "backlog refinement checklist",
+      "Planning Poker acceptance criteria",
+      "Definition of Ready Scrum"
+    ],
+    "searchIntent": "Prepare Product Backlog items for responsible estimation and decide during refinement whether to estimate, clarify, split, or investigate before using Planning Poker.",
+    "summary": "A practical guide to checking whether a backlog item is clear enough for Planning Poker without turning readiness into bureaucracy.",
+    "publishedAt": "2026-08-08",
+    "updatedAt": "2026-08-10",
+    "author": "Equipe Battle Poker",
+    "relatedContent": [
+      "/en/articles/how-to-estimate-story-points",
+      "/en/articles/planning-poker-vote-disagreement",
+      "/en/articles/fibonacci-planning-poker-scale",
+      "/en/articles/remote-planning-poker"
+    ]
+  },
+  {
     "id": "fibonacci-planning-poker",
     "locale": "en",
     "slug": "fibonacci-planning-poker-scale",

@@ -1,0 +1,250 @@
+---
+status: "published"
+slug: "backlog-refinement-planning-poker"
+title: "Backlog refinement with Planning Poker: a practical checklist"
+description: "Learn how to prepare stories for estimation and decide when to estimate, clarify, split, or investigate an item during backlog refinement."
+summary: "A practical guide to checking whether a backlog item is clear enough for Planning Poker without turning readiness into bureaucracy."
+author: "Equipe Battle Poker"
+primaryKeyword: "backlog refinement with Planning Poker"
+secondaryKeywords:
+  - "Planning Poker in backlog refinement"
+  - "story ready for estimation"
+  - "backlog refinement checklist"
+  - "Planning Poker acceptance criteria"
+  - "Definition of Ready Scrum"
+searchIntent: "Prepare Product Backlog items for responsible estimation and decide during refinement whether to estimate, clarify, split, or investigate before using Planning Poker."
+relatedContent:
+  - "/en/articles/how-to-estimate-story-points"
+  - "/en/articles/planning-poker-vote-disagreement"
+  - "/en/articles/fibonacci-planning-poker-scale"
+  - "/en/articles/remote-planning-poker"
+publishedAt: "2026-08-08"
+updatedAt: "2026-08-10"
+coverImage: "/blog/refinamento-backlog-planning-poker/refinamento-backlog-planning-poker-capa.webp"
+coverAlt: "Ambiguous backlog items moving through a refinement funnel toward a story ready to receive votes of 3, 5, and 8"
+socialImage: "/blog/refinamento-backlog-planning-poker/backlog-refinement-planning-poker-social-en.webp"
+ctaTitle: "Bring a refined story to the vote"
+ctaDescription: "Create a room without signing up, name the round, and share the link. In Battle Poker, votes stay hidden until the simultaneous reveal so the team can discuss its assumptions."
+ctaButton: "Create an estimation room"
+---
+
+In **backlog refinement with Planning Poker**, voting should begin only when the team understands the expected outcome, the item boundaries, the main acceptance criteria, and the relevant uncertainties. “Ready to estimate” does not mean a complete specification: it means enough clarity to compare the item with reference stories and support a responsible conversation about size.
+
+Use this practical rule: **if a question could radically change the work, clarify it before voting**. If the item is too large, split it. If one technical uncertainty dominates, investigate it. When the remaining questions are a normal part of delivery, vote and record the assumptions.
+
+## Backlog refinement and Planning Poker are not the same thing
+
+Refinement continuously improves Product Backlog items. Planning Poker is an optional estimation technique that can be used within that activity. A team can refine without voting and can size work in other ways; treating both concepts as identical often turns the session into a race for numbers.
+
+The [Scrum Guide 2020](https://scrumguides.org/scrum-guide.html) defines refinement as breaking down and further defining items into smaller, more precise units, adding attributes such as description, order, and size. It also says that items deemed ready for Sprint Planning can be completed within one Sprint and that the Developers responsible for the work are accountable for sizing.
+
+**Fact:** Scrum does not require Planning Poker, story points, or a fixed refinement meeting. **Interpretation:** voting is useful when it helps the team build shared understanding and compare size. **Recommendation:** do not use a card to compensate for a story that still represents different outcomes in different people’s minds.
+
+| Activity | Main question | Useful outcome |
+| --- | --- | --- |
+| Refine | What must be understood or split for this item to become actionable? | A clearer, smaller, ordered item |
+| Estimate | What is the relative size of this work in the team’s context? | A size explained through references and assumptions |
+| Plan the Sprint | What makes sense to select to advance the Sprint Goal? | A forecast of work for the Sprint |
+
+## When a story is ready to estimate
+
+An item is ready for Planning Poker when the team can answer **enough** to compare the work without deciding every implementation detail. The right level depends on the risk, how soon the item may be selected, and the available knowledge.
+
+A Definition of Ready can serve as a working agreement, but Scrum does not require one. [Scrum.org explains that it is a complementary practice](https://www.scrum.org/resources/blog/ready-or-not-demystifying-definition-ready-scrum) and warns against turning it into a rigid gate, a source of blame, or an excuse to prevent learning. Prefer to call the list below **refinement questions**.
+
+### 1. Are the outcome and user clear?
+
+Everyone should be able to explain who benefits, which problem will be solved, and what observable change indicates success. The formula “As a person, I want something so that I get a benefit” can help, but it does not replace the conversation.
+
+If two people describe different outcomes, stop. Rewrite the objective before discussing points.
+
+### 2. Are the item boundaries explicit?
+
+Record what is included now and what is out of scope. Include business rules, permissions, channels, platforms, and volumes that significantly change the work. “Export a report” might mean downloading the current screen or building asynchronous generation for millions of rows.
+
+### 3. Are there verifiable acceptance criteria?
+
+Acceptance criteria describe observable conditions for considering the outcome correct. [Atlassian connects these criteria with understanding success and making a story testable](https://www.atlassian.com/br/agile/project-management/user-stories). They do not need to anticipate every test, but they should cover the main behavior, important boundaries, and relevant failures.
+
+Replace “it should work correctly” with concrete examples: given a user without permission, when they try to export, then the action is unavailable and access is not granted.
+
+### 4. Are known dependencies, constraints, and risks visible?
+
+Ask about external APIs, data, decisions from another team, migrations, security, accessibility, and non-functional constraints. Not every dependency must already be resolved. It must be visible enough for the team to decide whether it belongs in the estimate, requires investigation, or blocks the item.
+
+### 5. Is there enough knowledge to compare the item?
+
+Normal uncertainty belongs in an estimate. Dominant uncertainty prevents an honest comparison. If no one knows whether an API supports the essential operation, a high card does not create knowledge. Record the question and run a short investigation before the next round.
+
+### 6. Can the item fit as a coherent unit within one Sprint?
+
+The Scrum Guide uses the ability to complete an item within one Sprint as a sign of readiness for selection. That does not impose a universal number of story points. If the item combines independent flows or cannot reach Done within the period, look for vertical slices that preserve value.
+
+<ArticleImage
+  src="/blog/refinamento-backlog-planning-poker/story-ready-to-estimate-en.svg"
+  mobileSrc="/blog/refinamento-backlog-planning-poker/story-ready-to-estimate-mobile-en.svg"
+  alt="Diagram for deciding whether to estimate, clarify, split, or investigate a story during refinement"
+  width={1400}
+  height={788}
+  mobileWidth={768}
+  mobileHeight={1120}
+  caption="Use the questions to guide the conversation. Sufficient readiness is neither a bureaucratic gate nor a promise that nothing will change."
+/>
+
+## How to run backlog refinement with Planning Poker
+
+### 1. Select a few items near the top
+
+Refine first what has a real chance of being worked on soon. Preparing a distant backlog in detail creates an inventory of decisions that may become obsolete.
+
+### 2. Present the problem before the solution
+
+The Product Owner explains the goal, user, value, and known constraints. The team reads the item and notes questions without starting from a preferred architecture or desired number.
+
+### 3. Work through the six readiness questions
+
+Do not turn the list into document approval. Use it to find the question most likely to change the size. Update the item during the conversation: examples and decisions need to survive the meeting.
+
+### 4. Choose the outcome before opening the vote
+
+There are four honest outcomes:
+
+- **estimate now:** there is enough shared understanding and the size is comparable;
+- **clarify:** a product decision or business rule is missing;
+- **split:** the item combines independent outcomes or does not fit as one unit;
+- **investigate:** one dominant technical question needs evidence.
+
+### 5. Name the round and vote privately
+
+For estimable items, create a room in Battle Poker, name the round after the item, and share the link. Each participant chooses a card without seeing anyone else’s vote. That independence preserves signals that might disappear after the first opinion is spoken aloud.
+
+The [What is Planning Poker?](/en/what-is-planning-poker) page presents the complete activity. If the team still needs to calibrate reference stories, follow the guide on [how to estimate story points](/en/articles/how-to-estimate-story-points).
+
+### 6. Reveal and classify the disagreement
+
+After the simultaneous reveal, look at the distribution. Nearby votes may need only a quick confirmation. Outliers may indicate boundaries, dependencies, or criteria interpreted in different ways. Listen to the assumptions before calculating any average.
+
+The guide to [Planning Poker vote disagreement](/en/articles/planning-poker-vote-disagreement) shows how to run this conversation without pressuring the person whose vote stands alone.
+
+### 7. Record the decision—even when there is no number
+
+In Battle Poker, the team can review the result, set the agreed estimate, confirm the round in the history, or vote again. If the item returns for clarification, splitting, or investigation, record that outcome in the backlog and do not force an estimate just to end the meeting.
+
+## Example: export orders to CSV
+
+A team receives this item: “As a manager, I want to export orders so that I can analyze the results.” It sounds small, but the six questions expose incompatible interpretations.
+
+- one person imagined exporting the filtered table already displayed on the screen;
+- another included every order in the company with no date limit;
+- QA asked about time zones and special characters;
+- security noted that branches may see only their own orders;
+- the Product Owner had not decided whether the file should be immediate or sent by email.
+
+The team does not vote. First it defines the nearest deliverable: export to CSV the same orders visible on screen, respecting filters, branch permissions, the user’s time zone, and a limit of 10,000 rows. High-volume historical export becomes a separate discovery item.
+
+The first vote on the reduced item produces `3`, `5`, `5`, `8`, and `8`. The person who chose `3` believed the current library already handled separators and encoding. Those who chose `8` knew that the reused service ignored the user’s time zone. After confirming the required correction and comparing the item with a recent reference, the team votes again and agrees on `8`.
+
+The number now represents the same item for everyone. Refinement did not remove all uncertainty; it removed the interpretations that would have made each card estimate a different product.
+
+## Four possible decisions during the session
+
+| Observed signal | Decision | Next step |
+| --- | --- | --- |
+| Outcome, boundaries, and risks are understood | Estimate | Compare with references and vote |
+| A decisive business rule is missing | Clarify | Identify the owner and the specific question |
+| The item combines several outcomes | Split | Create vertical slices and reassess each one |
+| Technical unknowns dominate the size | Investigate | Run a short experiment with a clear question and limit |
+
+**Practical recommendation:** a productive session is not the one that assigns the most points. It is the one that makes the right decision for each item.
+
+## Three scenarios and how to respond
+
+### Happy path: the conversation confirms the same scope
+
+The criteria cover the main flow, permissions, and a known error. The cards range from `5` to `8`, and the difference comes from one simple testing assumption. The team records the decision and moves on.
+
+### Failure scenario: the checklist becomes a handoff contract
+
+An analyst must complete every field alone before “handing” the item to the Developers. Any change causes the story to fail the gate. The practice creates silos and reduces collaboration. Rebuild the questions with the whole team and accept that details will continue to emerge.
+
+### Alternative scenario: the work is urgent, but knowledge is missing
+
+A regulatory incident requires a quick response, and the external integration is unknown. The team does not invent `21` to absorb everything. It separates the immediate mitigation, creates a short investigation for the integration, and estimates the permanent delivery again with new evidence.
+
+## Common mistakes in refinement with Planning Poker
+
+### Voting early to “unlock” the conversation
+
+The number anchors the discussion before everyone understands the problem. Start with questions; open the cards when the same item is being compared.
+
+### Requiring a complete specification
+
+Readiness does not mean predicting every implementation decision. Add enough detail to reduce meaningful ambiguity while preserving room for learning during development.
+
+### Turning `?` into a high card
+
+In Battle Poker, `?` signals missing information and is excluded from the numerical average. Respond with a recorded question, not an inflated size.
+
+The [Battle Poker FAQ](/en/faq) summarizes the special cards: use `?` to request more information and `☕` to suggest a break; neither is a numerical estimate.
+
+### Treating the average as consensus
+
+Cards `3` and `13` average to `8`, but they may describe opposite scopes. Investigate the reasons. The article on the [Fibonacci scale in Planning Poker](/en/articles/fibonacci-planning-poker-scale) explains why high numbers and widening intervals require interpretation.
+
+### Refining the entire backlog to the same level of detail
+
+Distant items change. Invest more clarity in near-term candidates and keep the rest lightweight until priority justifies deeper work.
+
+## Checklist before voting
+
+- [ ] Can the expected outcome be explained in one sentence?
+- [ ] Is the user or beneficiary identified?
+- [ ] Are the included scope and main exclusions visible?
+- [ ] Do the acceptance criteria cover success, an important boundary, and a relevant failure?
+- [ ] Have the dependencies and constraints that change the size appeared?
+- [ ] Is the remaining uncertainty normal rather than dominant?
+- [ ] Can the item reach Done within one Sprint?
+- [ ] Does the team have its own reference stories for comparison?
+- [ ] Is everyone estimating the same slice?
+- [ ] Does the team accept leaving without a number when it needs to clarify, split, or investigate?
+
+For distributed teams, also agree on reading time, the conversation channel, and how to handle connection failures. The guide to [remote Planning Poker](/en/articles/remote-planning-poker) covers these contingencies.
+
+## Frequently asked questions
+
+### Is backlog refinement a mandatory Scrum meeting?
+
+No. The Scrum Guide describes refinement as an ongoing activity, not a formal event with a prescribed duration. A team can hold recurring sessions and refine throughout its work according to context.
+
+### Should Planning Poker happen during refinement or Sprint Planning?
+
+It can happen at either point, but estimating candidate items during refinement often lets Sprint Planning focus more on the goal and selecting the work. The technique is optional; choose the time that produces useful information without premature voting.
+
+### Does a story need acceptance criteria before it can be estimated?
+
+It needs conditions clear enough for everyone to compare the same outcome. That does not require an exhaustive specification. If a missing criterion could substantially change the work, define it or record an assumption before voting.
+
+### Is Definition of Ready part of Scrum?
+
+Not as a required element. It can be a complementary, adaptable practice. Use questions that support transparency and collaboration; avoid a fixed gate controlled by one isolated role.
+
+### Who should size the item?
+
+According to the Scrum Guide, the Developers who will do the work are responsible for sizing. The Product Owner helps clarify goals and trade-offs. Other people may contribute context, but they should not impose a size on the team.
+
+### How many items should be refined in one session?
+
+There is no universal number. Select a small set of items near the top and stop when there is enough clarity for the next decisions. Measuring success by the number of estimated items encourages superficial numbers.
+
+## Conclusion: enough clarity, not total certainty
+
+Good refinement prepares the estimation conversation without trying to freeze the future. Check the outcome, boundaries, criteria, dependencies, knowledge, and size. Then consciously choose whether to estimate, clarify, split, or investigate.
+
+When the item is ready, [create a room in Battle Poker](/en), share the link, and let each person vote without anchoring. Use the reveal and distribution to validate assumptions; confirm the agreed estimate only after everyone is talking about the same work.
+
+## References
+
+- [Scrum Guide 2020—refinement, readiness for Sprint Planning, and accountability for sizing](https://scrumguides.org/scrum-guide.html)
+- [Scrum.org—benefits and risks of Definition of Ready as a complementary practice](https://www.scrum.org/resources/blog/ready-or-not-demystifying-definition-ready-scrum)
+- [Atlassian—user stories, conversation, and verifiable acceptance criteria](https://www.atlassian.com/br/agile/project-management/user-stories)
+- [Mountain Goat Software—how and when to use Planning Poker](https://www.mountaingoatsoftware.com/agile/planning-poker)
