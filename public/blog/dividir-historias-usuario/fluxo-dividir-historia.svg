@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="788" viewBox="0 0 1400 788" role="img" aria-labelledby="title desc">
+  <title id="title">Da carta alta à nova estimativa</title>
+  <desc id="desc">O fluxo começa com o sinal da rodada, diagnostica escopo, desconhecido ou interpretações diferentes, define uma fatia vertical, valida valor e testabilidade e abre uma nova rodada.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#070b19"/><stop offset="1" stop-color="#101a34"/></linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a78bfa"/><stop offset="1" stop-color="#6d4df5"/></linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#55e6f2"/><stop offset="1" stop-color="#2695ff"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#9b7bff"/></marker>
+    <marker id="arrowCyan" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#55e6f2"/></marker>
+    <filter id="glow"><feGaussianBlur stdDeviation="7" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1400" height="788" rx="32" fill="url(#bg)"/>
+  <path d="M0 145H1400M0 492H1400M0 650H1400" stroke="#fff" stroke-opacity=".035"/>
+  <g font-family="Arial, sans-serif">
+    <text x="700" y="58" text-anchor="middle" fill="#f7f8ff" font-size="35" font-weight="800">Da carta alta à nova estimativa</text>
+    <text x="700" y="99" text-anchor="middle" fill="#aeb7d4" font-size="21">Mude o recorte antes de mudar o número.</text>
+
+    <rect x="55" y="165" width="285" height="290" rx="25" fill="#171630" stroke="#8f70ff" stroke-width="2"/>
+    <circle cx="99" cy="209" r="23" fill="url(#violet)"/><text x="99" y="217" text-anchor="middle" fill="#fff" font-size="22" font-weight="800">1</text>
+    <text x="197" y="217" text-anchor="middle" fill="#c9bdff" font-size="18" font-weight="700">LEIA O SINAL</text>
+    <g transform="translate(94 251)">
+      <rect x="0" y="0" width="66" height="94" rx="12" fill="#26214a" stroke="#a78bfa" stroke-width="2"/><text x="33" y="61" text-anchor="middle" fill="#fff" font-size="35" font-weight="800">21</text>
+      <rect x="70" y="0" width="66" height="94" rx="12" fill="#26214a" stroke="#a78bfa" stroke-width="2"/><text x="103" y="61" text-anchor="middle" fill="#fff" font-size="35" font-weight="800">?</text>
+    </g>
+    <text x="197" y="385" text-anchor="middle" fill="#fff" font-size="22" font-weight="700"><tspan x="197">Carta alta, dúvida</tspan><tspan x="197" dy="30">ou votos muito distantes</tspan></text>
+    <text x="197" y="438" text-anchor="middle" fill="#9da8c8" font-size="17">Não force uma média.</text>
+
+    <rect x="390" y="165" width="285" height="290" rx="25" fill="#171630" stroke="#8f70ff" stroke-width="2"/>
+    <circle cx="434" cy="209" r="23" fill="url(#violet)"/><text x="434" y="217" text-anchor="middle" fill="#fff" font-size="22" font-weight="800">2</text>
+    <text x="532" y="217" text-anchor="middle" fill="#c9bdff" font-size="18" font-weight="700">DIAGNOSTIQUE</text>
+    <text x="532" y="268" text-anchor="middle" fill="#fff" font-size="22" font-weight="700">O que domina o tamanho?</text>
+    <rect x="424" y="294" width="216" height="42" rx="12" fill="#232044"/><text x="532" y="321" text-anchor="middle" fill="#e5e1ff" font-size="17" font-weight="700">Muitos resultados → dividir</text>
+    <rect x="424" y="346" width="216" height="42" rx="12" fill="#1c2744"/><text x="532" y="373" text-anchor="middle" fill="#c7d2fe" font-size="17" font-weight="700">Desconhecido → investigar</text>
+    <rect x="424" y="398" width="216" height="42" rx="12" fill="#173145"/><text x="532" y="425" text-anchor="middle" fill="#bff8ff" font-size="17" font-weight="700">Escopos distintos → alinhar</text>
+
+    <rect x="725" y="165" width="285" height="290" rx="25" fill="#171630" stroke="#8f70ff" stroke-width="2"/>
+    <circle cx="769" cy="209" r="23" fill="url(#violet)"/><text x="769" y="217" text-anchor="middle" fill="#fff" font-size="22" font-weight="800">3</text>
+    <text x="900" y="217" text-anchor="middle" fill="#c9bdff" font-size="17" font-weight="700">FATIE VERTICALMENTE</text>
+    <text x="867" y="264" text-anchor="middle" fill="#fff" font-size="21" font-weight="700"><tspan x="867">Nomeie o menor</tspan><tspan x="867" dy="29">resultado útil</tspan></text>
+    <g transform="translate(767 327)">
+      <rect x="0" y="0" width="200" height="29" rx="8" fill="#6d4df5"/><text x="100" y="20" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">INTERFACE</text>
+      <rect x="0" y="34" width="200" height="29" rx="8" fill="#4267cc"/><text x="100" y="54" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">REGRA / INTEGRAÇÃO</text>
+      <rect x="0" y="68" width="200" height="29" rx="8" fill="#1685a4"/><text x="100" y="88" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">DADOS + TESTE</text>
+    </g>
+    <text x="867" y="438" text-anchor="middle" fill="#9da8c8" font-size="17">Caminho · regra · dado · interface</text>
+
+    <rect x="1060" y="165" width="285" height="290" rx="25" fill="#171630" stroke="#8f70ff" stroke-width="2"/>
+    <circle cx="1104" cy="209" r="23" fill="url(#violet)"/><text x="1104" y="217" text-anchor="middle" fill="#fff" font-size="22" font-weight="800">4</text>
+    <text x="1202" y="217" text-anchor="middle" fill="#c9bdff" font-size="18" font-weight="700">TESTE A FATIA</text>
+    <text x="1202" y="267" text-anchor="middle" fill="#fff" font-size="22" font-weight="700">Ela passa nos quatro testes?</text>
+    <text x="1100" y="316" fill="#bff8ff" font-size="18" font-weight="700">✓</text><text x="1130" y="316" fill="#e9ecff" font-size="18">Resultado perceptível</text>
+    <text x="1100" y="353" fill="#bff8ff" font-size="18" font-weight="700">✓</text><text x="1130" y="353" fill="#e9ecff" font-size="18">Fluxo ponta a ponta</text>
+    <text x="1100" y="390" fill="#bff8ff" font-size="18" font-weight="700">✓</text><text x="1130" y="390" fill="#e9ecff" font-size="18">Critérios observáveis</text>
+    <text x="1100" y="427" fill="#bff8ff" font-size="18" font-weight="700">✓</text><text x="1130" y="427" fill="#e9ecff" font-size="18">Pode chegar a Done</text>
+
+    <path d="M340 310H378" stroke="#9b7bff" stroke-width="4" marker-end="url(#arrow)"/>
+    <path d="M675 310H713" stroke="#9b7bff" stroke-width="4" marker-end="url(#arrow)"/>
+    <path d="M1010 310H1048" stroke="#9b7bff" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <rect x="405" y="515" width="270" height="103" rx="20" fill="#20203e" stroke="#6470a6" stroke-width="2"/>
+    <text x="540" y="551" text-anchor="middle" fill="#c7d2fe" font-size="17" font-weight="700">SE DOMINA O DESCONHECIDO</text>
+    <text x="540" y="583" text-anchor="middle" fill="#fff" font-size="21" font-weight="800">Investigue com limite</text>
+    <text x="540" y="606" text-anchor="middle" fill="#9da8c8" font-size="15">Volte com evidência.</text>
+    <path d="M532 455V503" stroke="#66708f" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="1055" y="515" width="295" height="103" rx="20" fill="#2c1727" stroke="#f87171" stroke-width="2"/>
+    <text x="1202" y="551" text-anchor="middle" fill="#fecaca" font-size="17" font-weight="700">SE NÃO PASSA NOS TESTES</text>
+    <text x="1202" y="583" text-anchor="middle" fill="#fff" font-size="21" font-weight="800">Refaça o corte</text>
+    <text x="1202" y="606" text-anchor="middle" fill="#d6aab9" font-size="15">Não crie camadas isoladas.</text>
+    <path d="M1202 455V503" stroke="#66708f" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <path d="M867 455V665H932" fill="none" stroke="#55e6f2" stroke-width="4" marker-end="url(#arrowCyan)"/>
+    <path d="M1202 455V480H1010V638" fill="none" stroke="#55e6f2" stroke-width="3" stroke-dasharray="8 8" marker-end="url(#arrowCyan)"/>
+    <text x="915" y="646" fill="#bff8ff" font-size="17" font-weight="700">PASSOU</text>
+    <rect x="330" y="660" width="740" height="91" rx="25" fill="#10364c" stroke="url(#cyan)" stroke-width="3" filter="url(#glow)"/>
+    <text x="700" y="697" text-anchor="middle" fill="#bff8ff" font-size="20" font-weight="700">NOVA RODADA NO PLANNING POKER</text>
+    <text x="700" y="730" text-anchor="middle" fill="#fff" font-size="23" font-weight="800">Nomeie a fatia → vote oculto → revele → registre ou ajuste</text>
+  </g>
+</svg>

@@ -123,6 +123,31 @@
     ]
   },
   {
+    "id": "dividir-historias-usuario",
+    "locale": "pt-BR",
+    "slug": "dividir-historias-usuario",
+    "title": "Como dividir histórias de usuário após o Planning Poker",
+    "primaryKeyword": "como dividir histórias de usuário",
+    "secondaryKeywords": [
+      "história de usuário grande",
+      "fatiamento vertical user story",
+      "SPIDR histórias de usuário",
+      "dividir user stories",
+      "reestimar story points"
+    ],
+    "searchIntent": "Transformar uma história de usuário grande identificada durante a estimativa em fatias verticais menores e voltar ao Planning Poker com recortes comparáveis.",
+    "summary": "Um método para transformar cartas altas em fatias verticais menores, testáveis e valiosas — com critérios, exemplo completo e roteiro de nova votação.",
+    "publishedAt": "2026-08-24",
+    "updatedAt": "2026-08-24",
+    "author": "Equipe Battle Poker",
+    "relatedContent": [
+      "/artigos/refinamento-backlog-planning-poker",
+      "/artigos/fibonacci-planning-poker",
+      "/artigos/como-estimar-story-points",
+      "/artigos/divergencia-votos-planning-poker"
+    ]
+  },
+  {
     "id": "estimar-bugs-planning-poker",
     "locale": "pt-BR",
     "slug": "estimar-bugs-planning-poker",
@@ -213,13 +238,13 @@
     "searchIntent": "Preparar itens do Product Backlog para uma estimativa responsável e decidir, durante o refinamento, quando votar, esclarecer, dividir ou investigar antes do Planning Poker.",
     "summary": "Um roteiro prático para verificar se um item do backlog está claro o suficiente para o Planning Poker, sem transformar prontidão em burocracia.",
     "publishedAt": "2026-08-08",
-    "updatedAt": "2026-08-18",
+    "updatedAt": "2026-08-24",
     "author": "Equipe Battle Poker",
     "relatedContent": [
       "/artigos/como-estimar-story-points",
       "/artigos/divergencia-votos-planning-poker",
       "/artigos/fibonacci-planning-poker",
-      "/artigos/planning-poker-remoto"
+      "/artigos/dividir-historias-usuario"
     ]
   },
   {
@@ -238,13 +263,13 @@
     "searchIntent": "Entender por que a escala Fibonacci é usada no Planning Poker e aplicá-la com critérios claros, inclusive diante de cartas altas, incerteza e escalas alternativas.",
     "summary": "Um guia prático para escolher, calibrar e usar a escala Fibonacci no Planning Poker sem criar precisão falsa nem transformar pontos em prazo.",
     "publishedAt": "2026-08-07",
-    "updatedAt": "2026-08-07",
+    "updatedAt": "2026-08-24",
     "author": "Equipe Battle Poker",
     "relatedContent": [
       "/artigos/como-estimar-story-points",
       "/artigos/divergencia-votos-planning-poker",
       "/o-que-e-planning-poker",
-      "/artigos/planning-poker-remoto"
+      "/artigos/dividir-historias-usuario"
     ]
   },
   {
