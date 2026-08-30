@@ -6,15 +6,14 @@ import {
   Button,
   Container,
   Heading,
-  Icon,
   Text,
   useToast,
   VStack,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FiLayers } from "react-icons/fi";
 
 import {
   AppShell,
@@ -146,13 +145,16 @@ export default function Page({ params }: { params: ParamsUrl }) {
                 <Box
                   display="grid"
                   placeItems="center"
-                  boxSize={14}
-                  borderRadius="2xl"
-                  bgGradient="linear(to-br, brand.400, violet.500)"
-                  boxShadow="glowBrand"
+                  boxSize={16}
                   mb={5}
                 >
-                  <Icon as={FiLayers} boxSize={7} color="white" />
+                  <Image
+                    src="/logo.png"
+                    alt="Battle Poker"
+                    width={64}
+                    height={64}
+                    priority
+                  />
                 </Box>
                 <Text textStyle="eyebrow">{t("eyebrow")}</Text>
                 <Heading as="h1" textStyle="h1" mt={2}>

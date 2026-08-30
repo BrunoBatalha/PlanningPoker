@@ -5,7 +5,6 @@ import {
   Button,
   Container,
   HStack,
-  Icon,
   IconButton,
   Link as ChakraLink,
   Menu,
@@ -16,8 +15,9 @@ import {
   Spacer,
   Text,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import Link from "next/link";
-import { FiLayers, FiMenu } from "react-icons/fi";
+import { FiMenu } from "react-icons/fi";
 import { LanguageSwitcher, type Locale, useLocale, useTranslations } from "@/i18n";
 import { getLocalizedHref } from "@/lib/locale-routing";
 
@@ -59,12 +59,16 @@ export default function Header({ showFullLogo = false, localeHrefs }: HeaderProp
             <Box
               display="grid"
               placeItems="center"
-              boxSize={10}
-              borderRadius="xl"
-              bgGradient="linear(to-br, brand.400, violet.500)"
-              boxShadow="glowBrand"
+              boxSize={11}
+              flexShrink={0}
             >
-              <Icon as={FiLayers} boxSize={5} color="white" />
+              <Image
+                src="/logo.png"
+                alt=""
+                width={44}
+                height={44}
+                priority
+              />
             </Box>
             <Box>
               <Text

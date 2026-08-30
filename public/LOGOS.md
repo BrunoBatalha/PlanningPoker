@@ -6,27 +6,31 @@ Este diretório contém os logos utilizados na aplicação Planning Poker.
 
 ### `logo.png`
 - **Uso**: Logo principal da aplicação
-- **Dimensões recomendadas**: 512x512px ou maior
+- **Dimensões**: 1024x1024px
 - **Formato**: PNG com fundo transparente
 - **Utilizado em**:
-  - Favicon
   - Open Graph images
   - Schema Markup
   - Headers e breadcrumbs
-  - Manifest PWA
 
 ### `logo-text.png`
 - **Uso**: Logo com texto completo da marca
-- **Dimensões recomendadas**: Proporção 16:9 ou similar (ex: 800x450px)
+- **Dimensões**: 1200x600px
 - **Formato**: PNG com fundo transparente
 - **Utilizado em**:
-  - Página principal (hero section)
-  - Headers expandidos
-  - Marketing materials
+  - Materiais de divulgação
+  - Apresentações e capas com a assinatura completa
+
+### Ícones de aplicativo
+- `favicon-32x32.png`: favicon moderno em PNG
+- `apple-touch-icon.png`: ícone de 180x180px para dispositivos Apple
+- `icons/icon-192.png`: ícone PWA de 192x192px
+- `icons/icon-512.png`: ícone PWA de 512x512px
+- `src/app/favicon.ico`: fallback legado gerenciado pelo App Router
 
 ## Implementação
 
-Os logos são automaticamente otimizados pelo Next.js e servidos de forma eficiente. Fallbacks estão implementados caso os arquivos de imagem não carreguem.
+Os logos são automaticamente otimizados pelo Next.js e servidos de forma eficiente. A marca usa três cartas sobrepostas para formar um “B”, com o losango central representando um ponto de estimativa e a convergência do time.
 
 ## Substituição
 
