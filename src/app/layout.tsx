@@ -18,10 +18,11 @@ export const metadata: Metadata = {
   publisher: "Battle Poker",
   icons: {
     icon: [
+      { url: "/favicon.ico?v=2", sizes: "16x16 32x32 48x48", type: "image/x-icon" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
     ],
-    shortcut: "/favicon-32x32.png",
+    shortcut: "/favicon.ico?v=2",
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   manifest: "/manifest.json",

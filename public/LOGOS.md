@@ -26,7 +26,7 @@ Este diretório contém os logos utilizados na aplicação Planning Poker.
 - `apple-touch-icon.png`: ícone de 180x180px para dispositivos Apple
 - `icons/icon-192.png`: ícone PWA de 192x192px
 - `icons/icon-512.png`: ícone PWA de 512x512px
-- `src/app/favicon.ico`: fallback legado gerenciado pelo App Router
+- `favicon.ico`: favicon multirresolução de 16x16, 32x32 e 48x48px
 
 ## Implementação
 

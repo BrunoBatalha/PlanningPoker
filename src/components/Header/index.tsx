@@ -59,14 +59,15 @@ export default function Header({ showFullLogo = false, localeHrefs }: HeaderProp
             <Box
               display="grid"
               placeItems="center"
-              boxSize={11}
+              boxSize={{ base: 12, md: 14 }}
               flexShrink={0}
             >
               <Image
                 src="/logo.png"
                 alt=""
-                width={44}
-                height={44}
+                width={56}
+                height={56}
+                style={{ width: "100%", height: "auto" }}
                 priority
               />
             </Box>
